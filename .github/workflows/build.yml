@@ -63,7 +63,7 @@ jobs:
 
       - name: Patch Rust core library
         run: |
-          RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/library/core/src/ffi/c_str.rs"
+          RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs"
           echo "Patching file: $RUST_SRC_PATH"
           sed -i 's/unsafe { CStr::from_ptr(self\.entry\.d_name\.as_ptr()) }/unsafe { CStr::from_ptr(self.entry.d_name.as_ptr() as *const u8) }/g' "$RUST_SRC_PATH"
           echo "Patch applied successfully"
@@ -78,11 +78,10 @@ jobs:
           kconfig-tweak --enable CONFIG_FS_LARGEFILE
           kconfig-tweak --enable CONFIG_DEV_URANDOM
           kconfig-tweak --enable CONFIG_RUST_CRATES_REGEX
-          kconfig-tweak --set-val CONFIG_RUST_CRATES_REGEX_PROGNAME "rust_crates_test_regex"
-          kconfig-tweak --set-val CONFIG_RUST_CRATES_REGEX_PRIORITY 100
-          kconfig-tweak --set-val CONFIG_RUST_CRATES_REGEX_STACKSIZE 81920
           kconfig-tweak --set-val CONFIG_TLS_NELEM 16
           cd ..
 
+          # Touch the CMakeLists.txt file to fresh the configuration
+          touch nuttx/CMakeLists.txt
           cmake --build build -t refreshsilent
           cmake --build build
