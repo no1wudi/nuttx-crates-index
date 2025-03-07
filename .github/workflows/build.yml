@@ -47,7 +47,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y kconfig-frontends-nox gcc-arm-none-eabi qemu-system-arm cmake ninja-build
+          sudo apt-get install -y kconfig-frontends-nox gcc-arm-none-eabi qemu-system-arm cmake ninja-build python3-kconfiglib
 
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
