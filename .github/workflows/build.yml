@@ -78,6 +78,9 @@ jobs:
           kconfig-tweak --enable CONFIG_FS_LARGEFILE
           kconfig-tweak --enable CONFIG_DEV_URANDOM
           kconfig-tweak --enable CONFIG_RUST_CRATES_REGEX
+          kconfig-tweak --set-val CONFIG_RUST_CRATES_REGEX_PROGNAME "rust_crates_test_regex"
+          kconfig-tweak --set-val CONFIG_RUST_CRATES_REGEX_PRIORITY 100
+          kconfig-tweak --set-val CONFIG_RUST_CRATES_REGEX_STACKSIZE 81920
           kconfig-tweak --set-val CONFIG_TLS_NELEM 16
           cd ..
 
