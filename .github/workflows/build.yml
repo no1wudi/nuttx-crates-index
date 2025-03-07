@@ -31,14 +31,14 @@ jobs:
         with:
           repository: apache/nuttx
           path: nuttx
-          ref: 7f0a670bde7aa518164d8117abfa74c0a9973a44
+          ref: e15f7b13c7ed16934d10018ac7f868df936797d3
 
       - name: Checkout NuttX Apps repository
         uses: actions/checkout@v4
         with:
           repository: apache/nuttx-apps
           path: nuttx-apps
-          ref: a0f05d0c620492b259296780d9c1490eaa1f8794
+          ref: 3b03636e95f6202b512d8af32629da4c0dc4af2c
 
       - name: Create symbolic link to external directory
         run: |
