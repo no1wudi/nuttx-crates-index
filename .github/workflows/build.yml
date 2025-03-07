@@ -79,9 +79,7 @@ jobs:
           kconfig-tweak --enable CONFIG_DEV_URANDOM
           kconfig-tweak --enable CONFIG_RUST_CRATES_REGEX
           kconfig-tweak --set-val CONFIG_TLS_NELEM 16
+          touch .config
           cd ..
 
-          # Touch the CMakeLists.txt file to fresh the configuration
-          touch nuttx/CMakeLists.txt
-          cmake --build build -t refreshsilent
-          cmake --build build
+          cmake --build build --fresh
