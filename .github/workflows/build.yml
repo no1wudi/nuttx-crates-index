@@ -77,6 +77,7 @@ jobs:
           kconfig-tweak --enable CONFIG_SYSTEM_TIME64
           kconfig-tweak --enable CONFIG_FS_LARGEFILE
           kconfig-tweak --enable CONFIG_DEV_URANDOM
+          kconfig-tweak --enable CONFIG_RUST_CRATES_REGEX
           kconfig-tweak --set-val CONFIG_TLS_NELEM 16
           cd ..
 
