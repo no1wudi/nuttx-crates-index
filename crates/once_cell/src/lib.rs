@@ -45,7 +45,7 @@ fn test_once_cell() {
     println!("once_cell test completed successfully!");
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn rust_once_cell_main() {
     test_once_cell();
 }

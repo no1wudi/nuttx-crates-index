@@ -28,7 +28,7 @@ fn test_lazy_static() {
     println!("lazy_static test completed successfully!");
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn rust_crates_test_lazy_static_main() {
     test_lazy_static();
 }
