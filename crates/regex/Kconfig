@@ -1,0 +1,30 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATES_REGEX
+	tristate "\"Rust Crates Regex\" example"
+	default n
+	---help---
+		Enable the \"Rust Crates Regex\" example application.
+
+if RUST_CRATES_REGEX
+
+config RUST_CRATES_REGEX_PROGNAME
+	string "Program name"
+	default "rust_crates_test_regex"
+	---help---
+		This is the name of the program that will be used when the
+		program is installed.
+
+config RUST_CRATES_REGEX_PRIORITY
+	int "Rust Regex task priority"
+	default 100
+
+config RUST_CRATES_REGEX_STACKSIZE
+	int "Rust Regex stack size"
+	default 81920
+	---help---
+		Stack size to be used. The Regex example needs approximately
+		64KB stack and 410KB heap memory on 32-bit ARM targets.
+
+endif
