@@ -82,4 +82,4 @@ jobs:
           touch .config
           cd ..
 
-          cmake --build build --fresh
+          cmake --build build
