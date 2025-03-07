@@ -81,4 +81,5 @@ jobs:
           kconfig-tweak --set-val CONFIG_TLS_NELEM 16
           cd ..
 
+          cmake --build build -t refreshsilent
           cmake --build build
