@@ -75,6 +75,7 @@ jobs:
 
       - name: Build NuttX
         run: |
+          rm -rf build
           cmake -Bbuild -DBOARD_CONFIG=${{ matrix.board }} nuttx
 
           # Enable additional configuration options
@@ -85,4 +86,20 @@ jobs:
           kconfig-tweak --set-val CONFIG_TLS_NELEM 16
           cd ..
 
-          make -C build -j$(nproc)
+          make -C build -j$(nproc) && size -A build/nuttx
+
+      - name: Build NuttX with Regex
+        run: |
+          rm -rf build
+          cmake -Bbuild -DBOARD_CONFIG=${{ matrix.board }} nuttx
+
+          # Enable additional configuration options
+          cd build
+          kconfig-tweak --enable CONFIG_SYSTEM_TIME64
+          kconfig-tweak --enable CONFIG_FS_LARGEFILE
+          kconfig-tweak --enable CONFIG_DEV_URANDOM
+          kconfig-tweak --set-val CONFIG_TLS_NELEM 16
+          kconfig-tweak --enable CONFIG_RUST_CRATES_REGEX
+          cd ..
+
+          make -C build -j$(nproc) && size -A build/nuttx
