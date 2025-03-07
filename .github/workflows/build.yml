@@ -31,12 +31,14 @@ jobs:
         with:
           repository: apache/nuttx
           path: nuttx
+          ref: 7f0a670bde7aa518164d8117abfa74c0a9973a44
 
       - name: Checkout NuttX Apps repository
         uses: actions/checkout@v4
         with:
           repository: apache/nuttx-apps
           path: nuttx-apps
+          ref: a0f05d0c620492b259296780d9c1490eaa1f8794
 
       - name: Create symbolic link to external directory
         run: |
@@ -52,12 +54,11 @@ jobs:
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Install Rust toolchain
-        uses: actions-rs/toolchain@v1
+        uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
-          profile: minimal
           toolchain: nightly-2025-03-07
+          components: rustfmt,clippy,rust-src
           override: true
-          components: rustfmt, clippy, rust-src
 
       - name: Patch Rust core library
         run: |
