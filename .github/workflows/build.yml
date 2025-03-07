@@ -1,0 +1,80 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+name: Build
+
+# Working directory layout after checkout:
+# .
+# ├── nuttx-crates-index/ (this repository)
+# ├── nuttx/              (NuttX repository)
+# ├── nuttx-apps/         (NuttX Apps repository)
+# │   └── external/       (symbolic link to nuttx-crates-index)
+# └── build/              (build directory)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout nuttx-crates-index
+        uses: actions/checkout@v4
+        with:
+          path: nuttx-crates-index
+
+      - name: Checkout NuttX repository
+        uses: actions/checkout@v4
+        with:
+          repository: apache/nuttx
+          path: nuttx
+
+      - name: Checkout NuttX Apps repository
+        uses: actions/checkout@v4
+        with:
+          repository: apache/nuttx-apps
+          path: nuttx-apps
+
+      - name: Create symbolic link to external directory
+        run: |
+          cd nuttx-apps
+          rm -rf external
+          ln -sf ../nuttx-crates-index external
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y kconfig-frontends-nox gcc-arm-none-eabi qemu-system-arm cmake ninja-build
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly-2025-03-07
+          override: true
+          components: rustfmt, clippy, rust-src
+
+      - name: Patch Rust core library
+        run: |
+          RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/library/core/src/ffi/c_str.rs"
+          echo "Patching file: $RUST_SRC_PATH"
+          sed -i 's/unsafe { CStr::from_ptr(self\.entry\.d_name\.as_ptr()) }/unsafe { CStr::from_ptr(self.entry.d_name.as_ptr() as *const u8) }/g' "$RUST_SRC_PATH"
+          echo "Patch applied successfully"
+
+      - name: Build NuttX
+        run: |
+          cmake -GNinja -Bbuild -DBOARD_CONFIG=sabre6-quad:nsh nuttx
+
+          # Enable additional configuration options
+          cd build
+          kconfig-tweak --enable CONFIG_SYSTEM_TIME64
+          kconfig-tweak --enable CONFIG_FS_LARGEFILE
+          kconfig-tweak --enable CONFIG_DEV_URANDOM
+          kconfig-tweak --enable CONFIG_RUST_CRATES_REGEX
+          kconfig-tweak --set-val CONFIG_TLS_NELEM 16
+          cd ..
+
+          cmake --build build
