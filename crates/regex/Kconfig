@@ -9,13 +9,6 @@ config RUST_CRATES_REGEX
 
 if RUST_CRATES_REGEX
 
-config RUST_CRATES_REGEX_PROGNAME
-	string "Program name"
-	default "rust_crates_test_regex"
-	---help---
-		This is the name of the program that will be used when the
-		program is installed.
-
 config RUST_CRATES_REGEX_PRIORITY
 	int "Rust Regex task priority"
 	default 100

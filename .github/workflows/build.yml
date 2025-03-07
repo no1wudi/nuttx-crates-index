@@ -26,7 +26,7 @@ jobs:
           - sabre-6quad:nsh
 
     steps:
-      - name: Checkout nuttx-crates-index
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           path: nuttx-crates-index

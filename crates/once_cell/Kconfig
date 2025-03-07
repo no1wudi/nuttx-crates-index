@@ -1,0 +1,22 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATES_ONCE_CELL
+	tristate "\"Rust Crates Once Cell\" example"
+	default n
+	---help---
+		Enable the \"Rust Crates Once Cell\" example application.
+
+if RUST_CRATES_ONCE_CELL
+
+config RUST_CRATES_ONCE_CELL_PRIORITY
+	int "Rust Once Cell task priority"
+	default 100
+
+config RUST_CRATES_ONCE_CELL_STACKSIZE
+	int "Rust Once Cell stack size"
+	default DEFAULT_TASK_STACKSIZE
+	---help---
+		Stack size to be used for the Once Cell example.
+
+endif
