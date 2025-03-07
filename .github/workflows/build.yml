@@ -20,6 +20,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        board:
+          - sabre-6quad:nsh
+
     steps:
       - name: Checkout nuttx-crates-index
         uses: actions/checkout@v4
@@ -49,7 +54,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y kconfig-frontends-nox gcc-arm-none-eabi qemu-system-arm cmake ninja-build python-is-python3
+          sudo apt-get install -y kconfig-frontends-nox gcc-arm-none-eabi qemu-system-arm cmake python-is-python3
           pip install kconfiglib --break-system-packages
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
@@ -70,16 +75,14 @@ jobs:
 
       - name: Build NuttX
         run: |
-          cmake -GNinja -Bbuild -DBOARD_CONFIG=sabre-6quad:nsh nuttx
+          cmake -Bbuild -DBOARD_CONFIG=${{ matrix.board }} nuttx
 
           # Enable additional configuration options
           cd build
           kconfig-tweak --enable CONFIG_SYSTEM_TIME64
           kconfig-tweak --enable CONFIG_FS_LARGEFILE
           kconfig-tweak --enable CONFIG_DEV_URANDOM
-          kconfig-tweak --enable CONFIG_RUST_CRATES_REGEX
           kconfig-tweak --set-val CONFIG_TLS_NELEM 16
-          touch .config
           cd ..
 
-          cmake --build build
+          make -C build -j$(nproc)
