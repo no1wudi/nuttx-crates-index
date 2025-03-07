@@ -58,6 +58,7 @@ jobs:
         with:
           toolchain: nightly-2025-03-07
           components: rustfmt,clippy,rust-src
+          cache: false
           override: true
 
       - name: Patch Rust core library
@@ -76,7 +77,6 @@ jobs:
           kconfig-tweak --enable CONFIG_SYSTEM_TIME64
           kconfig-tweak --enable CONFIG_FS_LARGEFILE
           kconfig-tweak --enable CONFIG_DEV_URANDOM
-          kconfig-tweak --enable CONFIG_RUST_CRATES_REGEX
           kconfig-tweak --set-val CONFIG_TLS_NELEM 16
           cd ..
 
