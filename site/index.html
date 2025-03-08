@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>NuttX Crates Size Impact</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .positive {
+            color: #d73027;
+        }
+
+        .percentage {
+            font-size: 0.9em;
+            color: #666;
+            margin-left: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>NuttX Crates Size Impact</h1>
+    <table id="sizeTable">
+        <tr>
+            <th>Crate</th>
+            <th>Text Δ</th>
+            <th>Data Δ</th>
+            <th>BSS Δ</th>
+            <th>Total Δ</th>
+        </tr>
+    </table>
+
+    <script>
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function formatPercentage(val, baseVal) {
+            const pct = (baseVal ? (val / baseVal) * 100 : 0).toFixed(1);
+            return `(${pct > 0 ? '+' : ''}${pct}%)`;
+        }
+
+        function createRow(build) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${build.crate_name}</td>
+                <td class="positive">
+                    +${formatNumber(build.differences.text)}
+                    <span class="percentage">${formatPercentage(build.differences.text, build.baseline.text)}</span>
+                </td>
+                <td class="positive">
+                    +${formatNumber(build.differences.data)}
+                    <span class="percentage">${formatPercentage(build.differences.data, build.baseline.data)}</span>
+                </td>
+                <td class="positive">
+                    +${formatNumber(build.differences.bss)}
+                    <span class="percentage">${formatPercentage(build.differences.bss, build.baseline.bss)}</span>
+                </td>
+                <td class="positive">
+                    +${formatNumber(build.differences.total)}
+                    <span class="percentage">${formatPercentage(build.differences.total, build.baseline.total)}</span>
+                </td>
+            `;
+            return row;
+        }
+
+        fetch('/sabre-6quad:nsh.json')
+            .then(response => response.json())
+            .then(data => {
+                const table = document.getElementById('sizeTable');
+                data.builds.forEach(build => {
+                    table.appendChild(createRow(build));
+                });
+            })
+            .catch(error => console.error('Error loading data:', error));
+    </script>
+</body>
+
+</html>

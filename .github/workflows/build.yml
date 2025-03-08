@@ -81,12 +81,12 @@ jobs:
         uses: softprops/turnstyle@v2
         if: github.ref == 'refs/heads/main'
 
-      - name: Fetch cache
-        uses: actions/cache@v4
-        if: github.ref == 'refs/heads/main'
-        with:
-          path: output/${{ matrix.board }}.json
-          key: output-${{ matrix.board }}
+      # - name: Fetch cache
+      #   uses: actions/cache@v4
+      #   if: github.ref == 'refs/heads/main'
+      #   with:
+      #     path: output/${{ matrix.board }}.json
+      #     key: output-${{ matrix.board }}
 
       - name: Build NuttX
         run: |
