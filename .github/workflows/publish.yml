@@ -35,9 +35,8 @@ jobs:
       - name: Retrieve JSON from cache
         uses: actions/cache/restore@v4
         with:
-          path: output/
           key: output-sabre-6quad:nsh
-          fail-on-cache-miss: true
+          path: output/sabre-6quad:nsh.json
 
       - name: Copy index.html to output
         run: |
