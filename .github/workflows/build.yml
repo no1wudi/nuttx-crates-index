@@ -74,10 +74,27 @@ jobs:
           sed -i 's/unsafe { CStr::from_ptr(self\.entry\.d_name\.as_ptr()) }/unsafe { CStr::from_ptr(self.entry.d_name.as_ptr() as *const u8) }/g' "$RUST_SRC_PATH"
           echo "Patch applied successfully"
 
+      - name: Create output directory
+        run: mkdir -p output
+
       - name: Turnstyle
         uses: softprops/turnstyle@v2
         if: github.ref == 'refs/heads/main'
 
+      - name: Fetch cache
+        uses: actions/cache@v4
+        if: github.ref == 'refs/heads/main'
+        with:
+          path: output/${{ matrix.board }}.json
+          key: output-${{ matrix.board }}
+
       - name: Build NuttX
         run: |
-          python3 nuttx-crates-index/tools/build.py ${{ matrix.board }}
+          python3 nuttx-crates-index/tools/build.py ${{ matrix.board }} --json output/${{ matrix.board }}.json
+
+      - name: Update cache
+        uses: actions/cache/save@v4
+        if: github.ref == 'refs/heads/main'
+        with:
+          path: output/${{ matrix.board }}.json
+          key: output-${{ matrix.board }}
