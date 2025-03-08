@@ -32,12 +32,12 @@ jobs:
       - name: Create output directory
         run: mkdir -p output
 
-      - name: Retrieve JSON from cache
-        uses: actions/cache/restore@v4
+      - name: Download JSON artifact
+        uses: actions/download-artifact@v4
         with:
-          key: dummy-key-without-cache
-          restore-keys: output-${{ github.sha }}-
+          name:
           path: output/
+          merge-multiple: true
 
       - name: Copy index.html to output
         run: |

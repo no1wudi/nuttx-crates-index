@@ -19,27 +19,13 @@ on:
     branches: [main]
 
 jobs:
-  matrix:
-    runs-on: ubuntu-latest
-    outputs:
-      boards: ${{ steps.set-matrix.outputs.boards }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          path: nuttx-crates-index
-
-      - name: Set matrix
-        id: set-matrix
-        run: |
-          BOARDS=$(cat nuttx-crates-index/.github/boards.json | jq -c '{"board": .}')
-          echo "boards=$BOARDS" >> $GITHUB_OUTPUT
 
   build:
-    needs: matrix
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJson(needs.matrix.outputs.boards) }}
+      matrix:
+        board:
+          - sabre-6quad
 
     steps:
       - name: Checkout repository
@@ -100,8 +86,8 @@ jobs:
         run: |
           python3 nuttx-crates-index/tools/build.py ${{ matrix.board }} --json output/${{ matrix.board }}.json
 
-      - name: Save output cache
-        uses: actions/cache/save@v4
+      - name: Upload JSON artifact
+        uses: actions/upload-artifact@v4
         with:
+          name: output-${{ matrix.board }}
           path: output/${{ matrix.board }}.json
-          key: output-${{ github.sha }}-${{ matrix.board }}

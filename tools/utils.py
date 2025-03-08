@@ -50,43 +50,61 @@ def print_build_results(crate_name, baseline, crate_size, build_time):
         # Combine them with proper spacing to ensure alignment
         return f"{diff_str:>10} ({pct_str:>8})"
 
-    # Format differences with consistent spacing
+    # Helper function to format size values with byte suffix
+    def format_size(size):
+        return f"{size:,d} bytes"
+
+    print(f"📊 Build Results for: {crate_name}")
+    print("-" * 90)
+
+    # Column headers with adjusted spacing
+    headers = ["Section", "Baseline", "With Crate", "Difference", "Impact"]
+    print(
+        f"{headers[0]:<10} {headers[1]:>20} {headers[2]:>20} {headers[3]:>25} {headers[4]:>10}"
+    )
+    print("-" * 90)
+
+    # Table rows with improved alignment
+    def print_row(section, baseline_val, crate_val, diff_str, impact_icon):
+        print(
+            f"{section:<10} "
+            f"{format_size(baseline_val):>20} "
+            f"{format_size(crate_val):>20} "
+            f"{diff_str:>25} "
+            f"{impact_icon:^10}"
+        )
+
+    # Calculate formatted difference strings
     text_str = format_diff(text_diff, text_pct)
     data_str = format_diff(data_diff, data_pct)
     bss_str = format_diff(bss_diff, bss_pct)
     total_str = format_diff(total_diff, total_pct)
 
-    print(f"📊 Build Results for: {crate_name}")
-    print("-" * 90)
+    print_row(
+        "text",
+        baseline["text"],
+        crate_size["text"],
+        text_str,
+        get_impact_icon(text_pct),
+    )
+    print_row(
+        "data",
+        baseline["data"],
+        crate_size["data"],
+        data_str,
+        get_impact_icon(data_pct),
+    )
+    print_row(
+        "bss", baseline["bss"], crate_size["bss"], bss_str, get_impact_icon(bss_pct)
+    )
+    print_row(
+        "total",
+        baseline["total"],
+        crate_size["total"],
+        total_str,
+        get_impact_icon(total_pct),
+    )
 
-    # Column headers with right-aligned difference and impact columns
-    headers = ["Section", "Baseline", "With Crate", "Difference", "Impact"]
-    print(
-        f"{headers[0]:<10} {headers[1]:<15} {headers[2]:<15} {headers[3]:>25} {headers[4]:>10}"
-    )
-    print("-" * 90)
-
-    # Table rows with consistent formatting and right-aligned difference and impact columns
-    print(
-        f"{'text':<10} {baseline['text']:,d} bytes{' '*(15-len(str(baseline['text']))-6)} "
-        f"{crate_size['text']:,d} bytes{' '*(15-len(str(crate_size['text']))-6)} "
-        f"{text_str:>25} {get_impact_icon(text_pct):^10}"
-    )
-    print(
-        f"{'data':<10} {baseline['data']:,d} bytes{' '*(15-len(str(baseline['data']))-6)} "
-        f"{crate_size['data']:,d} bytes{' '*(15-len(str(crate_size['data']))-6)} "
-        f"{data_str:>25} {get_impact_icon(data_pct):^10}"
-    )
-    print(
-        f"{'bss':<10} {baseline['bss']:,d} bytes{' '*(15-len(str(baseline['bss']))-6)} "
-        f"{crate_size['bss']:,d} bytes{' '*(15-len(str(crate_size['bss']))-6)} "
-        f"{bss_str:>25} {get_impact_icon(bss_pct):^10}"
-    )
-    print(
-        f"{'total':<10} {baseline['total']:,d} bytes{' '*(15-len(str(baseline['total']))-6)} "
-        f"{crate_size['total']:,d} bytes{' '*(15-len(str(crate_size['total']))-6)} "
-        f"{total_str:>25} {get_impact_icon(total_pct):^10}"
-    )
     print("-" * 90)
     print(f"⏱️  Build time: {build_time:.2f} seconds")
 
