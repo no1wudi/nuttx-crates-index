@@ -10,11 +10,11 @@ config RUST_CRATES_ONCE_CELL
 if RUST_CRATES_ONCE_CELL
 
 config RUST_CRATES_ONCE_CELL_PRIORITY
-	int "Rust Once Cell task priority"
+	int "Once Cell task priority"
 	default 100
 
 config RUST_CRATES_ONCE_CELL_STACKSIZE
-	int "Rust Once Cell stack size"
+	int "Once Cell stack size"
 	default DEFAULT_TASK_STACKSIZE
 	---help---
 		Stack size to be used for the Once Cell example.

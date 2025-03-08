@@ -10,11 +10,11 @@ config RUST_CRATES_REGEX
 if RUST_CRATES_REGEX
 
 config RUST_CRATES_REGEX_PRIORITY
-	int "Rust Regex task priority"
+	int "Regex task priority"
 	default 100
 
 config RUST_CRATES_REGEX_STACKSIZE
-	int "Rust Regex stack size"
+	int "Regex stack size"
 	default 81920
 	---help---
 		Stack size to be used. The Regex example needs approximately

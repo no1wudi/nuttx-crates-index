@@ -11,11 +11,11 @@ config RUST_CRATES_REGEX_LITE
 if RUST_CRATES_REGEX_LITE
 
 config RUST_CRATES_REGEX_LITE_PRIORITY
-	int "Rust Regex Lite task priority"
+	int "Regex Lite task priority"
 	default 100
 
 config RUST_CRATES_REGEX_LITE_STACKSIZE
-	int "Rust Regex Lite stack size"
+	int "Regex Lite stack size"
 	default 16384
 	---help---
 		Stack size to be used. The Regex Lite example needs less memory

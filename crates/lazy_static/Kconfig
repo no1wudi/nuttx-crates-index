@@ -10,11 +10,11 @@ config RUST_CRATES_LAZY_STATIC
 if RUST_CRATES_LAZY_STATIC
 
 config RUST_CRATES_LAZY_STATIC_PRIORITY
-	int "Rust Lazy Static task priority"
+	int "Lazy Static task priority"
 	default 100
 
 config RUST_CRATES_LAZY_STATIC_STACKSIZE
-	int "Rust Lazy Static stack size"
+	int "Lazy Static stack size"
 	default DEFAULT_TASK_STACKSIZE
 	---help---
 		Stack size to be used.
