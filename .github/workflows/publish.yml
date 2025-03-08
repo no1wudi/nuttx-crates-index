@@ -15,10 +15,6 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
   publish:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
@@ -40,7 +36,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: output/
-          key: output-*
+          key: output-sabre-6quad:nsh
           fail-on-cache-miss: true
 
       - name: Copy index.html to output
