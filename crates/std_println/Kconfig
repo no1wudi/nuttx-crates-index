@@ -1,0 +1,24 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATES_STD_PRINTLN
+	tristate "\"Rust Std Println\" example"
+	default n
+	---help---
+		Enable the \"Rust Std Println\" example application.
+		This demonstrates basic println macro functionality.
+
+if RUST_CRATES_STD_PRINTLN
+
+config RUST_CRATES_STD_PRINTLN_PRIORITY
+	int "Rust Std Println task priority"
+	default 100
+
+config RUST_CRATES_STD_PRINTLN_STACKSIZE
+	int "Rust Std Println stack size"
+	default 8192
+	---help---
+		Stack size to be used. The Std Println example needs minimal memory
+		as it only demonstrates basic printing.
+
+endif
