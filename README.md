@@ -31,6 +31,7 @@ This repository is designed to work alongside:
 ## License
 
 Copyright (c) 2025 Xiaomi Corporation
+
 SPDX-License-Identifier: Apache-2.0
 
 ## Contributing
@@ -38,5 +39,7 @@ SPDX-License-Identifier: Apache-2.0
 1. Fork the repository
 2. Create a feature branch
 3. Submit a pull request
+
+Requests for new crates or updates to existing ones are welcome.
 
 For more information about NuttX, visit [Apache NuttX website](https://nuttx.apache.org/).
