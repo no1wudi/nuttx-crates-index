@@ -11,7 +11,6 @@ Kconfig tweaking, and build process.
 
 import argparse
 import os
-import json
 import time
 from builder import Builder
 from collect import Collector
@@ -79,7 +78,6 @@ def main():
 
         # Always collect results, but only mention file writing when args.json is provided
         json_manager.append_result(
-            args.board_config,
             crate_name,
             baseline,
             crate_size,

@@ -51,17 +51,16 @@ class JsonResultManager:
                 return {"builds": []}
 
     def append_result(
-        self, board_config, crate_name, baseline, crate_size, diffs, timestamp
+        self, crate_name, baseline, crate_size, diffs, timestamp
     ):
         """
         Append build results to the JSON data structure.
 
         This method adds a new build result entry to the data structure with information
-        about the board configuration, crate name, baseline and crate build sizes,
+        about the crate name, baseline and crate build sizes,
         the differences between them, and a timestamp for when the build was performed.
 
         Args:
-            board_config (str): Current board configuration identifier
             crate_name (str): Name of the crate being built
             baseline (dict): Baseline build sizes containing text, data, bss, and total
             crate_size (dict): Current crate build sizes containing text, data, bss, and total
@@ -70,7 +69,6 @@ class JsonResultManager:
         """
         # Add new build result
         build_data = {
-            "board_config": board_config,
             "crate_name": crate_name,
             "baseline": baseline,
             "crate_build": crate_size,
