@@ -13,7 +13,6 @@ import os
 import subprocess
 import shutil
 import sys
-import time
 from multiprocessing import cpu_count
 
 # Configuration map using tuples: (action, option, [value])
@@ -207,12 +206,10 @@ class Builder:
 
         Returns:
             dict: Size information of the built binary
+                 Example: {'text': 156540, 'data': 1016, 'bss': 27456, 'total': 185012}
         """
         jobs = cpu_count()
-        start_time = time.time()
         self.runner.run(f"make -j{jobs}", cwd=self.build_dir)
-        end_time = time.time()
-        print(f"Make build time: {end_time - start_time:.2f} seconds")
 
         # Get and return size information
         size_info = self._parse_size_info()

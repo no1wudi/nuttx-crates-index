@@ -9,6 +9,7 @@ name: Build
 # ├── nuttx/              (NuttX repository)
 # ├── nuttx-apps/         (NuttX Apps repository)
 # │   └── external/       (symbolic link to nuttx-crates-index)
+# ├── output/             (Artifact directory)
 # └── build/              (build directory)
 
 on:
@@ -75,6 +76,7 @@ jobs:
 
       - name: Turnstyle
         uses: softprops/turnstyle@v2
+        if: github.ref == 'refs/heads/main'
 
       - name: Build NuttX
         run: |
