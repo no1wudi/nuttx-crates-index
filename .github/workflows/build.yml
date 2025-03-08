@@ -54,7 +54,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y kconfig-frontends-nox gcc-arm-none-eabi qemu-system-arm cmake python-is-python3
+          sudo apt-get install -y kconfig-frontends-nox gcc-arm-none-eabi qemu-system-arm cmake python-is-python3 ninja-build
           pip install kconfiglib --break-system-packages
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
@@ -66,7 +66,7 @@ jobs:
           cache: false
           override: true
 
-      - name: Patch Rust core library
+      - name: Patch Rust std library
         run: |
           RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs"
           echo "Patching file: $RUST_SRC_PATH"
@@ -75,31 +75,4 @@ jobs:
 
       - name: Build NuttX
         run: |
-          rm -rf build
-          cmake -Bbuild -DBOARD_CONFIG=${{ matrix.board }} nuttx
-
-          # Enable additional configuration options
-          cd build
-          kconfig-tweak --enable CONFIG_SYSTEM_TIME64
-          kconfig-tweak --enable CONFIG_FS_LARGEFILE
-          kconfig-tweak --enable CONFIG_DEV_URANDOM
-          kconfig-tweak --set-val CONFIG_TLS_NELEM 16
-          cd ..
-
-          make -C build -j$(nproc) && size -A build/nuttx
-
-      - name: Build NuttX with Regex
-        run: |
-          rm -rf build
-          cmake -Bbuild -DBOARD_CONFIG=${{ matrix.board }} nuttx
-
-          # Enable additional configuration options
-          cd build
-          kconfig-tweak --enable CONFIG_SYSTEM_TIME64
-          kconfig-tweak --enable CONFIG_FS_LARGEFILE
-          kconfig-tweak --enable CONFIG_DEV_URANDOM
-          kconfig-tweak --set-val CONFIG_TLS_NELEM 16
-          kconfig-tweak --enable CONFIG_RUST_CRATES_REGEX
-          cd ..
-
-          make -C build -j$(nproc) && size -A build/nuttx
+          python3 nuttx-crates-index/tools/build.py ${{ matrix.board }}
