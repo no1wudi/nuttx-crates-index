@@ -35,8 +35,8 @@ jobs:
       - name: Retrieve JSON from cache
         uses: actions/cache/restore@v4
         with:
-          key: output-sabre-6quad:nsh
-          path: output/sabre-6quad:nsh.json
+          key: output-sabre-6quad-${{ github.sha }}
+          path: output/sabre-6quad.json
 
       - name: Copy index.html to output
         run: |

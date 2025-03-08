@@ -24,7 +24,7 @@ jobs:
     strategy:
       matrix:
         board:
-          - sabre-6quad:nsh
+          - sabre-6quad
 
     steps:
       - name: Checkout repository
@@ -81,20 +81,12 @@ jobs:
         uses: softprops/turnstyle@v2
         if: github.ref == 'refs/heads/main'
 
-      # - name: Fetch cache
-      #   uses: actions/cache@v4
-      #   if: github.ref == 'refs/heads/main'
-      #   with:
-      #     path: output/${{ matrix.board }}.json
-      #     key: output-${{ matrix.board }}
-
       - name: Build NuttX
         run: |
           python3 nuttx-crates-index/tools/build.py ${{ matrix.board }} --json output/${{ matrix.board }}.json
 
-      - name: Update cache
+      - name: Save output cache
         uses: actions/cache/save@v4
-        if: github.ref == 'refs/heads/main'
         with:
           path: output/${{ matrix.board }}.json
-          key: output-${{ matrix.board }}
+          key: output-${{ matrix.board }}-${{ github.sha }}

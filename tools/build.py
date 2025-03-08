@@ -31,7 +31,7 @@ def main():
     parser = argparse.ArgumentParser(
         description="Build NuttX with specified board configuration"
     )
-    parser.add_argument("board_config", help="Board configuration to use")
+    parser.add_argument("board", help="Board configuration to use")
     parser.add_argument(
         "--path", default="nuttx", help="Path to NuttX directory (default: nuttx)"
     )
@@ -52,7 +52,8 @@ def main():
     # Get the main Kconfig option from the Kconfig file
     kconfig_option = collector.get_crate_config_mapping()
 
-    builder = Builder(args.board_config, args.path)
+    # Use the nsh config for each board
+    builder = Builder(f"{args.board}:nsh", args.path)
     print(f"Building NuttX Baseline")
     builder.configure()
     baseline = builder.build()
