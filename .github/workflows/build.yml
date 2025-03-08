@@ -104,4 +104,4 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: output/${{ matrix.board }}.json
-          key: output-${{ matrix.board }}-${{ github.sha }}
+          key: output-${{ github.sha }}-${{ matrix.board }}
