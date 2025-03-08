@@ -18,18 +18,7 @@ on:
     branches: [main]
 
 jobs:
-  wait-for-previous:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Wait for previous runs
-        uses: softprops/turnstyle@v1
-        with:
-          poll-interval-seconds: 60
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   build:
-    needs: wait-for-previous
     runs-on: ubuntu-latest
     strategy:
       matrix:
