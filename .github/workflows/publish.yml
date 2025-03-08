@@ -38,6 +38,7 @@ jobs:
           pattern: output-*
           path: output/
           merge-multiple: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Copy index.html to output
         run: |
