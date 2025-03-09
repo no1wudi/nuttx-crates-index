@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_STD_CONDVAR
+	tristate "\"Std Condvar\" example"
+	default n
+
+if RUST_CRATE_STD_CONDVAR
+
+config RUST_CRATE_STD_CONDVAR_PRIORITY
+	int "Std Condvar task priority"
+	default 100
+
+config RUST_CRATE_STD_CONDVAR_STACKSIZE
+	int "Std Condvar stack size"
+	default 4096
+
+endif
