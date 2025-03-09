@@ -22,6 +22,7 @@ _RUST_CONFIG = [
     ("enable", "CONFIG_SYSTEM_TIME64"),
     ("enable", "CONFIG_FS_LARGEFILE"),
     ("enable", "CONFIG_DEV_URANDOM"),
+    ("enable", "CONFIG_DEBUG_FULLOPT"),
     ("set-val", "CONFIG_TLS_NELEM", "16"),
 ]
 
