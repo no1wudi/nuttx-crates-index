@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_CHRONO
+	tristate "\"Crate Chrono\" example"
+	default n
+
+if RUST_CRATE_CHRONO
+
+config RUST_CRATE_CHRONO_PRIORITY
+	int "Chrono task priority"
+	default 100
+
+config RUST_CRATE_CHRONO_STACKSIZE
+	int "Chrono stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
