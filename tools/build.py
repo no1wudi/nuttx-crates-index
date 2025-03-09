@@ -45,7 +45,7 @@ def main():
 
     # Collect crate directories using the Collector class
     collector = Collector(f"{parent_dir}/crates")
-    print(f"Found {len(collector.crate_dirs)} crate directories:")
+    print(f"📦 Found {len(collector.crate_dirs)} crate directories:")
     for crate_dir in collector.crate_dirs:
         print(f"  - {os.path.basename(crate_dir)}")
 
@@ -54,11 +54,11 @@ def main():
 
     # Use the nsh config for each board
     builder = Builder(f"{args.board}:nsh", args.path)
-    print(f"Building NuttX Baseline")
+    print(f"🔨 Building NuttX Baseline")
     builder.configure()
     baseline = builder.build()
     print(
-        f"Baseline size: text={baseline['text']} data={baseline['data']} bss={baseline['bss']} total={baseline['total']}"
+        f"📊 Baseline size: text={baseline['text']} data={baseline['data']} bss={baseline['bss']} total={baseline['total']}"
     )
 
     # Create JSON result manager (will discard data if args.json is None)
@@ -67,7 +67,7 @@ def main():
     # Iterate over the crate directories and build each one with their config options
     for crate_path, config_option in kconfig_option.items():
         crate_name = os.path.basename(crate_path)
-        print(f"\nBuilding crate: {crate_name} with option: {config_option}")
+        print(f"\n🔧 Building crate: {crate_name} with option: {config_option}")
 
         start_time = time.time()
         builder.configure([("enable", config_option)])
@@ -87,7 +87,13 @@ def main():
         )
 
     json_manager.flush()  # Will only write to file if args.json was provided
-    print(f"💾 Results to {args.json}")
+    if args.json:
+        print(f"💾 Results saved to {args.json}")
+
+    # Calculate and display total execution time
+    end_timestamp = time.time()
+    execution_time = end_timestamp - start_timestamp
+    print(f"⏱️ Total execution time: {execution_time:.2f} seconds")
 
 
 if __name__ == "__main__":
