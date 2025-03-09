@@ -38,7 +38,7 @@ Kconfig file to demonstrate the libstd's functionality
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_STD_[NAME]
-	tristate "\"Rust Std [Name]\" example"
+	tristate "\"Std [Name]\" example"
 	default n
 
 if RUST_CRATE_STD_[NAME]
@@ -60,7 +60,7 @@ kconfig file to demonstrate the libcore's functionality
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_CORE_[NAME]
-	tristate "\"Rust Core [Name]\" example"
+	tristate "\"Core [Name]\" example"
 	default n
 
 if RUST_CRATE_CORE_[NAME]
