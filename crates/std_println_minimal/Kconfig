@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_STD_PRINTLN_MINIMAL
+	tristate "\"Std Println Minimal\" example"
+	default n
+
+if RUST_CRATE_STD_PRINTLN_MINIMAL
+
+config RUST_CRATE_STD_PRINTLN_MINIMAL_PRIORITY
+	int "Std Println Minimal task priority"
+	default 100
+
+config RUST_CRATE_STD_PRINTLN_MINIMAL_STACKSIZE
+	int "Std Println Minimal stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
