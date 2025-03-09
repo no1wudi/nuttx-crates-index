@@ -15,17 +15,17 @@ kconfig file to demonstrate the third-party Rust crate
 # Copyright (c) 2025 Xiaomi Corporation
 # SPDX-License-Identifier: Apache-2.0
 
-config RUST_CRATES_[NAME]
-	tristate "\"Rust Crate [Name]\" example"
+config RUST_CRATE_[NAME]
+	tristate "\"Crate [Name]\" example"
 	default n
 
-if RUST_CRATES_[NAME]
+if RUST_CRATE_[NAME]
 
-config RUST_CRATES_[NAME]_PRIORITY
+config RUST_CRATE_[NAME]_PRIORITY
 	int "[Name] task priority"
 	default 100
 
-config RUST_CRATES_[NAME]_STACKSIZE
+config RUST_CRATE_[NAME]_STACKSIZE
 	int "[Name] stack size"
 	default DEFAULT_TASK_STACKSIZE
 
@@ -37,17 +37,17 @@ Kconfig file to demonstrate the libstd's functionality
 # Copyright (c) 2025 Xiaomi Corporation
 # SPDX-License-Identifier: Apache-2.0
 
-config RUST_CRATES_STD_[NAME]
+config RUST_CRATE_STD_[NAME]
 	tristate "\"Rust Std [Name]\" example"
 	default n
 
-if RUST_CRATES_STD_[NAME]
+if RUST_CRATE_STD_[NAME]
 
-config RUST_CRATES_STD_[NAME]_PRIORITY
+config RUST_CRATE_STD_[NAME]_PRIORITY
 	int "Std [Name] task priority"
 	default 100
 
-config RUST_CRATES_STD_[NAME]_STACKSIZE
+config RUST_CRATE_STD_[NAME]_STACKSIZE
 	int "Std [Name] stack size"
 	default DEFAULT_TASK_STACKSIZE
 
@@ -59,17 +59,17 @@ kconfig file to demonstrate the libcore's functionality
 # Copyright (c) 2025 Xiaomi Corporation
 # SPDX-License-Identifier: Apache-2.0
 
-config RUST_CRATES_CORE_[NAME]
+config RUST_CRATE_CORE_[NAME]
 	tristate "\"Rust Core [Name]\" example"
 	default n
 
-if RUST_CRATES_CORE_[NAME]
+if RUST_CRATE_CORE_[NAME]
 
-config RUST_CRATES_CORE_[NAME]_PRIORITY
+config RUST_CRATE_CORE_[NAME]_PRIORITY
 	int "Core [Name] task priority"
 	default 100
 
-config RUST_CRATES_CORE_[NAME]_STACKSIZE
+config RUST_CRATE_CORE_[NAME]_STACKSIZE
 	int "Core [Name] stack size"
 	default DEFAULT_TASK_STACKSIZE
 
@@ -81,12 +81,12 @@ endif
 # Copyright (c) 2025 Xiaomi Corporation
 # SPDX-License-Identifier: Apache-2.0
 
-if(CONFIG_RUST_CRATES_[NAME])
+if(CONFIG_RUST_CRATE_[NAME])
   nuttx_add_rust(CRATE_NAME [name] CRATE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
   nuttx_add_application(
-    NAME rust_crates_test_[name]
-    STACKSIZE ${CONFIG_RUST_CRATES_[NAME]_STACKSIZE}
-    PRIORITY ${CONFIG_RUST_CRATES_[NAME]_PRIORITY})
+    NAME rust_crate_test_[name]
+    STACKSIZE ${CONFIG_RUST_CRATE_[NAME]_STACKSIZE}
+    PRIORITY ${CONFIG_RUST_CRATE_[NAME]_PRIORITY})
   add_dependencies(apps [name])
 endif()
 ```
@@ -120,7 +120,7 @@ opt-level = 'z'
 // SPDX-License-Identifier: Apache-2.0
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crates_test_[name]_main() {
+pub extern "C" fn rust_crate_test_[name]_main() {
     // Implement your functionality here
 }
 ```
@@ -132,4 +132,4 @@ pub extern "C" fn rust_crates_test_[name]_main() {
 3. Update the main function name to match your crate
 4. Ensure copyright headers in all files
 5. Add appropriate documentation
-6. Ensure "#[unsafe(no_mangle)]" used for the main function
+6. Ensure "#[unsafe(no_mangle)]" used for the entry point to meet the requirements of Rust 2024
