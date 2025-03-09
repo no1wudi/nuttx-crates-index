@@ -2,10 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATES_REGEX
-	tristate "\"Rust Crates Regex\" example"
+	tristate "\"Crate Regex\" example"
 	default n
-	---help---
-		Enable the \"Rust Crates Regex\" example application.
 
 if RUST_CRATES_REGEX
 
@@ -15,9 +13,6 @@ config RUST_CRATES_REGEX_PRIORITY
 
 config RUST_CRATES_REGEX_STACKSIZE
 	int "Regex stack size"
-	default 81920
-	---help---
-		Stack size to be used. The Regex example needs approximately
-		64KB stack and 410KB heap memory on 32-bit ARM targets.
+	default DEFAULT_TASK_STACKSIZE
 
 endif

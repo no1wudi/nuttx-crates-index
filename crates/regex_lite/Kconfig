@@ -2,11 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATES_REGEX_LITE
-	tristate "\"Rust Crates Regex Lite\" example"
+	tristate "\"Crate Regex Lite\" example"
 	default n
-	---help---
-		Enable the \"Rust Crates Regex Lite\" example application.
-		This is a lightweight alternative to the full regex crate.
 
 if RUST_CRATES_REGEX_LITE
 
@@ -16,9 +13,6 @@ config RUST_CRATES_REGEX_LITE_PRIORITY
 
 config RUST_CRATES_REGEX_LITE_STACKSIZE
 	int "Regex Lite stack size"
-	default 16384
-	---help---
-		Stack size to be used. The Regex Lite example needs less memory
-		compared to the full regex crate.
+	default DEFAULT_TASK_STACKSIZE
 
 endif

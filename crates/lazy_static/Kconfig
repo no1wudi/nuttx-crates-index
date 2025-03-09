@@ -2,10 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATES_LAZY_STATIC
-	tristate "\"Rust Lazy Static\" example"
+	tristate "\"Crate Lazy Static\" example"
 	default n
-	---help---
-		Enable the \"Rust Lazy Static\" example application.
 
 if RUST_CRATES_LAZY_STATIC
 
@@ -16,7 +14,5 @@ config RUST_CRATES_LAZY_STATIC_PRIORITY
 config RUST_CRATES_LAZY_STATIC_STACKSIZE
 	int "Lazy Static stack size"
 	default DEFAULT_TASK_STACKSIZE
-	---help---
-		Stack size to be used.
 
 endif

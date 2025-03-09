@@ -1,6 +1,6 @@
 # NuttX Rust Application Creation Template
 
-Generate a new Rust crate for NuttX using the following template structure. Please replace:
+Generate a new Rust crate using the following template structure. Please replace:
 - `[NAME]` with uppercase configuration name
 - `[name]` with lowercase crate name
 - `[Description]` with brief app description
@@ -9,16 +9,15 @@ Generate a new Rust crate for NuttX using the following template structure. Plea
 ## Required Files
 
 ### 1. Kconfig
+
+kconfig file to demonstrate the third-party Rust crate
 ```kconfig
 # Copyright (c) 2025 Xiaomi Corporation
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATES_[NAME]
-	tristate "\"[Description]\" example"
+	tristate "\"Rust Crate [Name]\" example"
 	default n
-	---help---
-		Enable the [Description] example application.
-		This demonstrates [SPECIFIC_FUNCTIONALITY].
 
 if RUST_CRATES_[NAME]
 
@@ -28,9 +27,51 @@ config RUST_CRATES_[NAME]_PRIORITY
 
 config RUST_CRATES_[NAME]_STACKSIZE
 	int "[Name] stack size"
-	default 8192
-	---help---
-		Stack size to be used.
+	default DEFAULT_TASK_STACKSIZE
+
+endif
+```
+
+Kconfig file to demonstrate the libstd's functionality
+```kconfig
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATES_STD_[NAME]
+	tristate "\"Rust Std [Name]\" example"
+	default n
+
+if RUST_CRATES_STD_[NAME]
+
+config RUST_CRATES_STD_[NAME]_PRIORITY
+	int "Std [Name] task priority"
+	default 100
+
+config RUST_CRATES_STD_[NAME]_STACKSIZE
+	int "Std [Name] stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
+```
+
+kconfig file to demonstrate the libcore's functionality
+```kconfig
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATES_CORE_[NAME]
+	tristate "\"Rust Core [Name]\" example"
+	default n
+
+if RUST_CRATES_CORE_[NAME]
+
+config RUST_CRATES_CORE_[NAME]_PRIORITY
+	int "Core [Name] task priority"
+	default 100
+
+config RUST_CRATES_CORE_[NAME]_STACKSIZE
+	int "Core [Name] stack size"
+	default DEFAULT_TASK_STACKSIZE
 
 endif
 ```
@@ -91,6 +132,4 @@ pub extern "C" fn rust_crates_test_[name]_main() {
 3. Update the main function name to match your crate
 4. Ensure copyright headers in all files
 5. Add appropriate documentation
-6. Test the integration with NuttX build system
-
-Example usage: "Create a new Rust crate called 'led_blink' that demonstrates GPIO control for LED blinking"
+6. Ensure "#[unsafe(no_mangle)]" used for the main function

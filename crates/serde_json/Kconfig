@@ -2,10 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATES_SERDE_JSON
-	tristate "\"Rust Crates Serde JSON\" example"
+	tristate "\"Crate Serde JSON\" example"
 	default n
-	---help---
-		Enable the \"Rust Crates Serde JSON\" example application.
 
 if RUST_CRATES_SERDE_JSON
 

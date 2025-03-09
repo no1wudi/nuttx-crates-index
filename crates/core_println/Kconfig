@@ -4,9 +4,6 @@
 config RUST_CRATES_CORE_PRINTLN
 	tristate "\"Core Println\" example"
 	default n
-	---help---
-		Enable the Core Println example application.
-		This demonstrates core library's format macro functionality without std.
 
 if RUST_CRATES_CORE_PRINTLN
 
@@ -16,8 +13,6 @@ config RUST_CRATES_CORE_PRINTLN_PRIORITY
 
 config RUST_CRATES_CORE_PRINTLN_STACKSIZE
 	int "Core println stack size"
-	default 8192
-	---help---
-		Stack size to be used.
+	default DEFAULT_TASK_STACKSIZE
 
 endif
