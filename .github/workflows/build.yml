@@ -30,7 +30,8 @@ jobs:
     strategy:
       matrix:
         target:
-          - { board: sabre-6quad, arch: thumbv7a }
+          - { board: sabre-6quad, arch: thumbv7a-cortex-a9 }
+          - { board: nucleo-h743zi, arch: thumbv7em-cortex-m7 }
 
     steps:
       - name: Checkout repository
