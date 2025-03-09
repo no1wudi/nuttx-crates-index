@@ -13,6 +13,6 @@ config RUST_CRATE_SERDE_JSON_PRIORITY
 
 config RUST_CRATE_SERDE_JSON_STACKSIZE
 	int "Serde JSON stack size"
-	default 8192
+	default DEFAULT_TASK_STACKSIZE
 
 endif

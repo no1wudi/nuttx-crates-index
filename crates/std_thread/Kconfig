@@ -13,6 +13,6 @@ config RUST_CRATE_STD_THREAD_PRIORITY
 
 config RUST_CRATE_STD_THREAD_STACKSIZE
 	int "Std Thread stack size"
-	default 8192
+	default DEFAULT_TASK_STACKSIZE
 
 endif
