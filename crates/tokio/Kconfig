@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_TOKIO
+	tristate "\"Crate Tokio\" example"
+	default n
+
+if RUST_CRATE_TOKIO
+
+config RUST_CRATE_TOKIO_PRIORITY
+	int "Tokio task priority"
+	default 100
+
+config RUST_CRATE_TOKIO_STACKSIZE
+	int "Tokio stack size"
+	default 16384
+
+endif
