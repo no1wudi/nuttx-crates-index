@@ -106,7 +106,7 @@ def print_build_results(crate_name, baseline, crate_size, build_time):
     )
 
     print("-" * 90)
-    print(f"⏱️  Build time: {build_time:.2f} seconds")
+    print(f"⏱️ Build time: {build_time:.2f} seconds")
 
     # Return differences for use in result manager
     return {
