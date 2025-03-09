@@ -29,8 +29,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        board:
-          - sabre-6quad
+        target:
+          - { board: sabre-6quad, arch: thumbv7a }
 
     steps:
       - name: Checkout repository
@@ -89,13 +89,13 @@ jobs:
 
       - name: Build NuttX
         run: |
-          python3 nuttx-crates-index/tools/build.py ${{ matrix.board }} --json output/${{ matrix.board }}.json
+          python3 nuttx-crates-index/tools/build.py ${{ matrix.target.board }} --json output/${{ matrix.target.arch }}.json
 
       - name: Upload JSON artifact
         uses: actions/upload-artifact@v4
         with:
-          name: output-${{ matrix.board }}
-          path: output/${{ matrix.board }}.json
+          name: output-${{ matrix.target.arch }}
+          path: output/${{ matrix.target.arch }}.json
 
   publish:
     needs: build
