@@ -3,48 +3,197 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>NuttX Crates Size Impact</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NuttX Crates Index</title>
     <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --background-color: #f9f9f9;
+            --card-color: #ffffff;
+            --border-color: #e0e0e0;
+            --text-color: #333333;
+            --text-light: #7f8c8d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 500;
+        }
+
         table {
             border-collapse: collapse;
             width: 100%;
+            margin: 1.5rem 0;
+            background-color: var(--card-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
         }
 
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
+        th, td {
+            padding: 12px 15px;
             text-align: left;
+            border-bottom: 1px solid var(--border-color);
         }
 
         th {
-            background-color: #f2f2f2;
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        tr:hover {
+            background-color: rgba(52, 152, 219, 0.05);
         }
 
         .positive {
-            color: #d73027;
+            color: var(--accent-color);
+            font-weight: 500;
         }
 
         .percentage {
-            font-size: 0.9em;
-            color: #666;
-            margin-left: 4px;
+            font-size: 0.85em;
+            color: var(--text-light);
+            margin-left: 6px;
+        }
+
+        #boardSelector {
+            margin-bottom: 30px;
+            background-color: var(--card-color);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        label {
+            font-weight: 500;
+            margin-right: 10px;
+            color: var(--secondary-color);
+        }
+
+        select {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: white;
+            color: var(--text-color);
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            min-width: 200px;
+        }
+
+        select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        #errorMessage {
+            color: var(--accent-color);
+            margin-top: 20px;
+            background-color: rgba(231, 76, 60, 0.1);
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 8px 10px;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: var(--text-light);
+            font-size: 0.9rem;
         }
     </style>
 </head>
 
 <body>
-    <h1>NuttX Crates Size Impact</h1>
-    <table id="sizeTable">
-        <tr>
-            <th>Crate</th>
-            <th>Text Δ</th>
-            <th>Data Δ</th>
-            <th>BSS Δ</th>
-            <th>Total Δ</th>
-        </tr>
-    </table>
-    <div id="errorMessage" style="color: red; margin-top: 20px;"></div>
+    <header>
+        <h1>NuttX Crates Index</h1>
+    </header>
+
+    <div class="container">
+        <div id="boardSelector">
+            <label for="boards">Select Architecture:</label>
+            <select id="boards"></select>
+        </div>
+
+        <table id="sizeTable">
+            <thead>
+                <tr>
+                    <th>Crate</th>
+                    <th>Text Δ</th>
+                    <th>Data Δ</th>
+                    <th>BSS Δ</th>
+                    <th>Total Δ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be added dynamically -->
+            </tbody>
+        </table>
+        <div id="errorMessage" style="display: none;"></div>
+
+        <div class="footer">
+            NuttX Crates Index | <a href="https://github.com/no1wudi/nuttx-crates-index" target="_blank">GitHub Repository</a>
+        </div>
+    </div>
 
     <script>
         function formatNumber(num) {
@@ -80,28 +229,80 @@
             return row;
         }
 
-        fetch('sabre-6quad.json')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const table = document.getElementById('sizeTable');
-                data.builds.forEach(build => {
-                    table.appendChild(createRow(build));
+        function loadBoardsList() {
+            fetch('boards.txt')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load boards list');
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    const boards = text.trim().split('\n');
+                    const boardSelect = document.getElementById('boards');
+
+                    boards.forEach(board => {
+                        const option = document.createElement('option');
+                        option.value = board;
+                        option.textContent = board.replace('.json', '');
+                        boardSelect.appendChild(option);
+                    });
+
+                    // Load the first board by default
+                    if (boards.length > 0) {
+                        loadBoardData(boards[0]);
+                    }
+
+                    // Add change event listener
+                    boardSelect.addEventListener('change', (e) => {
+                        loadBoardData(e.target.value);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading boards list:', error);
+                    showError(`Error loading boards list: ${error.message}`);
                 });
-            })
-            .catch(error => {
-                console.error('Error loading data:', error);
-                document.getElementById('errorMessage').innerHTML = `
-                    Error loading data: ${error.message}<br><br>
-                    To view this page locally:<br>
-                    1. Start a local server: python3 -m http.server<br>
-                    2. Open: <a href="http://localhost:8000">http://localhost:8000</a>
-                `;
-            });
+        }
+
+        function showError(message) {
+            const errorElement = document.getElementById('errorMessage');
+            errorElement.innerHTML = message;
+            errorElement.style.display = 'block';
+        }
+
+        function loadBoardData(jsonFile) {
+            // Clear existing table except header
+            const tableBody = document.querySelector('#sizeTable tbody');
+            tableBody.innerHTML = '';
+
+            // Clear error message
+            document.getElementById('errorMessage').style.display = 'none';
+
+            fetch(jsonFile)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    data.builds.forEach(build => {
+                        tableBody.appendChild(createRow(build));
+                    });
+                })
+                .catch(error => {
+                    console.error(`Error loading data from ${jsonFile}:`, error);
+                    showError(`
+                        Error loading data: ${error.message}<br><br>
+                        To view this page locally:<br>
+                        1. Start a local server: python3 -m http.server<br>
+                        2. Open: <a href="http://localhost:8000">http://localhost:8000</a>
+                    `);
+                });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', loadBoardsList);
     </script>
 </body>
 

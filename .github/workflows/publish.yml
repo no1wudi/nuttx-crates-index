@@ -36,6 +36,11 @@ jobs:
           cp site/index.html output/
           ls -la output/
 
+      - name: Generate boards list
+        run: |
+          find output -name "*.json" -type f | sed 's|output/||' | sort > output/boards.txt
+          cat output/boards.txt
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
