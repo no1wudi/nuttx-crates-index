@@ -1,0 +1,23 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATES_STD_THREAD
+	tristate "\"Rust Std Thread\" example"
+	default n
+	---help---
+		Enable the Rust standard library threading example application.
+		This demonstrates thread creation, synchronization, and management using Rust's std::thread.
+
+if RUST_CRATES_STD_THREAD
+
+config RUST_CRATES_STD_THREAD_PRIORITY
+	int "Std Thread task priority"
+	default 100
+
+config RUST_CRATES_STD_THREAD_STACKSIZE
+	int "Std Thread stack size"
+	default 8192
+	---help---
+		Stack size to be used.
+
+endif
