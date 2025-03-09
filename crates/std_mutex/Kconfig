@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_STD_MUTEX
+	tristate "\"Std Mutex\" example"
+	default n
+
+if RUST_CRATE_STD_MUTEX
+
+config RUST_CRATE_STD_MUTEX_PRIORITY
+	int "Std Mutex task priority"
+	default 100
+
+config RUST_CRATE_STD_MUTEX_STACKSIZE
+	int "Std Mutex stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
