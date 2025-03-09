@@ -65,7 +65,7 @@ fn shared_data_example() {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crates_test_std_thread_main() {
+pub extern "C" fn rust_crate_test_std_thread_main() {
     println!("Starting std_thread demonstration");
 
     // Run examples

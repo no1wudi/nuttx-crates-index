@@ -50,7 +50,7 @@ class Collector:
         Extract the main CONFIG option from a Kconfig file using regex.
 
         Looks for config entries that start with RUST_, supporting various
-        patterns like RUST_CRATES_*, RUST_STD_*, RUST_CORE_*, etc.
+        patterns like RUST_CRATE_*, RUST_STD_*, RUST_CORE_*, etc.
 
         Args:
             kconfig_path (str): Path to the Kconfig file
@@ -76,6 +76,19 @@ class Collector:
 
         Returns:
             dict: Dictionary mapping crate directories to their main CONFIG options
+
+        Example:
+            {
+                '/home/Work/nuttx-crates-index/crates/serde_json': 'CONFIG_RUST_CRATE_SERDE_JSON',
+                '/home/Work/nuttx-crates-index/crates/std_thread': 'CONFIG_RUST_CRATE_STD_THREAD',
+                '/home/Work/nuttx-crates-index/crates/rand': 'CONFIG_RUST_CRATE_RAND',
+                '/home/Work/nuttx-crates-index/crates/std_println': 'CONFIG_RUST_CRATE_STD_PRINTLN',
+                '/home/Work/nuttx-crates-index/crates/core_println': 'CONFIG_RUST_CRATE_CORE_PRINTLN',
+                '/home/Work/nuttx-crates-index/crates/lazy_static': 'CONFIG_RUST_CRATE_LAZY_STATIC',
+                '/home/Work/nuttx-crates-index/crates/regex_lite': 'CONFIG_RUST_CRATE_REGEX_LITE',
+                '/home/Work/nuttx-crates-index/crates/once_cell': 'CONFIG_RUST_CRATE_ONCE_CELL',
+                '/home/Work/nuttx-crates-index/crates/regex': 'CONFIG_RUST_CRATE_REGEX'
+            }
         """
         configs = {}
         for crate_dir in self.crate_dirs:

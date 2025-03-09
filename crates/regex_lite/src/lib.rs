@@ -40,7 +40,7 @@ fn test_basic_patterns() {
 
 /// Main entry point for the regex-lite example
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crates_test_regex_lite_main() {
+pub extern "C" fn rust_crate_test_regex_lite_main() {
     println!("Starting regex-lite examples...");
     test_basic_patterns();
     println!("All regex-lite tests completed successfully!");

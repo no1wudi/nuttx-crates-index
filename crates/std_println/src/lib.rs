@@ -13,7 +13,7 @@
 ///
 /// This function is marked as `no_mangle` and is intended to be called from C code.
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crates_test_std_println_main() {
+pub extern "C" fn rust_crate_test_std_println_main() {
     println!("Hello from Rust!");
     println!("Demonstrating different println formats:");
     println!("Numbers: {}", 42);

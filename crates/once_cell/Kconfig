@@ -1,17 +1,17 @@
 # Copyright (c) 2025 Xiaomi Corporation
 # SPDX-License-Identifier: Apache-2.0
 
-config RUST_CRATES_ONCE_CELL
+config RUST_CRATE_ONCE_CELL
 	tristate "\"Crate Once Cell\" example"
 	default n
 
-if RUST_CRATES_ONCE_CELL
+if RUST_CRATE_ONCE_CELL
 
-config RUST_CRATES_ONCE_CELL_PRIORITY
+config RUST_CRATE_ONCE_CELL_PRIORITY
 	int "Once Cell task priority"
 	default 100
 
-config RUST_CRATES_ONCE_CELL_STACKSIZE
+config RUST_CRATE_ONCE_CELL_STACKSIZE
 	int "Once Cell stack size"
 	default DEFAULT_TASK_STACKSIZE
 

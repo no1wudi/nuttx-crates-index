@@ -1,17 +1,17 @@
 # Copyright (c) 2025 Xiaomi Corporation
 # SPDX-License-Identifier: Apache-2.0
 
-config RUST_CRATES_LAZY_STATIC
+config RUST_CRATE_LAZY_STATIC
 	tristate "\"Crate Lazy Static\" example"
 	default n
 
-if RUST_CRATES_LAZY_STATIC
+if RUST_CRATE_LAZY_STATIC
 
-config RUST_CRATES_LAZY_STATIC_PRIORITY
+config RUST_CRATE_LAZY_STATIC_PRIORITY
 	int "Lazy Static task priority"
 	default 100
 
-config RUST_CRATES_LAZY_STATIC_STACKSIZE
+config RUST_CRATE_LAZY_STATIC_STACKSIZE
 	int "Lazy Static stack size"
 	default DEFAULT_TASK_STACKSIZE
 

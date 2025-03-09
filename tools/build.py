@@ -36,6 +36,7 @@ def main():
         "--path", default="nuttx", help="Path to NuttX directory (default: nuttx)"
     )
     parser.add_argument("--json", help="JSON file to append build results to")
+    parser.add_argument("--crate", help="Specific crate to build instead of all crates")
 
     args = parser.parse_args()
 
@@ -51,6 +52,16 @@ def main():
 
     # Get the main Kconfig option from the Kconfig file
     kconfig_option = collector.get_crate_config_mapping()
+
+    # Filter crates if a specific one is requested
+    if args.crate:
+        filtered_crates = {k: v for k, v in kconfig_option.items()
+                          if os.path.basename(k) == args.crate}
+        if not filtered_crates:
+            print(f"❌ Error: Crate '{args.crate}' not found")
+            return
+        kconfig_option = filtered_crates
+        print(f"🔍 Building only crate: {args.crate}")
 
     # Use the nsh config for each board
     builder = Builder(f"{args.board}:nsh", args.path)

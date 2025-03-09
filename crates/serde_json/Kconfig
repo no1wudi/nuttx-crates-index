@@ -1,17 +1,17 @@
 # Copyright (c) 2025 Xiaomi Corporation
 # SPDX-License-Identifier: Apache-2.0
 
-config RUST_CRATES_SERDE_JSON
+config RUST_CRATE_SERDE_JSON
 	tristate "\"Crate Serde JSON\" example"
 	default n
 
-if RUST_CRATES_SERDE_JSON
+if RUST_CRATE_SERDE_JSON
 
-config RUST_CRATES_SERDE_JSON_PRIORITY
+config RUST_CRATE_SERDE_JSON_PRIORITY
 	int "Serde JSON task priority"
 	default 100
 
-config RUST_CRATES_SERDE_JSON_STACKSIZE
+config RUST_CRATE_SERDE_JSON_STACKSIZE
 	int "Serde JSON stack size"
 	default 8192
 

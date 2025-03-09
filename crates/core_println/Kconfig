@@ -1,17 +1,17 @@
 # Copyright (c) 2025 Xiaomi Corporation
 # SPDX-License-Identifier: Apache-2.0
 
-config RUST_CRATES_CORE_PRINTLN
+config RUST_CRATE_CORE_PRINTLN
 	tristate "\"Core Println\" example"
 	default n
 
-if RUST_CRATES_CORE_PRINTLN
+if RUST_CRATE_CORE_PRINTLN
 
-config RUST_CRATES_CORE_PRINTLN_PRIORITY
+config RUST_CRATE_CORE_PRINTLN_PRIORITY
 	int "Core println task priority"
 	default 100
 
-config RUST_CRATES_CORE_PRINTLN_STACKSIZE
+config RUST_CRATE_CORE_PRINTLN_STACKSIZE
 	int "Core println stack size"
 	default DEFAULT_TASK_STACKSIZE
 

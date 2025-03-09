@@ -60,7 +60,7 @@ impl Write for PutsWriter {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crates_test_core_println_main() {
+pub extern "C" fn rust_crate_test_core_println_main() {
     let mut writer = PutsWriter::new();
 
     let _ = writeln!(writer, "Hello from Rust!");
