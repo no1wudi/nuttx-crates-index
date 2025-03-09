@@ -27,6 +27,8 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
     strategy:
       matrix:
         target:
@@ -59,13 +61,6 @@ jobs:
           cd nuttx-apps
           rm -rf external
           ln -sf ../nuttx-crates-index external
-
-      - name: Install build dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y kconfig-frontends-nox gcc-arm-none-eabi qemu-system-arm cmake python-is-python3 ninja-build
-          pip install kconfiglib --break-system-packages
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Install Rust toolchain
         uses: actions-rust-lang/setup-rust-toolchain@v1
