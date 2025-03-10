@@ -9,120 +9,104 @@
 //! date validation, and regex sets.
 
 use regex::Regex;
-use regex::RegexSet;
 
-/// Demonstrates basic regular expression functionality by parsing structured data.
+/// Demonstrates basic regular expression functionality.
 ///
 /// # Example Output
 /// ```text
-/// File: path/to/foo, Line: 54, Content: Blue Harvest
-/// File: path/to/bar, Line: 90, Content: Something, Something, Something, Dark Side
-/// File: path/to/baz, Line: 3, Content: It's a Trap!
+/// Is 'user@example.com' a valid email? true
+/// Is 'invalid.email@' a valid email? false
+/// Is 'not-an-email' a valid email? false
 /// ```
 ///
 /// # Implementation Details
-/// - Uses a regex pattern to parse colon-separated data
-/// - Extracts file paths, line numbers, and content
-/// - Converts line numbers to u64
-fn test_basic_example() {
-    println!("Testing regex examples...");
+/// - Validates email formats using pattern matching
+/// - Checks phone number formatting
+/// - Demonstrates basic capture group functionality
+fn test_basic_patterns() {
+    println!("Testing basic regex-lite patterns...");
 
-    // Original example
-    let re = Regex::new(r"(?m)^([^:]+):([0-9]+):(.+)$").unwrap();
-    let hay = "\
-path/to/foo:54:Blue Harvest
-path/to/bar:90:Something, Something, Something, Dark Side
-path/to/baz:3:It's a Trap!
-";
+    // Basic email pattern matching
+    let email_re = Regex::new(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$").unwrap();
+    let test_emails = ["user@example.com", "invalid.email@", "not-an-email"];
 
-    println!("\nParsing structured data:");
-    for (_, [path, lineno, line]) in re.captures_iter(hay).map(|c| c.extract()) {
-        if let Ok(num) = lineno.parse::<u64>() {
-            println!("File: {}, Line: {}, Content: {}", path, num, line);
-        }
+    println!("\nValidating email addresses:");
+    for email in test_emails {
+        println!("Is '{}' a valid email? {}", email, email_re.is_match(email));
+    }
+
+    // Simple phone number pattern
+    let phone_re = Regex::new(r"^\d{3}-\d{3}-\d{4}$").unwrap();
+    let test_phones = ["123-456-7890", "1234-567-890", "123-456-789"];
+
+    println!("\nValidating phone numbers:");
+    for phone in test_phones {
+        println!(
+            "Is '{}' a valid phone number? {}",
+            phone,
+            phone_re.is_match(phone)
+        );
+    }
+
+    // Capturing example
+    let capture_re = Regex::new(r"(\w+):(\d+)").unwrap();
+    let text = "count:42 items:123";
+
+    println!("\nExtracting key-value pairs:");
+    for cap in capture_re.captures_iter(text) {
+        println!("Found key: {}, value: {}", &cap[1], &cap[2]);
     }
 }
 
-/// Demonstrates named capture groups by matching a name pattern with a middle initial.
+/// Demonstrates text replacement functionality using regex patterns.
 ///
 /// # Example Output
 /// ```text
-/// Found middle initial: J
+/// Original: The quick brown fox jumps over the lazy dog
+/// Censored: The q**** brown fox j**** over the lazy dog
 /// ```
 ///
 /// # Implementation Details
-/// - Uses named capture groups with `?<name>` syntax
-/// - Extracts the middle initial from a full name
-fn test_name_matching() {
-    println!("\nTesting name matching with middle initial:");
-    let re = Regex::new(r"Homer (?<middle>.)\. Simpson").unwrap();
-    let hay = "Homer J. Simpson";
-    if let Some(caps) = re.captures(hay) {
-        println!("Found middle initial: {}", &caps["middle"]);
-    }
+/// - Uses regex to find specific words
+/// - Replaces matched words with censored versions
+fn test_text_replacement() {
+    println!("\nTesting text replacement:");
+
+    let text = "The quick brown fox jumps over the lazy dog";
+    let re = Regex::new(r"(quick|jumps)").unwrap();
+
+    let censored = re.replace_all(text, |caps: &regex::Captures| {
+        let word = &caps[1];
+        let first_char = word.chars().next().unwrap();
+        let stars = "*".repeat(word.len() - 1);
+        format!("{}{}", first_char, stars)
+    });
+
+    println!("Original: {}", text);
+    println!("Censored: {}", censored);
 }
 
-/// Validates date strings using a regular expression pattern.
+/// Validates URLs using regex patterns.
 ///
 /// # Example Output
 /// ```text
-/// Is '2010-03-14' a valid date? true
-/// Is '2023-99-99' a valid date? true
-/// Is 'not-a-date' a valid date? false
+/// Is 'https://www.example.com' a valid URL? true
+/// Is 'http://example' a valid URL? false
+/// Is 'not-a-url' a valid URL? false
 /// ```
 ///
 /// # Implementation Details
-/// - Checks if strings match the YYYY-MM-DD format
-/// - Note: Only validates format, not actual date validity
-fn test_date_validation() {
-    println!("\nTesting date validation:");
-    let re = Regex::new(r"^\d{4}-\d{2}-\d{2}$").unwrap();
-    let dates = ["2010-03-14", "2023-99-99", "not-a-date"];
-    for date in dates {
-        println!("Is '{}' a valid date? {}", date, re.is_match(date));
+/// - Checks for proper URL format with protocol and domain
+/// - Validates against common URL patterns
+fn test_url_validation() {
+    println!("\nTesting URL validation:");
+
+    let url_re = Regex::new(r"^(https?|ftp)://[^\s/$.?#].[^\s]*$").unwrap();
+    let test_urls = ["https://www.example.com", "http://example", "not-a-url"];
+
+    for url in test_urls {
+        println!("Is '{}' a valid URL? {}", url, url_re.is_match(url));
     }
-}
-
-/// Extracts dates from text using named capture groups.
-///
-/// # Example Output
-/// ```text
-/// Found date: 04/14/1865
-/// Found date: 07/02/1881
-/// Found date: 09/06/1901
-/// ```
-///
-/// # Implementation Details
-/// - Uses named capture groups for year, month, and day
-/// - Demonstrates iterating over multiple matches in text
-fn test_date_extraction() {
-    println!("\nTesting date extraction:");
-    let re = Regex::new(r"(?<y>[0-9]{4})-(?<m>[0-9]{2})-(?<d>[0-9]{2})").unwrap();
-    let hay = "Important dates: 1865-04-14, 1881-07-02, 1901-09-06";
-
-    for caps in re.captures_iter(hay) {
-        println!("Found date: {}/{}/{}", &caps["m"], &caps["d"], &caps["y"]);
-    }
-}
-
-/// Demonstrates the usage of RegexSet for matching multiple patterns simultaneously.
-///
-/// # Example Output
-/// ```text
-/// Patterns matched in 'foobar123': [0, 1, 2, 3, 4]
-/// ```
-///
-/// # Implementation Details
-/// - Creates a set of regular expressions
-/// - Shows which patterns match in a single string
-/// - Useful for checking multiple patterns efficiently
-fn test_regex_set() {
-    println!("\nTesting regex set matching:");
-    let set = RegexSet::new(&[r"\w+", r"\d+", r"foo", r"bar", r"foobar"]).unwrap();
-
-    let test_str = "foobar123";
-    let matches: Vec<_> = set.matches(test_str).into_iter().collect();
-    println!("Patterns matched in '{}': {:?}", test_str, matches);
 }
 
 /// Main entry point for the regex example
@@ -133,11 +117,9 @@ fn test_regex_set() {
 pub extern "C" fn rust_crate_test_regex_main() {
     println!("Starting regex examples...");
 
-    test_basic_example();
-    test_name_matching();
-    test_date_validation();
-    test_date_extraction();
-    test_regex_set();
+    test_basic_patterns();
+    test_text_replacement();
+    test_url_validation();
 
     println!("\nAll regex tests completed successfully!");
 }
