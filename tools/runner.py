@@ -43,7 +43,7 @@ class Runner:
         self.binary_path = binary_path
         self.board = board
         self.process = None  # Explicitly initialize process as None
-        self.timeout = 30  # Default timeout in seconds
+        self.timeout = 5  # Default timeout in seconds
         self.prompt = "nsh>"
 
     def _build_qemu_command(self) -> str:
