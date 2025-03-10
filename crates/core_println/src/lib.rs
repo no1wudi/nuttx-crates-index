@@ -4,17 +4,14 @@
 #![no_std]
 
 use core::fmt::Write;
-use core::panic::PanicInfo;
 
-#[panic_handler]
-fn panic(_info: &PanicInfo) -> ! {
-    unsafe {
-        // This is a placeholder panic handler. In a real application, you would
-        // handle the panic appropriately, such as logging the error or resetting
-        // the system.
-        puts(b"panic occurred!\0" as *const u8 as *const i8);
+#[cfg(target_os = "nuttx")]
+mod panic {
+    use core::panic::PanicInfo;
+    #[panic_handler]
+    fn panic(_info: &PanicInfo) -> ! {
+        loop {}
     }
-    loop {}
 }
 
 unsafe extern "C" {
@@ -73,7 +70,11 @@ pub extern "C" fn rust_crate_test_core_println_main() {
 
     let _ = writeln!(writer, "Float formatting: {:.2}", 3.1415926);
     let _ = writeln!(writer, "Debug formatting: {:?}", [1, 2, 3]);
-    let _ = writeln!(writer, "Padding and alignment: |{:>10}|{:<10}|", "right", "left");
+    let _ = writeln!(
+        writer,
+        "Padding and alignment: |{:>10}|{:<10}|",
+        "right", "left"
+    );
     let _ = writeln!(writer, "Binary: {:b}, Hex: {:x}, Octal: {:o}", 42, 255, 64);
     let _ = writeln!(writer, "With width and fill: {:0>5}", 123);
     writer.flush();
@@ -87,7 +88,11 @@ pub extern "C" fn rust_crate_test_core_println_main() {
     let result: Result<i32, &str> = Err("error message");
     let _ = writeln!(writer, "Error display: {:?}", result);
     let _ = writeln!(writer, "Tuple formatting: {:?}", (10, "hello", true));
-    let _ = writeln!(writer, "Precision control: {:.1} vs {:.5}", 3.141592, 3.141592);
+    let _ = writeln!(
+        writer,
+        "Precision control: {:.1} vs {:.5}",
+        3.141592, 3.141592
+    );
     writer.flush();
 
     let _ = writeln!(writer, "All core_println tests completed successfully!");

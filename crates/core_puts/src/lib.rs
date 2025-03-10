@@ -22,8 +22,12 @@ pub extern "C" fn rust_crate_test_core_puts_main() {
     }
 }
 
-/// Required panic handler for no_std environments
-#[panic_handler]
-fn panic(_info: &core::panic::PanicInfo) -> ! {
-    loop {}
+#[cfg(target_os = "nuttx")]
+mod panic {
+
+    use core::panic::PanicInfo;
+    #[panic_handler]
+    fn panic(_info: &PanicInfo) -> ! {
+        loop {}
+    }
 }
