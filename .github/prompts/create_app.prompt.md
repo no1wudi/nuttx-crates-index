@@ -134,3 +134,4 @@ pub extern "C" fn rust_crate_test_[name]_main() {
 5. Add appropriate documentation
 6. Ensure "#[unsafe(no_mangle)]" used for the entry point to meet the requirements of Rust 2024
 7. Rust's libstd is available for stdlib functionality and third-party crates
+8. Create thread with 4K stack size instead of use std::thread::spawn directly if you want to use threads
