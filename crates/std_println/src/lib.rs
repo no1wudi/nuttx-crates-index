@@ -29,8 +29,11 @@ pub extern "C" fn rust_crate_test_std_println_main() {
     println!("Scientific notation: {:e}", 1000000.0);
     println!("Alternative hex: {:#x}", 255);
     println!("Sign display: {:+}", 42);
-    println!("Nested formatting: {x:0>width$}", x=1, width=5);
-    println!("Error display: {:?}", Result::<i32, &str>::Err("error message"));
+    println!("Nested formatting: {x:0>width$}", x = 1, width = 5);
+    println!(
+        "Error display: {:?}",
+        Result::<i32, &str>::Err("error message")
+    );
     println!("Tuple formatting: {:?}", (10, "hello", true));
     println!("Precision control: {:.1} vs {:.5}", 3.141592, 3.141592);
     println!("Mixed alignment: {:^10}", "center");

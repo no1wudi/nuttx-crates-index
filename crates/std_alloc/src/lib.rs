@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Xiaomi Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-use std::alloc::{alloc, dealloc, Layout};
+use std::alloc::{Layout, alloc, dealloc};
 use std::ptr::NonNull;
 
 // A simple implementation of a custom vector using std::alloc

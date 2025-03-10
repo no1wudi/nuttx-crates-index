@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Xiaomi Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-use rand::{rngs::StdRng, Rng, SeedableRng};
+use rand::{Rng, SeedableRng, rngs::StdRng};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 #[unsafe(no_mangle)]

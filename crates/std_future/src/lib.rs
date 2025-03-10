@@ -4,8 +4,8 @@
 use std::future::Future;
 use std::pin::Pin;
 use std::task::{Context, Poll};
-use std::time::{Duration, Instant};
 use std::thread;
+use std::time::{Duration, Instant};
 
 // A simple future that resolves after a specified duration
 struct TimerFuture {
@@ -51,8 +51,8 @@ async fn async_task() {
 
 // Simple executor to run our future
 fn block_on<F: Future>(mut future: F) -> F::Output {
-    use std::task::{Wake};
     use std::sync::Arc;
+    use std::task::Wake;
 
     // Create a waker that just calls wake_by_ref on itself
     struct DummyWaker;
