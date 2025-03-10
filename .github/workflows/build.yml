@@ -46,9 +46,9 @@ jobs:
       - name: Checkout NuttX repository
         uses: actions/checkout@v4
         with:
-          repository: apache/nuttx
+          repository: no1wudi/nuttx
           path: nuttx
-          ref: e15f7b13c7ed16934d10018ac7f868df936797d3
+          ref: crate
 
       - name: Checkout NuttX Apps repository
         uses: actions/checkout@v4

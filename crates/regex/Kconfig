@@ -13,6 +13,6 @@ config RUST_CRATE_REGEX_PRIORITY
 
 config RUST_CRATE_REGEX_STACKSIZE
 	int "Regex stack size"
-	default DEFAULT_TASK_STACKSIZE
+	default 24576
 
 endif

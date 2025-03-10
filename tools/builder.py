@@ -133,6 +133,7 @@ class Builder:
                 self.runner.run(
                     f"kconfig-tweak --{action} {option} {value}", cwd=self.build_dir
                 )
+        self.runner.run("make olddefconfig", cwd=self.build_dir)
 
     def configure(self, extra=None):
         """

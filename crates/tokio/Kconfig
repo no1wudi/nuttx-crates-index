@@ -13,6 +13,6 @@ config RUST_CRATE_TOKIO_PRIORITY
 
 config RUST_CRATE_TOKIO_STACKSIZE
 	int "Tokio stack size"
-	default DEFAULT_TASK_STACKSIZE
+	default 16384
 
 endif
