@@ -28,6 +28,13 @@ _RUST_CONFIG = [
     ("set-val", "CONFIG_DEFAULT_TASK_STACKSIZE", "4096"),
 ]
 
+# Board-specific configurations
+_BOARD_CONFIG = {
+    "rv-virt": [
+        ("disable", "CONFIG_ARCH_FPU"),
+    ],
+}
+
 
 class CommandRunner:
     """
@@ -86,6 +93,8 @@ class Builder:
             nuttx_path: Path to the NuttX source directory
         """
         self.board_config = board_config
+        self.board = board_config.split(":")[0]
+        self.config = board_config.split(":")[1]
         self.nuttx_path = nuttx_path
         self.build_dir = "build"
         self.runner = CommandRunner()
@@ -105,6 +114,27 @@ class Builder:
             f"cmake -B{self.build_dir} -G'Unix Makefiles' -DBOARD_CONFIG={self.board_config} {self.nuttx_path}"
         )
 
+    def _apply_kconfig_option(self, config):
+        """
+        Apply a single Kconfig option using kconfig-tweak.
+
+        Args:
+            config: A tuple representing the config option
+                   Format for binary options: (action, option)
+                   Format for valued options: (action, option, value)
+        """
+        for cfg in config:
+            if len(cfg) == 2:
+                action, option = cfg
+                self.runner.run(
+                    f"kconfig-tweak --{action} {option}", cwd=self.build_dir
+                )
+            elif len(cfg) == 3:
+                action, option, value = cfg
+                self.runner.run(
+                    f"kconfig-tweak --{action} {option} {value}", cwd=self.build_dir
+                )
+
     def _configure_kconfig(self, configs=None):
         """
         Configure Kconfig options for the NuttX build.
@@ -116,23 +146,22 @@ class Builder:
             configs: Optional list of additional configuration tuples following the same format as _RUST_CONFIG
         """
         # Apply default configurations
-        configs_to_apply = _RUST_CONFIG.copy()
+        self._apply_kconfig_option(_RUST_CONFIG)
 
-        # Add extra configurations if provided
+        # Apply board-specific configurations if available
+        if self.board in _BOARD_CONFIG:
+            self._apply_kconfig_option(_BOARD_CONFIG[self.board])
+
+        if self.board_config in _BOARD_CONFIG:
+            self._apply_kconfig_option(_BOARD_CONFIG[self.board_config])
+
+        # Ensure the board-specific configuration is set
+        self.runner.run("make olddefconfig", cwd=self.build_dir)
+
+        # Apply the configurations
         if configs:
-            configs_to_apply.extend(configs)
+            self._apply_kconfig_option(configs)
 
-        for config in configs_to_apply:
-            if len(config) == 2:
-                action, option = config
-                self.runner.run(
-                    f"kconfig-tweak --{action} {option}", cwd=self.build_dir
-                )
-            elif len(config) == 3:
-                action, option, value = config
-                self.runner.run(
-                    f"kconfig-tweak --{action} {option} {value}", cwd=self.build_dir
-                )
         self.runner.run("make olddefconfig", cwd=self.build_dir)
 
     def configure(self, extra=None):

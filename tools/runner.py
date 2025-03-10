@@ -11,21 +11,29 @@ different emulation tools like QEMU and Renode.
 import pexpect
 import time
 
+# Board configurations with QEMU parameters
+QEMU_BOARD_CONFIGS = {
+    "mps2-an521:nsh": {
+        "cmd": "qemu-system-arm",
+        "machine": "mps2-an521",
+        "nographic": True,
+    },
+    "sabre-6quad:nsh": {
+        "cmd": "qemu-system-arm",
+        "machine": "sabrelite",
+        "nographic": True,
+    },
+    "rv-virt:nsh": {
+        "cmd": "qemu-system-riscv32",
+        "machine": "virt",
+        "nographic": True,
+        "extra": "-M virt,aclint=on -cpu rv32 -smp 8 -bios none",
+    },
+}
+
 
 class Runner:
     """Class to run NuttX binaries using QEMU."""
-
-    # Board configurations with QEMU parameters
-    QEMU_BOARD_CONFIGS = {
-        "mps2-an521": {
-            "machine": "mps2-an521",
-            "nographic": True,
-        },
-        "sabre-6quad": {
-            "machine": "sabrelite",
-            "nographic": True,
-        },
-    }
 
     def __init__(self, binary_path: str, board: str = "mps2-an521"):
         """
@@ -35,9 +43,9 @@ class Runner:
             binary_path: Path to the binary file to run
             board: Name of the board to emulate (must be in QEMU_BOARD_CONFIGS)
         """
-        if board not in self.QEMU_BOARD_CONFIGS:
+        if board not in QEMU_BOARD_CONFIGS:
             raise ValueError(
-                f"Unsupported board: {board}. Supported boards: {list(self.QEMU_BOARD_CONFIGS.keys())}"
+                f"Unsupported board: {board}. Supported boards: {list(QEMU_BOARD_CONFIGS.keys())}"
             )
 
         self.binary_path = binary_path
@@ -48,8 +56,8 @@ class Runner:
 
     def _build_qemu_command(self) -> str:
         """Build the QEMU command based on board configuration."""
-        config = self.QEMU_BOARD_CONFIGS[self.board]
-        cmd = ["qemu-system-arm"]
+        config = QEMU_BOARD_CONFIGS[self.board]
+        cmd = [config["cmd"]]
 
         # Add board specific configurations
         cmd.extend(["-machine", config["machine"]])
@@ -65,6 +73,9 @@ class Runner:
 
         if "mem" in config:
             cmd.extend(["-m", config["mem"]])
+
+        if "extra" in config:
+            cmd.extend(config["extra"].split())
 
         # Add the binary file
         cmd.extend(["-kernel", self.binary_path])

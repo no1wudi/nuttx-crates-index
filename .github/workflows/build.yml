@@ -32,10 +32,11 @@ jobs:
     strategy:
       matrix:
         target:
-          - { board: sabre-6quad, arch: thumbv7a-cortex-a9 }
-          - { board: nucleo-h743zi, arch: thumbv7em-cortex-m7 }
-          - { board: stm32f4discovery, arch: thumbv7em-cortex-m4 }
-          - { board: mps2-an521, arch: thumbv8m.main-cortex-m33 }
+          - { board: sabre-6quad:nsh, arch: thumbv7a-cortex-a9 }
+          - { board: nucleo-h743zi:nsh, arch: thumbv7em-cortex-m7 }
+          - { board: stm32f4discovery:nsh, arch: thumbv7em-cortex-m4 }
+          - { board: mps2-an521:nsh, arch: thumbv8m.main-cortex-m33 }
+          - { board: rv-virt:nsh, arch: riscv32imac }
 
     steps:
       - name: Checkout repository

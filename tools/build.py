@@ -65,7 +65,7 @@ def collect_crates(parent_dir, specific_crate=None):
 
 def build_baseline(board_config, nuttx_path):
     """Build the baseline NuttX configuration."""
-    builder = Builder(f"{board_config}:nsh", nuttx_path)
+    builder = Builder(f"{board_config}", nuttx_path)
     print(f"🔨 Building NuttX Baseline")
     start_time = time.time()
     builder.configure()
