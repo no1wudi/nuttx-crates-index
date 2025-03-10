@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_STD_COLLECTIONS
+	tristate "\"Std Collections\" example"
+	default n
+
+if RUST_CRATE_STD_COLLECTIONS
+
+config RUST_CRATE_STD_COLLECTIONS_PRIORITY
+	int "Std Collections task priority"
+	default 100
+
+config RUST_CRATE_STD_COLLECTIONS_STACKSIZE
+	int "Std Collections stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
