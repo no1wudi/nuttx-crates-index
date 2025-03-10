@@ -11,12 +11,3 @@ crate-type = ["staticlib"]
 
 [dependencies]
 rand = { version = "0.9", default-features = false, features = ["std", "std_rng"] }
-
-[profile.dev]
-panic = "abort"
-
-[profile.release]
-panic = "abort"
-lto = true
-codegen-units = 1
-opt-level = 'z'

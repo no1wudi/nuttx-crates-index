@@ -10,3 +10,12 @@ exclude = [
   "crates/core_println",
   "crates/core_puts",
 ]
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+lto = true
+codegen-units = 1
+opt-level = 'z'
