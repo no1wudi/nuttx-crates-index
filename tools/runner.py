@@ -108,6 +108,8 @@ class Runner:
             raise RuntimeError("QEMU process is not running")
 
         self.process.sendline(command)
+        # Wait for the command echo to confirm it was sent
+        self.process.expect(command, timeout=1)
 
     def read_output(self, timeout: float = None) -> str:
         """
