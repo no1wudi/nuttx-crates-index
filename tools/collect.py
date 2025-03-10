@@ -33,7 +33,7 @@ class Collector:
         Cargo.toml, CMakeLists.txt, and Kconfig.
 
         Returns:
-            list: List of directories containing all required files
+            list: List of sorted directories containing all required files
         """
         self.crate_dirs = []
         for root, _, files in os.walk(self.base_path):
@@ -43,6 +43,9 @@ class Collector:
                 and "Kconfig" in files
             ):
                 self.crate_dirs.append(root)
+
+        # Sort the crate directories
+        self.crate_dirs.sort()
         return self.crate_dirs
 
     def get_kconfig_main_config(self, kconfig_path):
@@ -97,4 +100,6 @@ class Collector:
                 config = self.get_kconfig_main_config(kconfig_path)
                 if config:
                     configs[crate_dir] = f"CONFIG_{config}"
-        return configs
+
+        # Return sorted dictionary
+        return dict(sorted(configs.items()))

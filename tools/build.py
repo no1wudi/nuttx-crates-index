@@ -78,6 +78,54 @@ def build_baseline(board_config, nuttx_path):
     return builder, baseline
 
 
+def build_crate(builder, crate_name, config_option, baseline):
+    """Build a single crate with its configuration option."""
+    print(f"\n🔧 Building crate: {crate_name} with option: {config_option}")
+
+    start_time = time.time()
+    builder.configure([("enable", config_option)])
+    crate_size = builder.build()
+    build_time = time.time() - start_time
+
+    # Print build results and get size differences
+    diffs = print_build_results(crate_name, baseline, crate_size, build_time)
+
+    return crate_size, diffs, build_time
+
+
+def run_crate_test(runner, crate_name, binary_path):
+    """Run test for a specific crate."""
+    test_time = None
+    test_output = None
+    test_success = None
+
+    if not runner:
+        return test_time, test_output, test_success
+
+    if not os.path.exists(binary_path):
+        print(f"❌ Binary not found at: {binary_path}")
+        return test_time, test_output, "Binary not found", False
+
+    print(f"🚀 Running test for crate: {crate_name}")
+    try:
+        test_command = f"rust_crate_test_{crate_name}"
+        print(f"⚙️ Executing command: {test_command}")
+        execution_time, output, success = runner.run(test_command)
+
+        print(f"⏱️ Command execution time: {execution_time:.2f} seconds")
+        if success:
+            print(f"✅ Success")
+        else:
+            print(f"❌ Failure")
+        print("📝 Output:")
+        print(output)
+
+        return execution_time, output, success
+    except Exception as e:
+        print(f"❌ Error running binary: {str(e)}")
+        return None, str(e), False
+
+
 def build_crates(
     kconfig_options, builder, baseline, json_manager, start_timestamp, args=None
 ):
@@ -89,73 +137,40 @@ def build_crates(
         try:
             runner = Runner(binary_path, args.board)
         except Exception as e:
-            # Warn if the runner cannot be created, it will be skipped
             print(f"ℹ️ Info: Unable to create runner, skip test: {str(e)}")
 
-    for crate_path, config_option in kconfig_options.items():
-        crate_name = os.path.basename(crate_path)
-        print(f"\n🔧 Building crate: {crate_name} with option: {config_option}")
+    try:
+        for crate_path, config_option in kconfig_options.items():
+            crate_name = os.path.basename(crate_path)
 
-        start_time = time.time()
-        builder.configure([("enable", config_option)])
-        crate_size = builder.build()
-        build_time = time.time() - start_time
+            # Build the crate
+            crate_size, diffs, _ = build_crate(
+                builder, crate_name, config_option, baseline
+            )
 
-        # Print build results and get size differences
-        diffs = print_build_results(crate_name, baseline, crate_size, build_time)
+            # Run tests if requested
+            test_time, test_output, test_success = None, None, None
+            if runner:
+                binary_path = f"{builder.build_dir}/nuttx"
+                test_time, test_output, test_success = run_crate_test(
+                    runner, crate_name, binary_path
+                )
 
-        # Initialize test results
-        test_time = None
-        test_output = None
-        test_success = None
-
-        # Run the binary if requested
+            # Collect results
+            json_manager.append_result(
+                crate_name,
+                baseline,
+                crate_size,
+                diffs,
+                start_timestamp,
+                test_time,
+                test_output,
+                test_success,
+            )
+    finally:
+        # Ensure runner is stopped even if an exception occurs
         if runner:
-            binary_path = f"{builder.build_dir}/nuttx"
-            if os.path.exists(binary_path):
-                print(f"🚀 Running test for crate: {crate_name}")
-                try:
-                    print(f"⚙️ Executing command: rust_crate_test_{crate_name}")
-                    execution_time, output, success = runner.run(
-                        f"rust_crate_test_{crate_name}"
-                    )
-
-                    # Store test results
-                    test_time = execution_time
-                    test_output = output
-                    test_success = success
-
-                    print(f"⏱️ Command execution time: {execution_time:.2f} seconds")
-                    if success:
-                        print(f"✅ Success")
-                    else:
-                        print(f"❌ Failure")
-                    print("📝 Output:")
-                    print(output)
-                except Exception as e:
-                    print(f"❌ Error running binary: {str(e)}")
-                    test_success = False
-                    test_output = str(e)
-            else:
-                print(f"❌ Binary not found at: {binary_path}")
-                test_success = False
-                test_output = "Binary not found"
-
-        # Always collect results, now including test results
-        json_manager.append_result(
-            crate_name,
-            baseline,
-            crate_size,
-            diffs,
-            start_timestamp,
-            test_time,
-            test_output,
-            test_success,
-        )
-
-    # Stop the runner when done
-    if runner:
-        runner.stop()
+            runner.stop()
 
 
 def main():
