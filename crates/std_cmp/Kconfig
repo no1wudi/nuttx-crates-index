@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_STD_CMP
+	tristate "\"Std Cmp\" example"
+	default n
+
+if RUST_CRATE_STD_CMP
+
+config RUST_CRATE_STD_CMP_PRIORITY
+	int "Std Cmp task priority"
+	default 100
+
+config RUST_CRATE_STD_CMP_STACKSIZE
+	int "Std Cmp stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
