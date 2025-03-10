@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_CORE_PUTS
+	tristate "\"Core Puts\" example"
+	default n
+
+if RUST_CRATE_CORE_PUTS
+
+config RUST_CRATE_CORE_PUTS_PRIORITY
+	int "Core Puts task priority"
+	default 100
+
+config RUST_CRATE_CORE_PUTS_STACKSIZE
+	int "Core Puts stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
