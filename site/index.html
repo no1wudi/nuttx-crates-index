@@ -150,6 +150,36 @@
             box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
         }
 
+        /* Search input styling */
+        .search-container {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        #searchInput {
+            flex: 1;
+            padding: 10px 15px;
+            font-size: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: white;
+            color: var(--text-color);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        #searchInput:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .search-icon {
+            margin-right: 10px;
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+        }
+
         #errorMessage {
             color: var(--accent-color);
             margin-top: 20px;
@@ -371,6 +401,11 @@
             </ul>
             <p>Values are shown in bytes, with percentage representing the proportion of memory added relative to the
                 baseline build (without the crate).</p>
+        </div>
+
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Search for crates...">
         </div>
 
         <div class="filter-controls">
@@ -756,6 +791,60 @@
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', loadBoardsList);
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const currentView = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+
+            // Apply search to all tables but only show results in the active one
+            applySearch('sizeTable', searchTerm);
+            applySearch('passTable', searchTerm);
+            applySearch('failTable', searchTerm);
+            applySearch('skipTable', searchTerm);
+
+            // Update empty message visibility based on search results
+            updateEmptyMessages();
+        });
+
+        function applySearch(tableId, searchTerm) {
+            const table = document.getElementById(tableId);
+            const rows = table.querySelectorAll('tbody tr');
+            let hasResults = false;
+
+            rows.forEach(row => {
+                const crateName = row.querySelector('td').textContent.toLowerCase();
+                if (crateName.includes(searchTerm)) {
+                    row.style.display = '';
+                    hasResults = true;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            // Return whether we have any visible rows
+            return hasResults;
+        }
+
+        function updateEmptyMessages() {
+            const sections = ['all', 'pass', 'fail', 'skip'];
+
+            sections.forEach(section => {
+                const tableId = section === 'all' ? 'sizeTable' : `${section}Table`;
+                const sectionId = `${section}-tests`;
+
+                // Check if there are any visible rows
+                const table = document.getElementById(tableId);
+                const visibleRows = Array.from(table.querySelectorAll('tbody tr')).filter(
+                    row => row.style.display !== 'none'
+                ).length;
+
+                // Show/hide empty message based on visible rows
+                const emptyMessage = document.querySelector(`#${sectionId} .empty-table-message`);
+                emptyMessage.style.display = visibleRows === 0 ? 'block' : 'none';
+                emptyMessage.textContent = 'No matching crates found';
+            });
+        }
     </script>
 </body>
 
