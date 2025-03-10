@@ -21,6 +21,10 @@ class Runner:
             "machine": "mps2-an521",
             "nographic": True,
         },
+        "sabre-6quad": {
+            "machine": "sabrelite",
+            "nographic": True,
+        },
     }
 
     def __init__(self, binary_path: str, board: str = "mps2-an521"):
@@ -169,11 +173,12 @@ class Runner:
             timeout = self.timeout
 
         try:
+            # Run the command and measure its execution time
+            start_time = time.time()
+
             # Start the QEMU process
             self.start()
 
-            # Run the command and measure its execution time
-            start_time = time.time()
             self.send_command(command)
             output = self.read_output(timeout=timeout)
 
