@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_STD_CLONE
+	tristate "\"Std Clone\" example"
+	default n
+
+if RUST_CRATE_STD_CLONE
+
+config RUST_CRATE_STD_CLONE_PRIORITY
+	int "Std Clone task priority"
+	default 100
+
+config RUST_CRATE_STD_CLONE_STACKSIZE
+	int "Std Clone stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
