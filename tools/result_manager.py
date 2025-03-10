@@ -44,12 +44,6 @@ class JsonResultManager:
         if not self.json_file or not os.path.exists(self.json_file):
             return {"builds": []}
 
-        with open(self.json_file, "r") as f:
-            try:
-                return json.load(f)
-            except json.JSONDecodeError:
-                return {"builds": []}
-
     def append_result(
         self,
         crate_name,
