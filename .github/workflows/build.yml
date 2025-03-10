@@ -37,6 +37,7 @@ jobs:
           - { board: "stm32f4discovery:nsh", arch: thumbv7em-cortex-m4 }
           - { board: "mps2-an521:nsh", arch: thumbv8m.main-cortex-m33 }
           - { board: "rv-virt:nsh", arch: riscv32imac }
+          - { board: "rv-virt:nsh64", arch: riscv64imac }
 
     steps:
       - name: Checkout repository

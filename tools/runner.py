@@ -14,20 +14,16 @@ import time
 # Board configurations with QEMU parameters
 QEMU_BOARD_CONFIGS = {
     "mps2-an521:nsh": {
-        "cmd": "qemu-system-arm",
-        "machine": "mps2-an521",
-        "nographic": True,
+        "cmd": "qemu-system-arm -M mps2-an521 -nographic -kernel {kernel}",
     },
     "sabre-6quad:nsh": {
-        "cmd": "qemu-system-arm",
-        "machine": "sabrelite",
-        "nographic": True,
+        "cmd": "qemu-system-arm -M sabrelite -nographic -kernel {kernel}",
     },
     "rv-virt:nsh": {
-        "cmd": "qemu-system-riscv32",
-        "machine": "virt",
-        "nographic": True,
-        "extra": "-M virt,aclint=on -cpu rv32 -smp 8 -bios none",
+        "cmd": "qemu-system-riscv32 -M virt,aclint=on -cpu rv32 -smp 8 -bios none -nographic -kernel {kernel}",
+    },
+    "rv-virt:nsh64": {
+        "cmd": "qemu-system-riscv64 -M virt,aclint=on -cpu rv64 -smp 8 -bios none -nographic -kernel {kernel}",
     },
 }
 
@@ -57,30 +53,11 @@ class Runner:
     def _build_qemu_command(self) -> str:
         """Build the QEMU command based on board configuration."""
         config = QEMU_BOARD_CONFIGS[self.board]
-        cmd = [config["cmd"]]
 
-        # Add board specific configurations
-        cmd.extend(["-machine", config["machine"]])
+        # Replace {kernel} with the actual binary path
+        cmd = config["cmd"].format(kernel=self.binary_path)
 
-        if "cpu" in config:
-            cmd.extend(["-cpu", config["cpu"]])
-
-        if config.get("nographic", False):
-            cmd.append("-nographic")
-
-        if "serial" in config:
-            cmd.extend(["-serial", config["serial"]])
-
-        if "mem" in config:
-            cmd.extend(["-m", config["mem"]])
-
-        if "extra" in config:
-            cmd.extend(config["extra"].split())
-
-        # Add the binary file
-        cmd.extend(["-kernel", self.binary_path])
-
-        return " ".join(cmd)
+        return cmd
 
     def start(self) -> pexpect.spawn:
         """Start QEMU process and return the pexpect object."""
