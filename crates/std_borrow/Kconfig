@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_STD_BORROW
+	tristate "\"Std Borrow\" example"
+	default n
+
+if RUST_CRATE_STD_BORROW
+
+config RUST_CRATE_STD_BORROW_PRIORITY
+	int "Std Borrow task priority"
+	default 100
+
+config RUST_CRATE_STD_BORROW_STACKSIZE
+	int "Std Borrow stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
