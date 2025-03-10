@@ -583,14 +583,15 @@
             // Add test status as a data attribute to the row
             row.setAttribute('data-test-status', testStatus);
 
-            // Add click event to test status span
-            const testStatusSpan = row.querySelector('.test-status');
+            // Store the test output and execution time as data attributes if available
             if (build.test && build.test.output) {
+                const testStatusSpan = row.querySelector('.test-status');
                 testStatusSpan.style.cursor = 'pointer';
                 testStatusSpan.title = 'Click to view test output';
-                testStatusSpan.addEventListener('click', function () {
-                    showTestOutput(build.crate_name, build.test.output, build.test.execution_time);
-                });
+                testStatusSpan.setAttribute('data-output', build.test.output);
+                if (build.test.execution_time) {
+                    testStatusSpan.setAttribute('data-execution-time', build.test.execution_time);
+                }
             }
 
             return row;
@@ -715,15 +716,14 @@
         // Function to reattach click events after table content changes
         function attachTestOutputClickEvents() {
             document.querySelectorAll('.test-status').forEach(statusSpan => {
-                if (statusSpan.style.cursor === 'pointer') {
+                if (statusSpan.hasAttribute('data-output')) {
                     statusSpan.addEventListener('click', function () {
                         const crateName = this.getAttribute('data-crate');
-                        // We need to fetch the output data again - for simplicity, we'll trigger a click on the
-                        // corresponding span in the 'all' table
-                        const allTableSpan = document.querySelector(`#sizeTable .test-status[data-crate="${crateName}"]`);
-                        if (allTableSpan) {
-                            allTableSpan.click();
-                        }
+                        const output = this.getAttribute('data-output');
+                        const executionTime = this.hasAttribute('data-execution-time') ?
+                            parseFloat(this.getAttribute('data-execution-time')) : null;
+
+                        showTestOutput(crateName, output, executionTime);
                     });
                 }
             });
@@ -790,10 +790,24 @@
         });
 
         // Initialize on page load
-        document.addEventListener('DOMContentLoaded', loadBoardsList);
+        document.addEventListener('DOMContentLoaded', function () {
+            loadBoardsList();
+
+            // Set up the modal close events
+            document.querySelector('.modal-close').addEventListener('click', function () {
+                document.getElementById('testModal').style.display = 'none';
+            });
+
+            window.addEventListener('click', function (event) {
+                const modal = document.getElementById('testModal');
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
 
         // Search functionality
-        document.getElementById('searchInput').addEventListener('input', function() {
+        document.getElementById('searchInput').addEventListener('input', function () {
             const searchTerm = this.value.toLowerCase();
             const currentView = document.querySelector('.filter-btn.active').getAttribute('data-filter');
 
