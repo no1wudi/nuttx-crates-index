@@ -282,6 +282,68 @@
             font-size: 0.9rem;
             text-align: right;
         }
+
+        /* Filter controls styling */
+        .filter-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            background-color: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-btn:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .filter-btn .count {
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 0.8rem;
+        }
+
+        .filter-btn.active .count {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .table-section {
+            margin-bottom: 30px;
+        }
+
+        .table-section h2 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        .empty-table-message {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+            background-color: var(--card-color);
+            border-radius: 8px;
+            border: 1px dashed var(--border-color);
+        }
     </style>
 </head>
 
@@ -311,21 +373,101 @@
                 baseline build (without the crate).</p>
         </div>
 
-        <table id="sizeTable">
-            <thead>
-                <tr>
-                    <th>Crate</th>
-                    <th>Text Δ</th>
-                    <th>Data Δ</th>
-                    <th>BSS Δ</th>
-                    <th>Total Δ</th>
-                    <th>Test Result</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Rows will be added dynamically -->
-            </tbody>
-        </table>
+        <div class="filter-controls">
+            <button class="filter-btn active" data-filter="all">
+                All Tests <span class="count" id="count-all">0</span>
+            </button>
+            <button class="filter-btn" data-filter="pass">
+                Passed <span class="count" id="count-pass">0</span>
+            </button>
+            <button class="filter-btn" data-filter="fail">
+                Failed <span class="count" id="count-fail">0</span>
+            </button>
+            <button class="filter-btn" data-filter="skip">
+                Skipped <span class="count" id="count-skip">0</span>
+            </button>
+        </div>
+
+        <div id="all-tests" class="table-section">
+            <h2>All Tests</h2>
+            <table id="sizeTable" class="test-table">
+                <thead>
+                    <tr>
+                        <th>Crate</th>
+                        <th>Text Δ</th>
+                        <th>Data Δ</th>
+                        <th>BSS Δ</th>
+                        <th>Total Δ</th>
+                        <th>Test Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be added dynamically -->
+                </tbody>
+            </table>
+            <div class="empty-table-message" style="display: none;">No tests available</div>
+        </div>
+
+        <div id="pass-tests" class="table-section" style="display: none;">
+            <h2>Passed Tests</h2>
+            <table id="passTable" class="test-table">
+                <thead>
+                    <tr>
+                        <th>Crate</th>
+                        <th>Text Δ</th>
+                        <th>Data Δ</th>
+                        <th>BSS Δ</th>
+                        <th>Total Δ</th>
+                        <th>Test Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be added dynamically -->
+                </tbody>
+            </table>
+            <div class="empty-table-message" style="display: none;">No passed tests available</div>
+        </div>
+
+        <div id="fail-tests" class="table-section" style="display: none;">
+            <h2>Failed Tests</h2>
+            <table id="failTable" class="test-table">
+                <thead>
+                    <tr>
+                        <th>Crate</th>
+                        <th>Text Δ</th>
+                        <th>Data Δ</th>
+                        <th>BSS Δ</th>
+                        <th>Total Δ</th>
+                        <th>Test Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be added dynamically -->
+                </tbody>
+            </table>
+            <div class="empty-table-message" style="display: none;">No failed tests available</div>
+        </div>
+
+        <div id="skip-tests" class="table-section" style="display: none;">
+            <h2>Skipped Tests</h2>
+            <table id="skipTable" class="test-table">
+                <thead>
+                    <tr>
+                        <th>Crate</th>
+                        <th>Text Δ</th>
+                        <th>Data Δ</th>
+                        <th>BSS Δ</th>
+                        <th>Total Δ</th>
+                        <th>Test Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be added dynamically -->
+                </tbody>
+            </table>
+            <div class="empty-table-message" style="display: none;">No skipped tests available</div>
+        </div>
+
         <div id="errorMessage" style="display: none;"></div>
 
         <!-- Test Output Modal -->
@@ -362,17 +504,21 @@
             // Define test status class and text based on success property
             let testStatusClass = "test-skip";
             let testStatusText = "Skip";
+            let testStatus = "skip";
 
             if (build.test) {
                 if (build.test.success === "pass") {
                     testStatusClass = "test-pass";
                     testStatusText = "Pass";
+                    testStatus = "pass";
                 } else if (build.test.success === "fail") {
                     testStatusClass = "test-fail";
                     testStatusText = "Fail";
+                    testStatus = "fail";
                 } else if (build.test.success === "skip") {
                     testStatusClass = "test-skip";
                     testStatusText = "Skip";
+                    testStatus = "skip";
                 }
             }
 
@@ -399,12 +545,15 @@
                 </td>
             `;
 
+            // Add test status as a data attribute to the row
+            row.setAttribute('data-test-status', testStatus);
+
             // Add click event to test status span
-            const testStatus = row.querySelector('.test-status');
+            const testStatusSpan = row.querySelector('.test-status');
             if (build.test && build.test.output) {
-                testStatus.style.cursor = 'pointer';
-                testStatus.title = 'Click to view test output';
-                testStatus.addEventListener('click', function () {
+                testStatusSpan.style.cursor = 'pointer';
+                testStatusSpan.title = 'Click to view test output';
+                testStatusSpan.addEventListener('click', function () {
                     showTestOutput(build.crate_name, build.test.output, build.test.execution_time);
                 });
             }
@@ -454,9 +603,17 @@
         }
 
         function loadBoardData(jsonFile) {
-            // Clear existing table except header
-            const tableBody = document.querySelector('#sizeTable tbody');
-            tableBody.innerHTML = '';
+            // Clear existing tables
+            document.querySelector('#sizeTable tbody').innerHTML = '';
+            document.querySelector('#passTable tbody').innerHTML = '';
+            document.querySelector('#failTable tbody').innerHTML = '';
+            document.querySelector('#skipTable tbody').innerHTML = '';
+
+            // Reset counters
+            let countAll = 0;
+            let countPass = 0;
+            let countFail = 0;
+            let countSkip = 0;
 
             // Clear error message
             document.getElementById('errorMessage').style.display = 'none';
@@ -470,8 +627,44 @@
                 })
                 .then(data => {
                     data.builds.forEach(build => {
-                        tableBody.appendChild(createRow(build));
+                        const row = createRow(build);
+                        const testStatus = row.getAttribute('data-test-status');
+
+                        // Always add to the all table
+                        document.querySelector('#sizeTable tbody').appendChild(row.cloneNode(true));
+                        countAll++;
+
+                        // Also add to the specific table
+                        if (testStatus === 'pass') {
+                            document.querySelector('#passTable tbody').appendChild(row.cloneNode(true));
+                            countPass++;
+                        } else if (testStatus === 'fail') {
+                            document.querySelector('#failTable tbody').appendChild(row.cloneNode(true));
+                            countFail++;
+                        } else {
+                            document.querySelector('#skipTable tbody').appendChild(row.cloneNode(true));
+                            countSkip++;
+                        }
                     });
+
+                    // Update counters
+                    document.getElementById('count-all').textContent = countAll;
+                    document.getElementById('count-pass').textContent = countPass;
+                    document.getElementById('count-fail').textContent = countFail;
+                    document.getElementById('count-skip').textContent = countSkip;
+
+                    // Show/hide empty messages
+                    document.querySelector('#all-tests .empty-table-message').style.display =
+                        countAll === 0 ? 'block' : 'none';
+                    document.querySelector('#pass-tests .empty-table-message').style.display =
+                        countPass === 0 ? 'block' : 'none';
+                    document.querySelector('#fail-tests .empty-table-message').style.display =
+                        countFail === 0 ? 'block' : 'none';
+                    document.querySelector('#skip-tests .empty-table-message').style.display =
+                        countSkip === 0 ? 'block' : 'none';
+
+                    // Reattach click events for the test outputs
+                    attachTestOutputClickEvents();
                 })
                 .catch(error => {
                     console.error(`Error loading data from ${jsonFile}:`, error);
@@ -482,6 +675,23 @@
                         2. Open: <a href="http://localhost:8000">http://localhost:8000</a>
                     `);
                 });
+        }
+
+        // Function to reattach click events after table content changes
+        function attachTestOutputClickEvents() {
+            document.querySelectorAll('.test-status').forEach(statusSpan => {
+                if (statusSpan.style.cursor === 'pointer') {
+                    statusSpan.addEventListener('click', function () {
+                        const crateName = this.getAttribute('data-crate');
+                        // We need to fetch the output data again - for simplicity, we'll trigger a click on the
+                        // corresponding span in the 'all' table
+                        const allTableSpan = document.querySelector(`#sizeTable .test-status[data-crate="${crateName}"]`);
+                        if (allTableSpan) {
+                            allTableSpan.click();
+                        }
+                    });
+                }
+            });
         }
 
         // Function to show test output in the modal
@@ -503,6 +713,33 @@
 
             modal.style.display = 'block';
         }
+
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                // Update active state
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                const filter = this.getAttribute('data-filter');
+
+                // Hide all table sections
+                document.querySelectorAll('.table-section').forEach(section => {
+                    section.style.display = 'none';
+                });
+
+                // Show the selected section
+                if (filter === 'all') {
+                    document.getElementById('all-tests').style.display = 'block';
+                } else if (filter === 'pass') {
+                    document.getElementById('pass-tests').style.display = 'block';
+                } else if (filter === 'fail') {
+                    document.getElementById('fail-tests').style.display = 'block';
+                } else if (filter === 'skip') {
+                    document.getElementById('skip-tests').style.display = 'block';
+                }
+            });
+        });
 
         // Close modal when clicking the close button
         document.querySelector('.modal-close').addEventListener('click', function () {
