@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_LIBC_PUTS
+	tristate "\"Crate Libc Puts\" example"
+	default n
+
+if RUST_CRATE_LIBC_PUTS
+
+config RUST_CRATE_LIBC_PUTS_PRIORITY
+	int "Libc Puts task priority"
+	default 100
+
+config RUST_CRATE_LIBC_PUTS_STACKSIZE
+	int "Libc Puts stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
