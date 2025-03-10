@@ -133,3 +133,4 @@ pub extern "C" fn rust_crate_test_[name]_main() {
 4. Ensure copyright headers in all files
 5. Add appropriate documentation
 6. Ensure "#[unsafe(no_mangle)]" used for the entry point to meet the requirements of Rust 2024
+7. Rust's libstd is available for stdlib functionality and third-party crates
