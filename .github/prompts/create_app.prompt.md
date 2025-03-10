@@ -82,13 +82,19 @@ endif
 # SPDX-License-Identifier: Apache-2.0
 
 if(CONFIG_RUST_CRATE_[NAME])
-  nuttx_add_rust(CRATE_NAME [name] CRATE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+  nuttx_add_rust(
+    CRATE_NAME [name]
+    CRATE_PATH ${CMAKE_CURRENT_SOURCE_DIR}
+  )
+
   nuttx_add_application(
     NAME rust_crate_test_[name]
     STACKSIZE ${CONFIG_RUST_CRATE_[NAME]_STACKSIZE}
-    PRIORITY ${CONFIG_RUST_CRATE_[NAME]_PRIORITY})
+    PRIORITY ${CONFIG_RUST_CRATE_[NAME]_PRIORITY}
+  )
+
   add_dependencies(apps [name])
-endif()
+endif() # CONFIG_RUST_CRATE_[NAME]
 ```
 
 ### 3. Cargo.toml
