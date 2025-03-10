@@ -51,14 +51,23 @@ class JsonResultManager:
                 return {"builds": []}
 
     def append_result(
-        self, crate_name, baseline, crate_size, diffs, timestamp
+        self,
+        crate_name,
+        baseline,
+        crate_size,
+        diffs,
+        timestamp,
+        test_time=None,
+        test_output=None,
+        test_success=None,
     ):
         """
         Append build results to the JSON data structure.
 
         This method adds a new build result entry to the data structure with information
         about the crate name, baseline and crate build sizes,
-        the differences between them, and a timestamp for when the build was performed.
+        the differences between them, a timestamp for when the build was performed,
+        and test results if available.
 
         Args:
             crate_name (str): Name of the crate being built
@@ -66,6 +75,9 @@ class JsonResultManager:
             crate_size (dict): Current crate build sizes containing text, data, bss, and total
             diffs (dict): Size differences between baseline and crate build
             timestamp (int): Unix timestamp for the build session
+            test_time (float, optional): Execution time of the test in seconds
+            test_output (str, optional): Output of the test execution
+            test_success (bool or str, optional): Whether the test was successful ("true", "false", or "skip")
         """
         # Add new build result
         build_data = {
@@ -79,6 +91,21 @@ class JsonResultManager:
                 "total": diffs["total"],
             },
             "timestamp": timestamp,
+        }
+
+        # Convert test_success to string format
+        if test_success is None:
+            success_str = "skip"
+        elif isinstance(test_success, bool):
+            success_str = "pass" if test_success else "fail"
+        else:
+            success_str = str(test_success)  # Preserve string values
+
+        # Always include test results with default values if not provided
+        build_data["test"] = {
+            "execution_time": test_time if test_time is not None else 0,
+            "output": test_output if test_output is not None else "",
+            "success": success_str,
         }
 
         self.data["builds"].append(build_data)

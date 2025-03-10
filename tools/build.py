@@ -15,6 +15,7 @@ import time
 from builder import Builder
 from collect import Collector
 from result_manager import JsonResultManager
+from runner import Runner
 from utils import print_build_results
 
 
@@ -29,6 +30,9 @@ def parse_arguments():
     )
     parser.add_argument("--json", help="JSON file to append build results to")
     parser.add_argument("--crate", help="Specific crate to build instead of all crates")
+    parser.add_argument(
+        "--run", action="store_true", help="Run the binary after building"
+    )
 
     return parser.parse_args()
 
@@ -74,8 +78,20 @@ def build_baseline(board_config, nuttx_path):
     return builder, baseline
 
 
-def build_crates(kconfig_options, builder, baseline, json_manager, start_timestamp):
+def build_crates(
+    kconfig_options, builder, baseline, json_manager, start_timestamp, args=None
+):
     """Build each crate with its configuration option."""
+    # Create a runner for executing the binary if needed
+    runner = None
+    if args and args.run:
+        binary_path = f"{builder.build_dir}/nuttx"
+        try:
+            runner = Runner(binary_path, args.board)
+        except Exception as e:
+            # Warn if the runner cannot be created, it will be skipped
+            print(f"ℹ️ Info: Unable to create runner, skip test: {str(e)}")
+
     for crate_path, config_option in kconfig_options.items():
         crate_name = os.path.basename(crate_path)
         print(f"\n🔧 Building crate: {crate_name} with option: {config_option}")
@@ -88,14 +104,58 @@ def build_crates(kconfig_options, builder, baseline, json_manager, start_timesta
         # Print build results and get size differences
         diffs = print_build_results(crate_name, baseline, crate_size, build_time)
 
-        # Always collect results
+        # Initialize test results
+        test_time = None
+        test_output = None
+        test_success = None
+
+        # Run the binary if requested
+        if runner:
+            binary_path = f"{builder.build_dir}/nuttx"
+            if os.path.exists(binary_path):
+                print(f"🚀 Running test for crate: {crate_name}")
+                try:
+                    print(f"⚙️ Executing command: rust_crate_test_{crate_name}")
+                    execution_time, output, success = runner.run(
+                        f"rust_crate_test_{crate_name}"
+                    )
+
+                    # Store test results
+                    test_time = execution_time
+                    test_output = output
+                    test_success = success
+
+                    print(f"⏱️ Command execution time: {execution_time:.2f} seconds")
+                    if success:
+                        print(f"✅ Success")
+                    else:
+                        print(f"❌ Failure")
+                    print("📝 Output:")
+                    print(output)
+                except Exception as e:
+                    print(f"❌ Error running binary: {str(e)}")
+                    test_success = False
+                    test_output = str(e)
+            else:
+                print(f"❌ Binary not found at: {binary_path}")
+                test_success = False
+                test_output = "Binary not found"
+
+        # Always collect results, now including test results
         json_manager.append_result(
             crate_name,
             baseline,
             crate_size,
             diffs,
             start_timestamp,
+            test_time,
+            test_output,
+            test_success,
         )
+
+    # Stop the runner when done
+    if runner:
+        runner.stop()
 
 
 def main():
@@ -127,7 +187,9 @@ def main():
     json_manager = JsonResultManager(args.json)
 
     # Build each crate
-    build_crates(kconfig_options, builder, baseline, json_manager, start_timestamp)
+    build_crates(
+        kconfig_options, builder, baseline, json_manager, start_timestamp, args
+    )
 
     # Save results
     json_manager.flush()
