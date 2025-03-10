@@ -110,14 +110,6 @@ edition = "2024"
 [lib]
 crate-type = ["staticlib"]
 
-[profile.dev]
-panic = "abort"
-
-[profile.release]
-panic = "abort"
-lto = true
-codegen-units = 1
-opt-level = 'z'
 ```
 
 ### 4. src/lib.rs
