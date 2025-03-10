@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_STD_FUTURE
+	tristate "\"Std Future\" example"
+	default n
+
+if RUST_CRATE_STD_FUTURE
+
+config RUST_CRATE_STD_FUTURE_PRIORITY
+	int "Std Future task priority"
+	default 100
+
+config RUST_CRATE_STD_FUTURE_STACKSIZE
+	int "Std Future stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
