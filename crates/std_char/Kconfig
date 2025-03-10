@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_STD_CHAR
+	tristate "\"Std Char\" example"
+	default n
+
+if RUST_CRATE_STD_CHAR
+
+config RUST_CRATE_STD_CHAR_PRIORITY
+	int "Std Char task priority"
+	default 100
+
+config RUST_CRATE_STD_CHAR_STACKSIZE
+	int "Std Char stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
