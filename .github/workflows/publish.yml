@@ -18,9 +18,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
       - name: Create output directory
         run: mkdir -p output
 
@@ -40,6 +37,13 @@ jobs:
         run: |
           find output -name "*.json" -type f | sed 's|output/||' | sort > output/boards.txt
           cat output/boards.txt
+
+      - name: Turnstyle
+        uses: softprops/turnstyle@v2
+        if: github.ref == 'refs/heads/main'
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

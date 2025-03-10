@@ -81,10 +81,6 @@ jobs:
       - name: Create output directory
         run: mkdir -p output
 
-      - name: Turnstyle
-        uses: softprops/turnstyle@v2
-        if: github.ref == 'refs/heads/main'
-
       - name: Build NuttX
         run: |
           python3 nuttx-crates-index/tools/build.py ${{ matrix.target.board }} --json output/${{ matrix.target.arch }}.json --run
