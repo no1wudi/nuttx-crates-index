@@ -59,7 +59,8 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
@@ -91,6 +92,30 @@
             font-size: 0.85em;
             color: var(--text-light);
             margin-left: 6px;
+        }
+
+        .test-status {
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .test-pass {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+
+        .test-fail {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #c0392b;
+        }
+
+        .test-skip {
+            background-color: rgba(241, 196, 15, 0.2);
+            color: #f39c12;
         }
 
         #boardSelector {
@@ -148,7 +173,8 @@
                 font-size: 0.9rem;
             }
 
-            th, td {
+            th,
+            td {
                 padding: 8px 10px;
             }
         }
@@ -183,6 +209,79 @@
             margin: 8px 0;
             padding-left: 20px;
         }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: var(--card-color);
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--secondary-color);
+            margin: 0;
+        }
+
+        .modal-close {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--text-light);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .modal-close:hover {
+            color: var(--accent-color);
+        }
+
+        .test-output {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            line-height: 1.4;
+        }
+
+        .execution-time {
+            margin-top: 15px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            text-align: right;
+        }
     </style>
 </head>
 
@@ -199,14 +298,17 @@
 
         <div class="info-panel">
             <h3>Understanding the Table</h3>
-            <p>This table shows the memory usage impact of each Rust crate on the NuttX firmware size. Values represent the difference between builds with and without the crate enabled:</p>
+            <p>This table shows the memory usage impact of each Rust crate on the NuttX firmware size. Values represent
+                the difference between builds with and without the crate enabled:</p>
             <ul>
                 <li><strong>Text Δ</strong>: Increase in code/executable memory usage</li>
                 <li><strong>Data Δ</strong>: Increase in initialized data memory usage</li>
                 <li><strong>BSS Δ</strong>: Increase in uninitialized data memory usage</li>
                 <li><strong>Total Δ</strong>: Total memory footprint increase</li>
+                <li><strong>Test Result</strong>: Status of the crate's test suite, click to view output</li>
             </ul>
-            <p>Values are shown in bytes, with percentage representing the proportion of memory added relative to the baseline build (without the crate).</p>
+            <p>Values are shown in bytes, with percentage representing the proportion of memory added relative to the
+                baseline build (without the crate).</p>
         </div>
 
         <table id="sizeTable">
@@ -217,6 +319,7 @@
                     <th>Data Δ</th>
                     <th>BSS Δ</th>
                     <th>Total Δ</th>
+                    <th>Test Result</th>
                 </tr>
             </thead>
             <tbody>
@@ -225,8 +328,21 @@
         </table>
         <div id="errorMessage" style="display: none;"></div>
 
+        <!-- Test Output Modal -->
+        <div id="testModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalTitle">Test Output</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div id="testOutput" class="test-output"></div>
+                <div id="executionTime" class="execution-time"></div>
+            </div>
+        </div>
+
         <div class="footer">
-            NuttX Crates Index | <a href="https://github.com/no1wudi/nuttx-crates-index" target="_blank">GitHub Repository</a>
+            NuttX Crates Index | <a href="https://github.com/no1wudi/nuttx-crates-index" target="_blank">GitHub
+                Repository</a>
         </div>
     </div>
 
@@ -242,6 +358,24 @@
 
         function createRow(build) {
             const row = document.createElement('tr');
+
+            // Define test status class and text based on success property
+            let testStatusClass = "test-skip";
+            let testStatusText = "Skip";
+
+            if (build.test) {
+                if (build.test.success === "pass") {
+                    testStatusClass = "test-pass";
+                    testStatusText = "Pass";
+                } else if (build.test.success === "fail") {
+                    testStatusClass = "test-fail";
+                    testStatusText = "Fail";
+                } else if (build.test.success === "skip") {
+                    testStatusClass = "test-skip";
+                    testStatusText = "Skip";
+                }
+            }
+
             row.innerHTML = `
                 <td>${build.crate_name}</td>
                 <td class="positive">
@@ -260,7 +394,21 @@
                     +${formatNumber(build.differences.total)}
                     <span class="percentage">${formatPercentage(build.differences.total, build.baseline.total)}</span>
                 </td>
+                <td>
+                    <span class="test-status ${testStatusClass}" data-crate="${build.crate_name}">${testStatusText}</span>
+                </td>
             `;
+
+            // Add click event to test status span
+            const testStatus = row.querySelector('.test-status');
+            if (build.test && build.test.output) {
+                testStatus.style.cursor = 'pointer';
+                testStatus.title = 'Click to view test output';
+                testStatus.addEventListener('click', function () {
+                    showTestOutput(build.crate_name, build.test.output, build.test.execution_time);
+                });
+            }
+
             return row;
         }
 
@@ -335,6 +483,39 @@
                     `);
                 });
         }
+
+        // Function to show test output in the modal
+        function showTestOutput(crateName, output, executionTime) {
+            const modal = document.getElementById('testModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const testOutput = document.getElementById('testOutput');
+            const executionTimeElement = document.getElementById('executionTime');
+
+            modalTitle.textContent = `Test Output: ${crateName}`;
+            testOutput.textContent = output;
+
+            if (executionTime) {
+                executionTimeElement.textContent = `Execution time: ${executionTime.toFixed(3)} seconds`;
+                executionTimeElement.style.display = 'block';
+            } else {
+                executionTimeElement.style.display = 'none';
+            }
+
+            modal.style.display = 'block';
+        }
+
+        // Close modal when clicking the close button
+        document.querySelector('.modal-close').addEventListener('click', function () {
+            document.getElementById('testModal').style.display = 'none';
+        });
+
+        // Close modal when clicking outside the content
+        window.addEventListener('click', function (event) {
+            const modal = document.getElementById('testModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        });
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', loadBoardsList);
