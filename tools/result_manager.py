@@ -41,8 +41,7 @@ class JsonResultManager:
             dict: A dictionary containing all build results, with at least a "builds" list.
                  Returns {"builds": []} if the file doesn't exist or contains invalid JSON.
         """
-        if not self.json_file or not os.path.exists(self.json_file):
-            return {"builds": []}
+        return {"builds": []}
 
     def append_result(
         self,
