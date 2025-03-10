@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #![no_std]
+use core::panic::PanicInfo;
 
 // Declare the C puts function directly
 unsafe extern "C" {
@@ -22,12 +23,7 @@ pub extern "C" fn rust_crate_test_core_puts_main() {
     }
 }
 
-#[cfg(target_os = "nuttx")]
-mod panic {
-
-    use core::panic::PanicInfo;
-    #[panic_handler]
-    fn panic(_info: &PanicInfo) -> ! {
-        loop {}
-    }
+#[panic_handler]
+fn panic(_info: &PanicInfo) -> ! {
+    loop {}
 }

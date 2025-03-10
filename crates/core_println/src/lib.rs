@@ -4,14 +4,11 @@
 #![no_std]
 
 use core::fmt::Write;
+use core::panic::PanicInfo;
 
-#[cfg(target_os = "nuttx")]
-mod panic {
-    use core::panic::PanicInfo;
-    #[panic_handler]
-    fn panic(_info: &PanicInfo) -> ! {
-        loop {}
-    }
+#[panic_handler]
+fn panic(_info: &PanicInfo) -> ! {
+    loop {}
 }
 
 unsafe extern "C" {
