@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_STD_ALLOC
+	tristate "\"Std Alloc\" example"
+	default n
+
+if RUST_CRATE_STD_ALLOC
+
+config RUST_CRATE_STD_ALLOC_PRIORITY
+	int "Std Alloc task priority"
+	default 100
+
+config RUST_CRATE_STD_ALLOC_STACKSIZE
+	int "Std Alloc stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
