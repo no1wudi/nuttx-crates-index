@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_STD_LAZYLOCK
+	tristate "\"Std LazyLock\" example"
+	default n
+
+if RUST_CRATE_STD_LAZYLOCK
+
+config RUST_CRATE_STD_LAZYLOCK_PRIORITY
+	int "Std LazyLock task priority"
+	default 100
+
+config RUST_CRATE_STD_LAZYLOCK_STACKSIZE
+	int "Std LazyLock stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
