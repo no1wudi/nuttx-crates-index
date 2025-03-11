@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_STD_BARRIER
+	tristate "\"Std Barrier\" example"
+	default n
+
+if RUST_CRATE_STD_BARRIER
+
+config RUST_CRATE_STD_BARRIER_PRIORITY
+	int "Std Barrier task priority"
+	default 100
+
+config RUST_CRATE_STD_BARRIER_STACKSIZE
+	int "Std Barrier stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
