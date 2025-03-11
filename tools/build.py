@@ -113,10 +113,12 @@ def run_crate_test(runner, crate_name, binary_path):
         execution_time, output, success = runner.run(test_command)
 
         print(f"⏱️ Command execution time: {execution_time:.2f} seconds")
-        if success:
+        if success == True:
             print(f"✅ Success")
-        else:
+        elif success == False:
             print(f"❌ Failure")
+        else:
+            print(f"⚠️ Skipped")
         print("📝 Output:")
         print(output)
 

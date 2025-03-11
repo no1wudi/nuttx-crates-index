@@ -90,14 +90,40 @@ class Runner:
                 self.process.close()
                 self.process = None
 
-    def send_command(self, command: str) -> None:
+    def send_command(self, command: str):
+        """
+        Send a command to the QEMU process and wait for echo confirmation.
+
+        Args:
+            command (str): The command string to send to QEMU
+
+        Returns:
+            bool or None:
+                - True if command was sent and echoed successfully
+                - False if prompt appeared before command echo (unexpected behavior)
+                - None if command was not found
+
+        Raises:
+            RuntimeError: If QEMU process is not running
+        """
         """Send a command to the QEMU process."""
         if not self.process or not self.process.isalive():
             raise RuntimeError("QEMU process is not running")
 
         self.process.sendline(command)
         # Wait for the command echo to confirm it was sent
-        self.process.expect(command, timeout=1)
+        index = self.process.expect(
+            [command, f"{command}: command not found", self.prompt], timeout=1
+        )
+        if index == 0:
+            # Command was sent successfully
+            return True
+        elif index == 1:
+            # Command not found
+            return None
+        elif index == 2:
+            # Prompt appeared before command echo, unexpected behavior
+            return False
 
     def read_output(self, timeout: float = None) -> str:
         """
