@@ -38,10 +38,6 @@ jobs:
           find output -name "*.json" -type f | sed 's|output/||' | sort > output/boards.txt
           cat output/boards.txt
 
-      - name: Turnstyle
-        uses: softprops/turnstyle@v2
-        if: github.ref == 'refs/heads/main'
-
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
