@@ -9,6 +9,13 @@ use std::path::Path;
 pub extern "C" fn rust_crate_test_std_fs_main() {
     println!("Rust std::fs Demo");
 
+    // Ensure /tmp exists first
+    let tmp_base = Path::new("/tmp");
+    if !tmp_base.exists() {
+        println!("/tmp directory does not exist! The filesystem may not be properly mounted.");
+        panic!();
+    }
+
     // Define the working directory in /tmp
     let tmp_dir = "/tmp/rust_fs_test";
 
