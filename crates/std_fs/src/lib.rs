@@ -25,6 +25,10 @@ pub extern "C" fn rust_crate_test_std_fs_main() {
     file.write_all(b"Hello from Rust on NuttX!\n").unwrap();
     println!("Data written successfully");
 
+    // Check file size after writing
+    let metadata = fs::metadata(&file_path).unwrap();
+    println!("File size after initial write: {} bytes", metadata.len());
+
     // Reading from the file
     println!("Reading file content:");
     let mut file = File::open(&file_path).unwrap();
@@ -33,6 +37,10 @@ pub extern "C" fn rust_crate_test_std_fs_main() {
     file.read_to_string(&mut content).unwrap();
     println!("File content: {}", content.trim());
 
+    // Verify data matches what was written
+    assert_eq!(content.trim(), "Hello from Rust on NuttX!");
+    println!("Verified: Read data matches written data");
+
     // Append to the file
     println!("Appending to file");
     let mut file = OpenOptions::new().append(true).open(&file_path).unwrap();
@@ -40,10 +48,19 @@ pub extern "C" fn rust_crate_test_std_fs_main() {
     file.write_all(b"This is appended text.\n").unwrap();
     println!("Data appended successfully");
 
+    // Check file size after append
+    let metadata = fs::metadata(&file_path).unwrap();
+    println!("File size after append: {} bytes", metadata.len());
+
     // Reading complete file content
     println!("Reading updated file content:");
     let content = fs::read_to_string(&file_path).unwrap();
     println!("Updated content:\n{}", content);
+
+    // Verify complete content after append
+    assert!(content.contains("Hello from Rust on NuttX!"));
+    assert!(content.contains("This is appended text."));
+    println!("Verified: Complete content contains both original and appended data");
 
     // List directory contents
     println!("Listing files in {}:", tmp_dir);
