@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_STD_FS
+	tristate "\"Std FS\" example"
+	default n
+
+if RUST_CRATE_STD_FS
+
+config RUST_CRATE_STD_FS_PRIORITY
+	int "Std FS task priority"
+	default 100
+
+config RUST_CRATE_STD_FS_STACKSIZE
+	int "Std FS stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
