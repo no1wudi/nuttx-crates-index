@@ -58,7 +58,7 @@ fn heap_pinning_example() -> String {
     let mut output = String::new();
 
     // Create some data on the heap with Box
-    let mut boxed = Box::new(42);
+    let boxed = Box::new(42);
     writeln!(&mut output, "Original boxed value: {}", *boxed).unwrap();
 
     // Convert the Box into a Pin<Box<T>>
