@@ -25,6 +25,8 @@ _RUST_CONFIG = [
     ("enable", "CONFIG_DEBUG_FULLOPT"),
     ("enable", "CONFIG_FRAME_POINTER"),
     ("enable", "CONFIG_FS_TMPFS"),
+    ("enable", "CONFIG_DEBUG_FEATURES"),
+    ("enable", "CONFIG_DEBUG_ASSERTIONS"),
     ("set-val", "CONFIG_TLS_NELEM", "16"),
     ("set-val", "CONFIG_DEFAULT_TASK_STACKSIZE", "4096"),
 ]
