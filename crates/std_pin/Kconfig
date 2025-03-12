@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_STD_PIN
+	tristate "\"Std Pin\" example"
+	default n
+
+if RUST_CRATE_STD_PIN
+
+config RUST_CRATE_STD_PIN_PRIORITY
+	int "Std Pin task priority"
+	default 100
+
+config RUST_CRATE_STD_PIN_STACKSIZE
+	int "Std Pin stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
