@@ -1,7 +1,6 @@
 // Copyright (c) 2025 Xiaomi Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-use core::fmt::Write;
 use sha2::{Digest, Sha256};
 
 #[unsafe(no_mangle)]
