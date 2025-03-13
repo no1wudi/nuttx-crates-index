@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_BASE64
+	tristate "\"Crate Base64\" example"
+	default n
+
+if RUST_CRATE_BASE64
+
+config RUST_CRATE_BASE64_PRIORITY
+	int "Base64 task priority"
+	default 100
+
+config RUST_CRATE_BASE64_STACKSIZE
+	int "Base64 stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
