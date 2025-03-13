@@ -1,0 +1,17 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+if(CONFIG_RUST_CRATE_HASHBROWN)
+  nuttx_add_rust(
+    CRATE_NAME hashbrown
+    CRATE_PATH ${CMAKE_CURRENT_SOURCE_DIR}
+  )
+
+  nuttx_add_application(
+    NAME rust_crate_test_hashbrown
+    STACKSIZE ${CONFIG_RUST_CRATE_HASHBROWN_STACKSIZE}
+    PRIORITY ${CONFIG_RUST_CRATE_HASHBROWN_PRIORITY}
+  )
+
+  add_dependencies(apps hashbrown)
+endif() # CONFIG_RUST_CRATE_HASHBROWN
