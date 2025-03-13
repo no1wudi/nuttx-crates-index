@@ -126,6 +126,11 @@ pub extern "C" fn rust_crate_test_[name]_main() {
 ## Instructions
 
 1. Create a new directory under `crates/[name]`
+   - For 3rd party crates, use `crates/[name]` as the directory and crate name
+   - For libstd functionality, use `crates/std_[name]` as the directory and crate name
+   - For libcore functionality, use `crates/core_[name]` as the directory crate name
+   - Use the above templates to create `Kconfig`, `CMakeLists.txt`, and `Cargo.toml` files
+   - Create a `src` directory and add `lib.rs` file
 2. Copy and customize the above templates
 3. Update the main function name to match your crate
 4. Ensure copyright headers in all files
