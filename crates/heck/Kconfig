@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_HECK
+	tristate "\"Crate Heck\" example"
+	default n
+
+if RUST_CRATE_HECK
+
+config RUST_CRATE_HECK_PRIORITY
+	int "Heck task priority"
+	default 100
+
+config RUST_CRATE_HECK_STACKSIZE
+	int "Heck stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
