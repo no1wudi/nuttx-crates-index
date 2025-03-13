@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_ITOA
+	tristate "\"Crate Itoa\" example"
+	default n
+
+if RUST_CRATE_ITOA
+
+config RUST_CRATE_ITOA_PRIORITY
+	int "Itoa task priority"
+	default 100
+
+config RUST_CRATE_ITOA_STACKSIZE
+	int "Itoa stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
