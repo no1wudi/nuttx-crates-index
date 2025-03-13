@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_SMALLVEC
+	tristate "\"Crate Smallvec\" example"
+	default n
+
+if RUST_CRATE_SMALLVEC
+
+config RUST_CRATE_SMALLVEC_PRIORITY
+	int "Smallvec task priority"
+	default 100
+
+config RUST_CRATE_SMALLVEC_STACKSIZE
+	int "Smallvec stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
