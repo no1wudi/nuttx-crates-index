@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_EQUIVALENT
+	tristate "\"Crate Equivalent\" example"
+	default n
+
+if RUST_CRATE_EQUIVALENT
+
+config RUST_CRATE_EQUIVALENT_PRIORITY
+	int "Equivalent task priority"
+	default 100
+
+config RUST_CRATE_EQUIVALENT_STACKSIZE
+	int "Equivalent stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
