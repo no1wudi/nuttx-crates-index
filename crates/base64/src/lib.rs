@@ -25,7 +25,7 @@ pub extern "C" fn rust_crate_test_base64_main() {
             } else {
                 println!("✗ Roundtrip failed!");
             }
-        },
+        }
         Err(err) => {
             println!("Decoding error: {}", err);
         }
@@ -37,7 +37,10 @@ pub extern "C" fn rust_crate_test_base64_main() {
     let urlsafe = base64::prelude::BASE64_URL_SAFE.encode(data_with_special_chars);
 
     println!("\nStandard vs URL-safe encoding:");
-    println!("Original    : {}", std::str::from_utf8(data_with_special_chars).unwrap());
+    println!(
+        "Original    : {}",
+        std::str::from_utf8(data_with_special_chars).unwrap()
+    );
     println!("Standard    : {}", standard);
     println!("URL-safe    : {}", urlsafe);
 
