@@ -5,7 +5,7 @@ use libc::puts;
 use std::ffi::CString;
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_libc_puts_main() {
+pub fn rust_crate_test_libc_puts_main() {
     // Create a C-compatible string with our message
     let message = CString::new("Hello World from libc puts").expect("CString creation failed");
 

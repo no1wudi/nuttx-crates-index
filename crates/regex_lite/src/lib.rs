@@ -115,7 +115,7 @@ fn test_url_validation() {
 /// This function is marked as no_mangle to ensure it's callable from C code,
 /// allowing integration with the NuttX system.
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_regex_lite_main() {
+pub fn rust_crate_test_regex_lite_main() {
     println!("Starting regex-lite examples...");
 
     test_basic_patterns();

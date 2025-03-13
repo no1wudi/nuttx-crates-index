@@ -13,7 +13,7 @@ unsafe extern "C" {
 ///
 /// This function demonstrates using libcore (without std) to call puts from libc
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_core_puts_main() {
+pub fn rust_crate_test_core_puts_main() {
     // Create a C-compatible string
     let message = b"Hello World from libcore puts\n\0";
 

@@ -111,7 +111,7 @@ fn demonstrate_once_state() {
 
 // Use export_name which is safer than no_mangle
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_std_once_main() {
+pub fn rust_crate_test_std_once_main() {
     println!("Testing std::sync::Once functionality");
 
     // Create several threads to demonstrate that initialization happens only once

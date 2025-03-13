@@ -25,7 +25,7 @@ impl Ord for Sensor {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_std_cmp_main() {
+pub fn rust_crate_test_std_cmp_main() {
     println!("=== Demonstrating std::cmp functionality ===");
 
     // Demonstrate min and max functions

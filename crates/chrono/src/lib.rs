@@ -4,7 +4,7 @@
 use chrono::{DateTime, Local, TimeZone, Utc};
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_chrono_main() {
+pub fn rust_crate_test_chrono_main() {
     // Get the current UTC time
     let utc_now: DateTime<Utc> = Utc::now();
 

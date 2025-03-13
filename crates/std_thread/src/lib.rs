@@ -32,7 +32,7 @@ fn custom_stack_size_example() {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_std_thread_main() {
+pub fn rust_crate_test_std_thread_main() {
     println!("Starting std_thread demonstration");
 
     custom_stack_size_example();

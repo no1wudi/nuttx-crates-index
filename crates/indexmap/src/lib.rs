@@ -5,7 +5,7 @@ use indexmap::IndexMap;
 use std::println;
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_indexmap_main() {
+pub fn rust_crate_test_indexmap_main() {
     println!("IndexMap demo starting...");
 
     // Create a new empty IndexMap

@@ -4,7 +4,7 @@
 use smallvec::SmallVec;
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_smallvec_main() {
+pub fn rust_crate_test_smallvec_main() {
     // Demonstrate smallvec functionality
     println!("Starting smallvec example...");
 

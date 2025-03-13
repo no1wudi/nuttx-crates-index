@@ -4,7 +4,7 @@
 use hashbrown::HashMap;
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_hashbrown_main() {
+pub fn rust_crate_test_hashbrown_main() {
     // Create a new HashMap with hashbrown
     let mut map = HashMap::new();
 

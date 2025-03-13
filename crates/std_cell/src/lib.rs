@@ -57,7 +57,7 @@ fn demonstrate_refcell() {
 }
 
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn rust_crate_test_std_cell_main() {
+pub unsafe fn rust_crate_test_std_cell_main() {
     println!("Starting std_cell example");
 
     demonstrate_cell();

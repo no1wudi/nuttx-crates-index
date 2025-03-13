@@ -29,6 +29,6 @@ fn test_lazy_static() {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_lazy_static_main() {
+pub fn rust_crate_test_lazy_static_main() {
     test_lazy_static();
 }

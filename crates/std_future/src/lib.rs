@@ -79,7 +79,7 @@ fn block_on<F: Future>(mut future: F) -> F::Output {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_std_future_main() {
+pub fn rust_crate_test_std_future_main() {
     println!("=== Rust std::Future example ===");
 
     println!("Running async task using our simple executor...");

@@ -6,7 +6,7 @@ use std::path::{Path, PathBuf};
 
 /// This demo demonstrates various functionality from the std::path module
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_std_path_main() {
+pub fn rust_crate_test_std_path_main() {
     println!("\n=== std::path demonstration ===\n");
 
     // Create a Path from a string slice

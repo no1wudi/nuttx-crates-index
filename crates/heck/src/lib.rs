@@ -4,7 +4,7 @@
 use heck::{ToKebabCase, ToLowerCamelCase, ToSnakeCase, ToTitleCase};
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_heck_main() {
+pub fn rust_crate_test_heck_main() {
     // Example strings for case conversion
     let test_string = "hello_world_example";
     let pascal_string = "HelloWorldExample";

@@ -150,7 +150,7 @@ fn demonstrate_custom_vec() {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_std_alloc_main() {
+pub fn rust_crate_test_std_alloc_main() {
     println!("Starting std::alloc demonstration");
 
     demonstrate_global_allocator();

@@ -6,7 +6,7 @@ use std::io::{self, Write};
 /// Entry point for the std_io example
 /// Demonstrates various IO output methods from Rust's standard library
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_std_io_main() {
+pub fn rust_crate_test_std_io_main() {
     println!("=== Rust StdIO Example ===");
 
     // Basic println examples

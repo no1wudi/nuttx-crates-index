@@ -9,7 +9,7 @@ use bytes::{BufMut, BytesMut};
 /// from the bytes crate, showing buffer manipulation operations including
 /// adding data, splitting buffers, and checking capacity.
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_bytes_main() {
+pub fn rust_crate_test_bytes_main() {
     println!("Starting bytes crate example...");
 
     // Create a new BytesMut with capacity

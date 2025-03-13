@@ -5,7 +5,7 @@ use std::thread;
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_std_time_main() {
+pub fn rust_crate_test_std_time_main() {
     println!("=== Rust std::time Demo ===");
 
     // Demo 1: Duration

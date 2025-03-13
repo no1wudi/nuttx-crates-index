@@ -25,7 +25,7 @@ static FIBONACCI_CACHE: LazyLock<Vec<u64>> = LazyLock::new(|| {
 });
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_std_lazylock_main() {
+pub fn rust_crate_test_std_lazylock_main() {
     println!("LazyLock Demo - Testing lazy initialization");
 
     // First access to EXPENSIVE_RESULT will trigger initialization

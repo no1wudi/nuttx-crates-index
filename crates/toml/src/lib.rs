@@ -30,7 +30,7 @@ struct PeerConfig {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_toml_main() {
+pub fn rust_crate_test_toml_main() {
     let toml_str = r#"
         global_string = "test"
         global_integer = 5

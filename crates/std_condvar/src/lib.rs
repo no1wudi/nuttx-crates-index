@@ -15,7 +15,7 @@ struct SharedData {
 const THREAD_STACK_SIZE: usize = 4 * 1024;
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_std_condvar_main() {
+pub fn rust_crate_test_std_condvar_main() {
     println!("Starting Rust std::sync::Condvar example");
 
     // Create shared state for our threads

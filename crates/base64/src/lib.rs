@@ -5,7 +5,7 @@ use base64::{Engine as _, prelude::BASE64_STANDARD};
 use std::io::{self, Write};
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_base64_main() {
+pub fn rust_crate_test_base64_main() {
     println!("Base64 encoding/decoding test");
 
     // Test encoding

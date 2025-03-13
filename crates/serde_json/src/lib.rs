@@ -21,7 +21,7 @@ struct Address {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_serde_json_main() {
+pub fn rust_crate_test_serde_json_main() {
     println!("Running serde_json tests");
 
     test_basic_serialization();

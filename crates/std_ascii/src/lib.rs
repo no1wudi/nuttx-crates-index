@@ -78,7 +78,7 @@ fn escape_demo() {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_std_ascii_main() {
+pub fn rust_crate_test_std_ascii_main() {
     // Print a header
     println!("=== std::ascii Demo ===");
 

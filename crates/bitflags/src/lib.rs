@@ -26,7 +26,7 @@ bitflags! {
 }
 
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn rust_crate_test_bitflags_main() {
+pub unsafe fn rust_crate_test_bitflags_main() {
     println!("Starting bitflags crate demonstration...");
 
     // Demonstrate file permissions

@@ -4,7 +4,7 @@
 /// Example application demonstrating the ryu crate
 /// The ryu crate provides fast floating point to string conversion
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_ryu_main() {
+pub fn rust_crate_test_ryu_main() {
     println!("Ryu crate example starting...");
 
     // Create a buffer and format a floating-point number

@@ -118,7 +118,7 @@ crate-type = ["staticlib"]
 // SPDX-License-Identifier: Apache-2.0
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_[name]_main() {
+pub fn rust_crate_test_[name]_main() {
     // Implement your functionality here
 }
 ```

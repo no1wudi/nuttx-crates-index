@@ -29,7 +29,7 @@ fn roundtrip(data: &[u8]) -> bool {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_miniz_oxide_main() {
+pub fn rust_crate_test_miniz_oxide_main() {
     println!("Testing miniz_oxide compression/decompression...");
 
     // Test with a simple string

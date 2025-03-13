@@ -5,7 +5,7 @@ use rand::{Rng, SeedableRng, rngs::StdRng};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_rand_main() {
+pub fn rust_crate_test_rand_main() {
     // Get current time and use it as seed
     let now = SystemTime::now();
     let duration = now.duration_since(UNIX_EPOCH).expect("Time went backwards");

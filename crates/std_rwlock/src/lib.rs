@@ -111,7 +111,7 @@ fn test_rwlock_multi_thread() {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_std_rwlock_main() {
+pub fn rust_crate_test_std_rwlock_main() {
     println!("RwLock Example: Multiple readers, exclusive writer");
 
     // Run single thread test

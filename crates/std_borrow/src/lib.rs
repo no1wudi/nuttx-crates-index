@@ -93,7 +93,7 @@ fn demo_to_owned() {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_std_borrow_main() {
+pub fn rust_crate_test_std_borrow_main() {
     println!("Starting std::borrow showcase");
 
     // Example 1: Using Cow (Clone-on-write) for efficient string operations

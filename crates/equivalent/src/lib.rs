@@ -61,6 +61,6 @@ fn run_equivalent_demo() {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_equivalent_main() {
+pub fn rust_crate_test_equivalent_main() {
     run_equivalent_demo();
 }

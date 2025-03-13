@@ -52,7 +52,7 @@ fn demonstrate_box_for_large_data() {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_std_boxed_main() {
+pub fn rust_crate_test_std_boxed_main() {
     println!("=== Box Demo: Heap allocation in Rust ===");
 
     // Create a base structure

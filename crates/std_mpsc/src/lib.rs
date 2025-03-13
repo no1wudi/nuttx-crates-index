@@ -5,7 +5,7 @@ use std::sync::mpsc;
 use std::thread;
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_std_mpsc_main() {
+pub fn rust_crate_test_std_mpsc_main() {
     test_same_thread();
     test_multi_thread();
 }

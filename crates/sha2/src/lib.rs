@@ -4,7 +4,7 @@
 use sha2::{Digest, Sha256};
 
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn rust_crate_test_sha2_main() {
+pub unsafe fn rust_crate_test_sha2_main() {
     // Create a new SHA-256 hasher
     let mut hasher = Sha256::new();
 

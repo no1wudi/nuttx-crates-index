@@ -80,7 +80,7 @@ fn heap_pinning_example() -> String {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_std_pin_main() {
+pub fn rust_crate_test_std_pin_main() {
     println!("=== Std::Pin Example ===");
 
     // Example 1: Self-referential struct with Pin

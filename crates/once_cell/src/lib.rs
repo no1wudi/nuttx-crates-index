@@ -46,6 +46,6 @@ fn test_once_cell() {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_crate_test_once_cell_main() {
+pub fn rust_crate_test_once_cell_main() {
     test_once_cell();
 }
