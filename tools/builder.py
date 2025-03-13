@@ -115,7 +115,7 @@ class Builder:
         Configure the build using CMake with the specified board configuration.
         """
         self.runner.run(
-            f"cmake -B{self.build_dir} -G'Unix Makefiles' -DBOARD_CONFIG={self.board_config} {self.nuttx_path}"
+            f"cmake -B{self.build_dir} -GNinja -DBOARD_CONFIG={self.board_config} {self.nuttx_path}"
         )
 
     def _apply_kconfig_option(self, config):
@@ -160,13 +160,13 @@ class Builder:
             self._apply_kconfig_option(_BOARD_CONFIG[self.board_config])
 
         # Ensure the board-specific configuration is set
-        self.runner.run("make olddefconfig", cwd=self.build_dir)
+        self.runner.run("ninja olddefconfig", cwd=self.build_dir)
 
         # Apply the configurations
         if configs:
             self._apply_kconfig_option(configs)
 
-        self.runner.run("make olddefconfig", cwd=self.build_dir)
+        self.runner.run("ninja olddefconfig", cwd=self.build_dir)
 
     def configure(self, extra=None):
         """
@@ -236,17 +236,16 @@ class Builder:
 
     def build(self):
         """
-        Build NuttX using the configured environment.
+        Build NuttX using the configured environment with Ninja.
 
-        Uses parallel build based on the number of CPU cores and
+        Uses parallel build automatically managed by Ninja and
         reports build time and binary size information.
 
         Returns:
             dict: Size information of the built binary
                  Example: {'text': 156540, 'data': 1016, 'bss': 27456, 'total': 185012}
         """
-        jobs = cpu_count()
-        self.runner.run(f"make -j{jobs}", cwd=self.build_dir)
+        self.runner.run("ninja", cwd=self.build_dir)
 
         # Get and return size information
         size_info = self._parse_size_info()
