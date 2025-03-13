@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Xiaomi Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-use std::cmp::{max, min, Ord, Ordering, PartialOrd};
+use std::cmp::{Ord, Ordering, PartialOrd, max, min};
 use std::println;
 
 // Define a custom struct to demonstrate Ord and PartialOrd traits
@@ -48,8 +48,18 @@ pub extern "C" fn rust_crate_test_std_cmp_main() {
     let sensor3 = Sensor { id: 3, priority: 5 };
 
     println!("Comparing sensors based on priority:");
-    println!("sensor1 ({:?}) vs sensor2 ({:?}): {:?}", sensor1, sensor2, sensor1.cmp(&sensor2));
-    println!("sensor2 ({:?}) vs sensor3 ({:?}): {:?}", sensor2, sensor3, sensor2.cmp(&sensor3));
+    println!(
+        "sensor1 ({:?}) vs sensor2 ({:?}): {:?}",
+        sensor1,
+        sensor2,
+        sensor1.cmp(&sensor2)
+    );
+    println!(
+        "sensor2 ({:?}) vs sensor3 ({:?}): {:?}",
+        sensor2,
+        sensor3,
+        sensor2.cmp(&sensor3)
+    );
 
     // Finding the minimum and maximum sensors using the Ord trait
     let sensors = [&sensor1, &sensor2, &sensor3];

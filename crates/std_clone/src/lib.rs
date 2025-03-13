@@ -29,19 +29,31 @@ pub extern "C" fn rust_crate_test_std_clone_main() {
     // Demonstrate cloning primitive types
     let number = 42;
     let number_clone = number.clone();
-    println!("Original number: {}, Cloned number: {}", number, number_clone);
+    println!(
+        "Original number: {}, Cloned number: {}",
+        number, number_clone
+    );
 
     // Demonstrate cloning standard collections
     let vector = vec![1, 2, 3, 4, 5];
     let vector_clone = vector.clone();
-    println!("Original vector: {:?}, Cloned vector: {:?}", vector, vector_clone);
+    println!(
+        "Original vector: {:?}, Cloned vector: {:?}",
+        vector, vector_clone
+    );
 
     // Demonstrate clone_from method
     let mut string1 = String::from("Hello");
     let string2 = String::from("World");
-    println!("Before clone_from - string1: {}, string2: {}", string1, string2);
+    println!(
+        "Before clone_from - string1: {}, string2: {}",
+        string1, string2
+    );
     string1.clone_from(&string2);
-    println!("After clone_from - string1: {}, string2: {}", string1, string2);
+    println!(
+        "After clone_from - string1: {}, string2: {}",
+        string1, string2
+    );
 
     // Demonstrate custom clone implementation
     let device = Device {

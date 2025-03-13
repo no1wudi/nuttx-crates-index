@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_BITFLAGS
+	tristate "\"Crate Bitflags\" example"
+	default n
+
+if RUST_CRATE_BITFLAGS
+
+config RUST_CRATE_BITFLAGS_PRIORITY
+	int "Bitflags task priority"
+	default 100
+
+config RUST_CRATE_BITFLAGS_STACKSIZE
+	int "Bitflags stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
