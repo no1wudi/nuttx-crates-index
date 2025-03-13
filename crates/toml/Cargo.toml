@@ -1,0 +1,14 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+[package]
+name = "toml"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]
+toml = "0.8"
+serde = { version = "1.0", features = ["derive"] }
