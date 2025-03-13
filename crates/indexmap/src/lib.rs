@@ -33,7 +33,8 @@ pub extern "C" fn rust_crate_test_indexmap_main() {
     }
 
     // Remove an entry
-    map.remove("one");
+    // Use shift_remove instead of remove to explicitly preserve the order of remaining elements
+    map.shift_remove("one");
 
     println!("After removal:");
     for (key, val) in &map {
