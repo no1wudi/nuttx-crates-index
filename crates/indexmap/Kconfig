@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_INDEXMAP
+	tristate "\"Crate IndexMap\" example"
+	default n
+
+if RUST_CRATE_INDEXMAP
+
+config RUST_CRATE_INDEXMAP_PRIORITY
+	int "IndexMap task priority"
+	default 100
+
+config RUST_CRATE_INDEXMAP_STACKSIZE
+	int "IndexMap stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
