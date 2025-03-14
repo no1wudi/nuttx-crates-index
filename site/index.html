@@ -118,6 +118,11 @@
             color: #f39c12;
         }
 
+        .status-memleak {
+            background-color: rgba(156, 39, 176, 0.2);
+            color: #9c27b0;
+        }
+
         #boardSelector {
             margin-bottom: 30px;
             background-color: var(--card-color);
@@ -443,6 +448,7 @@
                         <th>BSS Δ</th>
                         <th>Total Δ</th>
                         <th>Test Result</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -463,6 +469,7 @@
                         <th>BSS Δ</th>
                         <th>Total Δ</th>
                         <th>Test Result</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -483,6 +490,7 @@
                         <th>BSS Δ</th>
                         <th>Total Δ</th>
                         <th>Test Result</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -503,6 +511,7 @@
                         <th>BSS Δ</th>
                         <th>Total Δ</th>
                         <th>Test Result</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -524,6 +533,7 @@
                         <th>BSS Δ</th>
                         <th>Total Δ</th>
                         <th>Test Result</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -544,6 +554,7 @@
                         <th>BSS Δ</th>
                         <th>Total Δ</th>
                         <th>Test Result</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -564,6 +575,7 @@
                         <th>BSS Δ</th>
                         <th>Total Δ</th>
                         <th>Test Result</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -627,6 +639,12 @@
                 }
             }
 
+            // Check for memory leak by searching for "Memdump task" in the output
+            let hasMemLeak = true;
+            if (build.test && build.test.output && build.test.output.includes("Memdump")) {
+                hasMemLeak = true;
+            }
+
             row.innerHTML = `
                 <td>${build.crate_name}</td>
                 <td class="positive">
@@ -647,6 +665,9 @@
                 </td>
                 <td>
                     <span class="test-status ${testStatusClass}" data-crate="${build.crate_name}">${testStatusText}</span>
+                </td>
+                <td>
+                    ${hasMemLeak ? '<span class="test-status status-memleak" title="Memory leak detected">MemLeak</span>' : ''}
                 </td>
             `;
 
