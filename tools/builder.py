@@ -26,10 +26,14 @@ _RUST_CONFIG = [
     ("enable", "CONFIG_FRAME_POINTER"),
     ("enable", "CONFIG_FS_TMPFS"),
     ("enable", "CONFIG_SCHED_BACKTRACE"),
+    ("enable", "CONFIG_MM_BACKTRACE_DEFAULT"),
+    ("enable", "CONFIG_SCHED_DUMP_LEAK"),
     # ("enable", "CONFIG_DEBUG_FEATURES"),
     # ("enable", "CONFIG_DEBUG_ASSERTIONS"),
     ("set-val", "CONFIG_TLS_NELEM", "16"),
     ("set-val", "CONFIG_DEFAULT_TASK_STACKSIZE", "4096"),
+    ("set-val", "CONFIG_INIT_STACKSIZE", "4096"),
+    ("set-val", "CONFIG_MM_BACKTRACE", "16"),
 ]
 
 # Board-specific configurations
