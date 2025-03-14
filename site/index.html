@@ -421,6 +421,15 @@
             <button class="filter-btn" data-filter="skip">
                 Skipped <span class="count" id="count-skip">0</span>
             </button>
+            <button class="filter-btn" data-filter="std">
+                Std Crates <span class="count" id="count-std">0</span>
+            </button>
+            <button class="filter-btn" data-filter="core">
+                Core Crates <span class="count" id="count-core">0</span>
+            </button>
+            <button class="filter-btn" data-filter="third">
+                3rd Party <span class="count" id="count-third">0</span>
+            </button>
         </div>
 
         <div id="all-tests" class="table-section">
@@ -501,6 +510,67 @@
                 </tbody>
             </table>
             <div class="empty-table-message" style="display: none;">No skipped tests available</div>
+        </div>
+
+        <!-- Add new table sections for crate categories -->
+        <div id="std-tests" class="table-section" style="display: none;">
+            <h2>Std Crates</h2>
+            <table id="stdTable" class="test-table">
+                <thead>
+                    <tr>
+                        <th>Crate</th>
+                        <th>Text Δ</th>
+                        <th>Data Δ</th>
+                        <th>BSS Δ</th>
+                        <th>Total Δ</th>
+                        <th>Test Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be added dynamically -->
+                </tbody>
+            </table>
+            <div class="empty-table-message" style="display: none;">No std crates available</div>
+        </div>
+
+        <div id="core-tests" class="table-section" style="display: none;">
+            <h2>Core Crates</h2>
+            <table id="coreTable" class="test-table">
+                <thead>
+                    <tr>
+                        <th>Crate</th>
+                        <th>Text Δ</th>
+                        <th>Data Δ</th>
+                        <th>BSS Δ</th>
+                        <th>Total Δ</th>
+                        <th>Test Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be added dynamically -->
+                </tbody>
+            </table>
+            <div class="empty-table-message" style="display: none;">No core crates available</div>
+        </div>
+
+        <div id="third-tests" class="table-section" style="display: none;">
+            <h2>3rd Party Crates</h2>
+            <table id="thirdTable" class="test-table">
+                <thead>
+                    <tr>
+                        <th>Crate</th>
+                        <th>Text Δ</th>
+                        <th>Data Δ</th>
+                        <th>BSS Δ</th>
+                        <th>Total Δ</th>
+                        <th>Test Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be added dynamically -->
+                </tbody>
+            </table>
+            <div class="empty-table-message" style="display: none;">No 3rd party crates available</div>
         </div>
 
         <div id="errorMessage" style="display: none;"></div>
@@ -644,12 +714,18 @@
             document.querySelector('#passTable tbody').innerHTML = '';
             document.querySelector('#failTable tbody').innerHTML = '';
             document.querySelector('#skipTable tbody').innerHTML = '';
+            document.querySelector('#stdTable tbody').innerHTML = '';
+            document.querySelector('#coreTable tbody').innerHTML = '';
+            document.querySelector('#thirdTable tbody').innerHTML = '';
 
             // Reset counters
             let countAll = 0;
             let countPass = 0;
             let countFail = 0;
             let countSkip = 0;
+            let countStd = 0;
+            let countCore = 0;
+            let countThird = 0;
 
             // Clear error message
             document.getElementById('errorMessage').style.display = 'none';
@@ -665,12 +741,26 @@
                     data.builds.forEach(build => {
                         const row = createRow(build);
                         const testStatus = row.getAttribute('data-test-status');
+                        const crateName = build.crate_name;
+
+                        // Categorize crates
+                        let crateCategory = 'third'; // default category
+                        if (crateName.startsWith('std_')) {
+                            crateCategory = 'std';
+                            countStd++;
+                        } else if (crateName.startsWith('core_')) {
+                            crateCategory = 'core';
+                            countCore++;
+                        } else {
+                            countThird++;
+                        }
+                        row.setAttribute('data-crate-category', crateCategory);
 
                         // Always add to the all table
                         document.querySelector('#sizeTable tbody').appendChild(row.cloneNode(true));
                         countAll++;
 
-                        // Also add to the specific table
+                        // Add to specific test status table
                         if (testStatus === 'pass') {
                             document.querySelector('#passTable tbody').appendChild(row.cloneNode(true));
                             countPass++;
@@ -681,6 +771,15 @@
                             document.querySelector('#skipTable tbody').appendChild(row.cloneNode(true));
                             countSkip++;
                         }
+
+                        // Add to specific category table
+                        if (crateCategory === 'std') {
+                            document.querySelector('#stdTable tbody').appendChild(row.cloneNode(true));
+                        } else if (crateCategory === 'core') {
+                            document.querySelector('#coreTable tbody').appendChild(row.cloneNode(true));
+                        } else {
+                            document.querySelector('#thirdTable tbody').appendChild(row.cloneNode(true));
+                        }
                     });
 
                     // Update counters
@@ -688,6 +787,9 @@
                     document.getElementById('count-pass').textContent = countPass;
                     document.getElementById('count-fail').textContent = countFail;
                     document.getElementById('count-skip').textContent = countSkip;
+                    document.getElementById('count-std').textContent = countStd;
+                    document.getElementById('count-core').textContent = countCore;
+                    document.getElementById('count-third').textContent = countThird;
 
                     // Show/hide empty messages
                     document.querySelector('#all-tests .empty-table-message').style.display =
@@ -698,6 +800,12 @@
                         countFail === 0 ? 'block' : 'none';
                     document.querySelector('#skip-tests .empty-table-message').style.display =
                         countSkip === 0 ? 'block' : 'none';
+                    document.querySelector('#std-tests .empty-table-message').style.display =
+                        countStd === 0 ? 'block' : 'none';
+                    document.querySelector('#core-tests .empty-table-message').style.display =
+                        countCore === 0 ? 'block' : 'none';
+                    document.querySelector('#third-tests .empty-table-message').style.display =
+                        countThird === 0 ? 'block' : 'none';
 
                     // Reattach click events for the test outputs
                     attachTestOutputClickEvents();
@@ -772,6 +880,12 @@
                     document.getElementById('fail-tests').style.display = 'block';
                 } else if (filter === 'skip') {
                     document.getElementById('skip-tests').style.display = 'block';
+                } else if (filter === 'std') {
+                    document.getElementById('std-tests').style.display = 'block';
+                } else if (filter === 'core') {
+                    document.getElementById('core-tests').style.display = 'block';
+                } else if (filter === 'third') {
+                    document.getElementById('third-tests').style.display = 'block';
                 }
             });
         });
@@ -816,6 +930,9 @@
             applySearch('passTable', searchTerm);
             applySearch('failTable', searchTerm);
             applySearch('skipTable', searchTerm);
+            applySearch('stdTable', searchTerm);
+            applySearch('coreTable', searchTerm);
+            applySearch('thirdTable', searchTerm);
 
             // Update empty message visibility based on search results
             updateEmptyMessages();
@@ -841,7 +958,7 @@
         }
 
         function updateEmptyMessages() {
-            const sections = ['all', 'pass', 'fail', 'skip'];
+            const sections = ['all', 'pass', 'fail', 'skip', 'std', 'core', 'third'];
 
             sections.forEach(section => {
                 const tableId = section === 'all' ? 'sizeTable' : `${section}Table`;
