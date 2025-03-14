@@ -640,9 +640,15 @@
             }
 
             // Check for memory leak by searching for "Memdump task" in the output
-            let hasMemLeak = true;
-            if (build.test && build.test.output && build.test.output.includes("Memdump")) {
-                hasMemLeak = true;
+            // Check for memory leak by looking for a clean memory dump pattern
+            let hasMemLeak = false;
+            if (build.test && build.test.output) {
+                // If the test output includes "Memdump" but doesn't include the clean memory pattern,
+                // it suggests there's a memory leak
+                if (build.test.output.includes("Memdump") &&
+                    !build.test.output.includes("Total Blks  Total Size\r\r\n           0           0")) {
+                    hasMemLeak = true;
+                }
             }
 
             row.innerHTML = `
