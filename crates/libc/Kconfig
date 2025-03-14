@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_LIBC
+	tristate "\"Crate Libc\" example"
+	default n
+
+if RUST_CRATE_LIBC
+
+config RUST_CRATE_LIBC_PRIORITY
+	int "Libc task priority"
+	default 100
+
+config RUST_CRATE_LIBC_STACKSIZE
+	int "Libc stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
