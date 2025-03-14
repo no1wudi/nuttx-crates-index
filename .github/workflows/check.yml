@@ -36,6 +36,8 @@ jobs:
         run: |
           # Define all targets
           TARGETS=(
+            # AArch64 targets
+            "aarch64-unknown-nuttx"
             # ARMv7-A targets
             "armv7a-nuttx-eabi"
             "armv7a-nuttx-eabihf"
