@@ -27,6 +27,7 @@ _RUST_CONFIG = [
     ("enable", "CONFIG_FS_TMPFS"),
     ("enable", "CONFIG_SCHED_BACKTRACE"),
     ("enable", "CONFIG_MM_BACKTRACE_DEFAULT"),
+    ("enable", "CONFIG_FS_PROCFS"),
     ("enable", "CONFIG_SCHED_DUMP_LEAK"),
     # ("enable", "CONFIG_DEBUG_FEATURES"),
     # ("enable", "CONFIG_DEBUG_ASSERTIONS"),
