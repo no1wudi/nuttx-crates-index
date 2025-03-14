@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_THISERROR
+	tristate "\"Crate Thiserror\" example"
+	default n
+
+if RUST_CRATE_THISERROR
+
+config RUST_CRATE_THISERROR_PRIORITY
+	int "Thiserror task priority"
+	default 100
+
+config RUST_CRATE_THISERROR_STACKSIZE
+	int "Thiserror stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
