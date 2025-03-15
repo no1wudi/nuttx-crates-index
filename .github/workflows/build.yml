@@ -71,17 +71,10 @@ jobs:
       - name: Install Rust toolchain
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
-          toolchain: nightly-2025-03-07
+          toolchain: nightly-2025-03-14
           components: rustfmt,clippy,rust-src
           cache: false
           override: true
-
-      - name: Patch Rust std library
-        run: |
-          RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs"
-          echo "Patching file: $RUST_SRC_PATH"
-          sed -i 's/unsafe { CStr::from_ptr(self\.entry\.d_name\.as_ptr()) }/unsafe { CStr::from_ptr(self.entry.d_name.as_ptr() as *const u8) }/g' "$RUST_SRC_PATH"
-          echo "Patch applied successfully"
 
       - name: Create output directory
         run: mkdir -p output
