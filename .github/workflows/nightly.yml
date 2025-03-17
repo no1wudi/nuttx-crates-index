@@ -1,0 +1,75 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+name: Nightly Build
+
+on:
+  schedule:
+    # Run at 00:00 UTC every day
+    - cron: '0 0 * * *'
+  # Allow manual triggering of the workflow
+  workflow_dispatch:
+
+jobs:
+  nightly-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: nuttx-crates-index
+
+      - name: Install latest nightly Rust toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: nightly
+          components: rustfmt,clippy,rust-src
+          cache: false
+          override: true
+
+      - name: Build with latest nightly
+        working-directory: nuttx-crates-index
+        shell: bash
+        run: |
+          # Define all targets
+          TARGETS=(
+            # AArch64 targets
+            "aarch64-unknown-nuttx"
+            # ARMv7-A targets
+            "armv7a-nuttx-eabi"
+            "armv7a-nuttx-eabihf"
+            # Thumb v6-M targets
+            "thumbv6m-nuttx-eabi"
+            # Thumb v7-A targets
+            "thumbv7a-nuttx-eabi"
+            "thumbv7a-nuttx-eabihf"
+            # Thumb v7-M targets
+            "thumbv7m-nuttx-eabi"
+            # Thumb v7E-M targets
+            "thumbv7em-nuttx-eabihf"
+            # Thumb v8-M.main targets
+            "thumbv8m.main-nuttx-eabi"
+            "thumbv8m.main-nuttx-eabihf"
+            # Thumb v8-M.base targets
+            "thumbv8m.base-nuttx-eabi"
+            # RISC-V 32-bit targets
+            "riscv32imc-unknown-nuttx-elf"
+            "riscv32imac-unknown-nuttx-elf"
+            "riscv32imafc-unknown-nuttx-elf"
+            # RISC-V 64-bit targets
+            "riscv64imac-unknown-nuttx-elf"
+            "riscv64gc-unknown-nuttx-elf"
+          )
+
+          # Loop through all targets and build
+          for target in "${TARGETS[@]}"; do
+            echo "Building target: $target with latest nightly"
+            cargo build --target=$target -Zbuild-std=std,panic_abort || echo "Failed to build target: $target"
+          done
+
+      - name: Report build results
+        if: always()
+        working-directory: nuttx-crates-index
+        shell: bash
+        run: |
+          echo "Nightly build completed. Check the logs for any failures."
