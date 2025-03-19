@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_TIME
+	tristate "\"Crate Time\" example"
+	default n
+
+if RUST_CRATE_TIME
+
+config RUST_CRATE_TIME_PRIORITY
+	int "Time task priority"
+	default 100
+
+config RUST_CRATE_TIME_STACKSIZE
+	int "Time stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
