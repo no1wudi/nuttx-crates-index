@@ -1,0 +1,10 @@
+[package]
+name = "scopeguard"
+version = "1.2.0"
+edition = "2024"
+
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]
+scopeguard = "1.2.0"

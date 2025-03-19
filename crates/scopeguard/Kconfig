@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_SCOPEGUARD
+	tristate "\"Crate scopeguard\" example"
+	default n
+
+if RUST_CRATE_SCOPEGUARD
+
+config RUST_CRATE_SCOPEGUARD_PRIORITY
+	int "scopeguard task priority"
+	default 100
+
+config RUST_CRATE_SCOPEGUARD_STACKSIZE
+	int "scopeguard stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
