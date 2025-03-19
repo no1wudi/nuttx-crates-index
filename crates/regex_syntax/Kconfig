@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_REGEX_SYNTAX
+	tristate "\"Crate regex-syntax\" example"
+	default n
+
+if RUST_CRATE_REGEX_SYNTAX
+
+config RUST_CRATE_REGEX_SYNTAX_PRIORITY
+	int "regex-syntax task priority"
+	default 100
+
+config RUST_CRATE_REGEX_SYNTAX_STACKSIZE
+	int "regex-syntax stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
