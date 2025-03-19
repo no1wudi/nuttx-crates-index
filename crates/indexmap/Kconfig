@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_INDEXMAP
-	tristate "\"Crate IndexMap\" example"
+	tristate "Crate Indexmap"
 	default n
 
 if RUST_CRATE_INDEXMAP
 
 config RUST_CRATE_INDEXMAP_PRIORITY
-	int "IndexMap task priority"
+	int "Crate Indexmap task priority"
 	default 100
 
 config RUST_CRATE_INDEXMAP_STACKSIZE
-	int "IndexMap stack size"
+	int "Crate Indexmap stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif

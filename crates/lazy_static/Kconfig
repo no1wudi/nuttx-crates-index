@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_LAZY_STATIC
-	tristate "\"Crate Lazy Static\" example"
+	tristate "Crate Lazy Static"
 	default n
 
 if RUST_CRATE_LAZY_STATIC
 
 config RUST_CRATE_LAZY_STATIC_PRIORITY
-	int "Lazy Static task priority"
+	int "Crate Lazy Static task priority"
 	default 100
 
 config RUST_CRATE_LAZY_STATIC_STACKSIZE
-	int "Lazy Static stack size"
+	int "Crate Lazy Static stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif

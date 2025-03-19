@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_ITERTOOLS
-	tristate "\"Crate Itertools\" example"
+	tristate "Crate Itertools"
 	default n
 
 if RUST_CRATE_ITERTOOLS
 
 config RUST_CRATE_ITERTOOLS_PRIORITY
-	int "Itertools task priority"
+	int "Crate Itertools task priority"
 	default 100
 
 config RUST_CRATE_ITERTOOLS_STACKSIZE
-	int "Itertools stack size"
+	int "Crate Itertools stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif

@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_REGEX_LITE
-	tristate "\"Crate Regex Lite\" example"
+	tristate "Crate Regex Lite"
 	default n
 
 if RUST_CRATE_REGEX_LITE
 
 config RUST_CRATE_REGEX_LITE_PRIORITY
-	int "Regex Lite task priority"
+	int "Crate Regex Lite task priority"
 	default 100
 
 config RUST_CRATE_REGEX_LITE_STACKSIZE
-	int "Regex Lite stack size"
+	int "Crate Regex Lite stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif

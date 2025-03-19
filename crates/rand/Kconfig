@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_RAND
-	tristate "\"Crate Rand\" example"
+	tristate "Crate Rand"
 	default n
 
 if RUST_CRATE_RAND
 
 config RUST_CRATE_RAND_PRIORITY
-	int "Rand task priority"
+	int "Crate Rand task priority"
 	default 100
 
 config RUST_CRATE_RAND_STACKSIZE
-	int "Rand stack size"
+	int "Crate Rand stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif

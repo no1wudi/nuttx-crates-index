@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_AUTOCFG
-	tristate "\"Crate Autocfg\" example"
+	tristate "Crate Autocfg"
 	default n
 
 if RUST_CRATE_AUTOCFG
 
 config RUST_CRATE_AUTOCFG_PRIORITY
-	int "Autocfg task priority"
+	int "Crate Autocfg task priority"
 	default 100
 
 config RUST_CRATE_AUTOCFG_STACKSIZE
-	int "Autocfg stack size"
+	int "Crate Autocfg stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif

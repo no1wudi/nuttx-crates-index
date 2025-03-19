@@ -16,17 +16,17 @@ kconfig file to demonstrate the third-party Rust crate
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_[NAME]
-	tristate "\"Crate [Name]\" example"
+	tristate "Crate [Name]"
 	default n
 
 if RUST_CRATE_[NAME]
 
 config RUST_CRATE_[NAME]_PRIORITY
-	int "[Name] task priority"
+	int "Crate [Name] task priority"
 	default 100
 
 config RUST_CRATE_[NAME]_STACKSIZE
-	int "[Name] stack size"
+	int "Crate [Name] stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif
@@ -38,7 +38,7 @@ Kconfig file to demonstrate the libstd's functionality
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_STD_[NAME]
-	tristate "\"Std [Name]\" example"
+	tristate "Std [Name]"
 	default n
 
 if RUST_CRATE_STD_[NAME]
@@ -60,7 +60,7 @@ kconfig file to demonstrate the libcore's functionality
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_CORE_[NAME]
-	tristate "\"Core [Name]\" example"
+	tristate "Core [Name]"
 	default n
 
 if RUST_CRATE_CORE_[NAME]

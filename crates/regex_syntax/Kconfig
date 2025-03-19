@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_REGEX_SYNTAX
-	tristate "\"Crate regex-syntax\" example"
+	tristate "Crate Regex Syntax"
 	default n
 
 if RUST_CRATE_REGEX_SYNTAX
 
 config RUST_CRATE_REGEX_SYNTAX_PRIORITY
-	int "regex-syntax task priority"
+	int "Crate Regex Syntax task priority"
 	default 100
 
 config RUST_CRATE_REGEX_SYNTAX_STACKSIZE
-	int "regex-syntax stack size"
+	int "Crate Regex Syntax stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif

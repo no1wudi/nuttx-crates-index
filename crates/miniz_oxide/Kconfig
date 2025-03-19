@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_MINIZ_OXIDE
-	tristate "\"Crate Miniz_oxide\" example"
+	tristate "Crate Miniz Oxide"
 	default n
 
 if RUST_CRATE_MINIZ_OXIDE
 
 config RUST_CRATE_MINIZ_OXIDE_PRIORITY
-	int "Miniz_oxide task priority"
+	int "Crate Miniz Oxide task priority"
 	default 100
 
 config RUST_CRATE_MINIZ_OXIDE_STACKSIZE
-	int "Miniz_oxide stack size"
+	int "Crate Miniz Oxide stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif

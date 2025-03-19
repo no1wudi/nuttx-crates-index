@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_BYTEORDER
-	tristate "\"Crate Byteorder\" example"
+	tristate "Crate Byteorder"
 	default n
 
 if RUST_CRATE_BYTEORDER
 
 config RUST_CRATE_BYTEORDER_PRIORITY
-	int "Byteorder task priority"
+	int "Crate Byteorder task priority"
 	default 100
 
 config RUST_CRATE_BYTEORDER_STACKSIZE
-	int "Byteorder stack size"
+	int "Crate Byteorder stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif

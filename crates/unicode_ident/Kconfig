@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_UNICODE_IDENT
-	tristate "\"Crate Unicode-Ident\" example"
+	tristate "Crate Unicode Ident"
 	default n
 
 if RUST_CRATE_UNICODE_IDENT
 
 config RUST_CRATE_UNICODE_IDENT_PRIORITY
-	int "Unicode-Ident task priority"
+	int "Crate Unicode Ident task priority"
 	default 100
 
 config RUST_CRATE_UNICODE_IDENT_STACKSIZE
-	int "Unicode-Ident stack size"
+	int "Crate Unicode Ident stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif

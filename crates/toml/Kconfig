@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_TOML
-	tristate "\"Crate Toml\" example"
+	tristate "Crate Toml"
 	default n
 
 if RUST_CRATE_TOML
 
 config RUST_CRATE_TOML_PRIORITY
-	int "Toml task priority"
+	int "Crate Toml task priority"
 	default 100
 
 config RUST_CRATE_TOML_STACKSIZE
-	int "Toml stack size"
+	int "Crate Toml stack size"
 	default 8192
 
 endif

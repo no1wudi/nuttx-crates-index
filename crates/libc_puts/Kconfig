@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_LIBC_PUTS
-	tristate "\"Crate Libc Puts\" example"
+	tristate "Crate Libc Puts"
 	default n
 
 if RUST_CRATE_LIBC_PUTS
 
 config RUST_CRATE_LIBC_PUTS_PRIORITY
-	int "Libc Puts task priority"
+	int "Crate Libc Puts task priority"
 	default 100
 
 config RUST_CRATE_LIBC_PUTS_STACKSIZE
-	int "Libc Puts stack size"
+	int "Crate Libc Puts stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif

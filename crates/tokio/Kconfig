@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_TOKIO
-	tristate "\"Crate Tokio\" example"
+	tristate "Crate Tokio"
 	default n
 
 if RUST_CRATE_TOKIO
 
 config RUST_CRATE_TOKIO_PRIORITY
-	int "Tokio task priority"
+	int "Crate Tokio task priority"
 	default 100
 
 config RUST_CRATE_TOKIO_STACKSIZE
-	int "Tokio stack size"
-	default 16384
+	int "Crate Tokio stack size"
+	default DEFAULT_TASK_STACKSIZE
 
 endif

@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_THISERROR
-	tristate "\"Crate Thiserror\" example"
+	tristate "Crate Thiserror"
 	default n
 
 if RUST_CRATE_THISERROR
 
 config RUST_CRATE_THISERROR_PRIORITY
-	int "Thiserror task priority"
+	int "Crate Thiserror task priority"
 	default 100
 
 config RUST_CRATE_THISERROR_STACKSIZE
-	int "Thiserror stack size"
+	int "Crate Thiserror stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif

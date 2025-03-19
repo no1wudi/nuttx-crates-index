@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_SERDE_JSON
-	tristate "\"Crate Serde JSON\" example"
+	tristate "Crate Serde Json"
 	default n
 
 if RUST_CRATE_SERDE_JSON
 
 config RUST_CRATE_SERDE_JSON_PRIORITY
-	int "Serde JSON task priority"
+	int "Crate Serde Json task priority"
 	default 100
 
 config RUST_CRATE_SERDE_JSON_STACKSIZE
-	int "Serde JSON stack size"
+	int "Crate Serde Json stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif

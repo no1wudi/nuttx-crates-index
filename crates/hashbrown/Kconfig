@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_HASHBROWN
-	tristate "\"Crate Hashbrown\" example"
+	tristate "Crate Hashbrown"
 	default n
 
 if RUST_CRATE_HASHBROWN
 
 config RUST_CRATE_HASHBROWN_PRIORITY
-	int "Hashbrown task priority"
+	int "Crate Hashbrown task priority"
 	default 100
 
 config RUST_CRATE_HASHBROWN_STACKSIZE
-	int "Hashbrown stack size"
+	int "Crate Hashbrown stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif

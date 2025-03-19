@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_AHO_CORASICK
-	tristate "\"Crate Aho-Corasick\" example"
+	tristate "Crate Aho-Corasick"
 	default n
 
 if RUST_CRATE_AHO_CORASICK

@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_BYTES
-	tristate "\"Crate Bytes\" example"
+	tristate "Crate Bytes"
 	default n
 
 if RUST_CRATE_BYTES
 
 config RUST_CRATE_BYTES_PRIORITY
-	int "Bytes task priority"
+	int "Crate Bytes task priority"
 	default 100
 
 config RUST_CRATE_BYTES_STACKSIZE
-	int "Bytes stack size"
+	int "Crate Bytes stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif

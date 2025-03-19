@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_MEMCHR
-	tristate "\"Crate Memchr\" example"
+	tristate "Crate Memchr"
 	default n
 
 if RUST_CRATE_MEMCHR
 
 config RUST_CRATE_MEMCHR_PRIORITY
-	int "Memchr task priority"
+	int "Crate Memchr task priority"
 	default 100
 
 config RUST_CRATE_MEMCHR_STACKSIZE
-	int "Memchr stack size"
+	int "Crate Memchr stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif

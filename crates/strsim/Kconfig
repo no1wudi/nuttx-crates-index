@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_STRSIM
-	tristate "\"Crate Strsim\" example"
+	tristate "Crate Strsim"
 	default n
 
 if RUST_CRATE_STRSIM
 
 config RUST_CRATE_STRSIM_PRIORITY
-	int "Strsim task priority"
+	int "Crate Strsim task priority"
 	default 100
 
 config RUST_CRATE_STRSIM_STACKSIZE
-	int "Strsim stack size"
+	int "Crate Strsim stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif

@@ -2,17 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config RUST_CRATE_SHA2
-	tristate "\"Crate Sha2\" example"
+	tristate "Crate Sha2"
 	default n
 
 if RUST_CRATE_SHA2
 
 config RUST_CRATE_SHA2_PRIORITY
-	int "Sha2 task priority"
+	int "Crate Sha2 task priority"
 	default 100
 
 config RUST_CRATE_SHA2_STACKSIZE
-	int "Sha2 stack size"
+	int "Crate Sha2 stack size"
 	default DEFAULT_TASK_STACKSIZE
 
 endif
