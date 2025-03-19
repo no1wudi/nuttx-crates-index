@@ -15,7 +15,7 @@ pub fn rust_crate_test_regex_syntax_main() {
         Ok(ast) => {
             println!("Successfully parsed pattern '[a-z]+'");
             println!("AST: {:?}", ast);
-        },
+        }
         Err(err) => {
             println!("Failed to parse pattern: {}", err);
         }
@@ -26,7 +26,7 @@ pub fn rust_crate_test_regex_syntax_main() {
         Ok(ast) => {
             println!("Successfully parsed pattern '\\d{{3}}-\\d{{2}}-\\d{{4}}'");
             println!("AST: {:?}", ast);
-        },
+        }
         Err(err) => {
             println!("Failed to parse pattern: {}", err);
         }
@@ -36,7 +36,7 @@ pub fn rust_crate_test_regex_syntax_main() {
     match parser.parse(r"[a-z") {
         Ok(_) => {
             println!("Unexpectedly parsed invalid pattern");
-        },
+        }
         Err(err) => {
             println!("Expected error for invalid pattern '[a-z': {}", err);
         }

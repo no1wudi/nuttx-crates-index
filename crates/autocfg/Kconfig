@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_AUTOCFG
+	tristate "\"Crate Autocfg\" example"
+	default n
+
+if RUST_CRATE_AUTOCFG
+
+config RUST_CRATE_AUTOCFG_PRIORITY
+	int "Autocfg task priority"
+	default 100
+
+config RUST_CRATE_AUTOCFG_STACKSIZE
+	int "Autocfg stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
