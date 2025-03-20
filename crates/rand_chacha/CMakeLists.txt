@@ -3,7 +3,7 @@
 
 if(CONFIG_RUST_CRATE_RAND_CHACHA)
   nuttx_add_rust(
-    CRATE_NAME rand-chacha
+    CRATE_NAME rand_chacha
     CRATE_PATH ${CMAKE_CURRENT_SOURCE_DIR}
   )
 
@@ -13,5 +13,5 @@ if(CONFIG_RUST_CRATE_RAND_CHACHA)
     PRIORITY ${CONFIG_RUST_CRATE_RAND_CHACHA_PRIORITY}
   )
 
-  add_dependencies(apps rand-chacha)
+  add_dependencies(apps rand_chacha)
 endif() # CONFIG_RUST_CRATE_RAND_CHACHA
