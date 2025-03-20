@@ -1,8 +1,8 @@
 # NuttX Rust Application Creation Template
 
 Generate a new Rust crate using the following template structure. Please replace:
-- `[NAME]` with uppercase configuration name
-- `[name]` with lowercase crate name
+- `[NAME]` with uppercase configuration name (use underscores for hyphens, e.g., "XXX YYY" for "xxx-yyy")
+- `[name]` with lowercase crate name (keep hyphens if present, e.g., "xxx-yyy")
 - `[Description]` with brief app description
 - `[SPECIFIC_FUNCTIONALITY]` with detailed functionality description
 
@@ -88,7 +88,7 @@ if(CONFIG_RUST_CRATE_[NAME])
   )
 
   nuttx_add_application(
-    NAME rust_crate_test_[name]
+    NAME rust_crate_test_[name_underscored]
     STACKSIZE ${CONFIG_RUST_CRATE_[NAME]_STACKSIZE}
     PRIORITY ${CONFIG_RUST_CRATE_[NAME]_PRIORITY}
   )
@@ -118,8 +118,64 @@ crate-type = ["staticlib"]
 // SPDX-License-Identifier: Apache-2.0
 
 #[unsafe(no_mangle)]
-pub fn rust_crate_test_[name]_main() {
+pub fn rust_crate_test_[name_underscored]_main() {
     // Implement your functionality here
+}
+```
+
+## Example for hyphenated crate name "xxx-yyy"
+
+### Kconfig
+```kconfig
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_XXX_YYY
+	tristate "Crate Xxx Yyy"
+	default n
+
+if RUST_CRATE_XXX_YYY
+
+config RUST_CRATE_XXX_YYY_PRIORITY
+	int "Crate Xxx Yyy task priority"
+	default 100
+
+config RUST_CRATE_XXX_YYY_STACKSIZE
+	int "Crate Xxx Yyy stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
+```
+
+### CMakeLists.txt
+```cmake
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+if(CONFIG_RUST_CRATE_XXX_YYY)
+  nuttx_add_rust(
+    CRATE_NAME xxx_yyy
+    CRATE_PATH ${CMAKE_CURRENT_SOURCE_DIR}
+  )
+
+  nuttx_add_application(
+    NAME rust_crate_test_xxx_yyy
+    STACKSIZE ${CONFIG_RUST_CRATE_XXX_YYY_STACKSIZE}
+    PRIORITY ${CONFIG_RUST_CRATE_XXX_YYY_PRIORITY}
+  )
+
+  add_dependencies(apps xxx_yyy)
+endif() # CONFIG_RUST_CRATE_XXX_YYY
+```
+
+### src/lib.rs
+```rust
+// Copyright (c) 2025 Xiaomi Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#[unsafe(no_mangle)]
+pub fn rust_crate_test_xxx_yyy_main() {
+    // Implementation goes here
 }
 ```
 
@@ -132,7 +188,9 @@ pub fn rust_crate_test_[name]_main() {
    - Use the above templates to create `Kconfig`, `CMakeLists.txt`, and `Cargo.toml` files
    - Create a `src` directory and add `lib.rs` file
 2. Copy and customize the above templates
-3. Update the main function name to match your crate
+3. Update the main function name to match your crate:
+   - For hyphenated names (e.g., "xxx-yyy"), use underscores in C function names: `rust_crate_test_xxx_yyy_main`
+   - In Kconfig, use uppercase with underscores: `RUST_CRATE_XXX_YYY`
 4. Ensure copyright headers in all files
 5. Add appropriate documentation
 6. Ensure "#[unsafe(no_mangle)]" used for the entry point to meet the requirements of Rust 2024
