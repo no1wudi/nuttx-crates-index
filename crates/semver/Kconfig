@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_SEMVER
+	tristate "Crate Semver"
+	default n
+
+if RUST_CRATE_SEMVER
+
+config RUST_CRATE_SEMVER_PRIORITY
+	int "Crate Semver task priority"
+	default 100
+
+config RUST_CRATE_SEMVER_STACKSIZE
+	int "Crate Semver stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
