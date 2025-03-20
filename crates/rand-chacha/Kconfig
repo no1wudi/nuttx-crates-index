@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_RAND_CHACHA
+	tristate "Crate Rand Chacha"
+	default n
+
+if RUST_CRATE_RAND_CHACHA
+
+config RUST_CRATE_RAND_CHACHA_PRIORITY
+	int "Crate Rand Chacha task priority"
+	default 100
+
+config RUST_CRATE_RAND_CHACHA_STACKSIZE
+	int "Crate Rand Chacha stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
