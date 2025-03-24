@@ -3,7 +3,7 @@
 
 if(CONFIG_RUST_CRATE_VERSION_CHECK)
   nuttx_add_rust(
-    CRATE_NAME version-check
+    CRATE_NAME version_check
     CRATE_PATH ${CMAKE_CURRENT_SOURCE_DIR}
   )
 
@@ -13,5 +13,5 @@ if(CONFIG_RUST_CRATE_VERSION_CHECK)
     PRIORITY ${CONFIG_RUST_CRATE_VERSION_CHECK_PRIORITY}
   )
 
-  add_dependencies(apps version-check)
+  add_dependencies(apps version_check)
 endif() # CONFIG_RUST_CRATE_VERSION_CHECK
