@@ -5,7 +5,10 @@ extern crate libc;
 
 use core::ffi::c_int;
 use libc::{O_CREAT, O_WRONLY, close, free, malloc, open, strcpy, strlen, time, time_t, write};
-use libc::{c_char, getpid, printf};
+use libc::{
+    SIGABRT, SIGALRM, SIGBUS, SIGCHLD, SIGCONT, SIGFPE, SIGHUP, SIGILL, SIGINT, SIGKILL, SIGPIPE,
+    SIGQUIT, SIGSEGV, SIGSTOP, SIGTERM, SIGUSR1, SIGUSR2, c_char, getpid, printf,
+};
 use std::ffi::CString;
 
 /// Example functionality demonstrating the use of the libc crate.
@@ -20,6 +23,7 @@ pub fn rust_crate_test_libc_main() {
     test_string_operations();
     test_file_operations();
     test_time_functions();
+    test_signal_constants();
 
     println!("Libc crate example completed!");
 }
@@ -140,4 +144,30 @@ fn test_time_functions() {
         // Note: ctime usage removed
         println!("Time functions tested successfully");
     }
+}
+
+/// Test function demonstrating the accessibility of signal constants
+fn test_signal_constants() {
+    println!("Testing signal constants...");
+
+    // Check if common signal constants are accessible
+    println!("SIGHUP signal constant value: {}", SIGHUP);
+    println!("SIGINT signal constant value: {}", SIGINT);
+    println!("SIGQUIT signal constant value: {}", SIGQUIT);
+    println!("SIGILL signal constant value: {}", SIGILL);
+    println!("SIGABRT signal constant value: {}", SIGABRT);
+    println!("SIGFPE signal constant value: {}", SIGFPE);
+    println!("SIGKILL signal constant value: {}", SIGKILL);
+    println!("SIGSEGV signal constant value: {}", SIGSEGV);
+    println!("SIGPIPE signal constant value: {}", SIGPIPE);
+    println!("SIGALRM signal constant value: {}", SIGALRM);
+    println!("SIGTERM signal constant value: {}", SIGTERM);
+    println!("SIGUSR1 signal constant value: {}", SIGUSR1);
+    println!("SIGUSR2 signal constant value: {}", SIGUSR2);
+    println!("SIGCHLD signal constant value: {}", SIGCHLD);
+    println!("SIGCONT signal constant value: {}", SIGCONT);
+    println!("SIGSTOP signal constant value: {}", SIGSTOP);
+    println!("SIGBUS signal constant value: {}", SIGBUS);
+
+    println!("Signal constants test completed");
 }
