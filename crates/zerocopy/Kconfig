@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_ZEROCOPY
+	tristate "Crate Zerocopy"
+	default n
+
+if RUST_CRATE_ZEROCOPY
+
+config RUST_CRATE_ZEROCOPY_PRIORITY
+	int "Crate Zerocopy task priority"
+	default 100
+
+config RUST_CRATE_ZEROCOPY_STACKSIZE
+	int "Crate Zerocopy stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
