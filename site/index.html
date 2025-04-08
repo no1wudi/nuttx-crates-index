@@ -639,17 +639,9 @@
                 }
             }
 
-            // Check for memory leak by searching for "Memdump task" in the output
-            // Check for memory leak by looking for a clean memory dump pattern
-            let hasMemLeak = false;
-            if (build.test && build.test.output) {
-                // If the test output includes "Memdump" but doesn't include the clean memory pattern,
-                // it suggests there's a memory leak
-                if (build.test.output.includes("Memdump") &&
-                    !build.test.output.includes("Total Blks  Total Size\r\r\n           0           0")) {
-                    hasMemLeak = true;
-                }
-            }
+            // Check for memory leak using the memory_leaked field
+            let hasMemLeak = build.test && build.test.memory_leaked > 0;
+            let memLeakText = hasMemLeak ? `MemLeak (${formatNumber(build.test.memory_leaked)}B)` : '';
 
             row.innerHTML = `
                 <td>${build.crate_name}</td>
@@ -673,7 +665,7 @@
                     <span class="test-status ${testStatusClass}" data-crate="${build.crate_name}">${testStatusText}</span>
                 </td>
                 <td>
-                    ${hasMemLeak ? '<span class="test-status status-memleak" title="Memory leak detected">MemLeak</span>' : ''}
+                    ${hasMemLeak ? `<span class="test-status status-memleak" title="Memory leak detected: ${formatNumber(build.test.memory_leaked)} bytes">${memLeakText}</span>` : ''}
                 </td>
             `;
 
