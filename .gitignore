@@ -2,4 +2,6 @@
 build
 Cargo.lock
 target
+Pipfile
+Pipfile.lock
 __pycache__
