@@ -220,6 +220,9 @@ class Runner:
         if timeout is None:
             timeout = self.timeout
 
+        free_memory = 0
+        free_memory_after = 0
+
         try:
             # Run the command and measure its execution time
             start_time = time.time()
