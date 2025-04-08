@@ -163,6 +163,35 @@ class Runner:
         except Exception as e:
             return f"Error reading output: {str(e)}"
 
+    def get_free_memory(self) -> int:
+        """
+        Get the free memory from the NuttX shell.
+
+        This method sends the "free" command to the NuttX shell and parses
+        the output to extract the free memory value.
+
+        Returns:
+            int: Free memory in bytes
+
+        Raises:
+            RuntimeError: If there's an issue with the QEMU process
+            ValueError: If output cannot be parsed
+        """
+        if not self.process or not self.process.isalive():
+            raise RuntimeError("QEMU process is not running")
+
+        self.send_command("free")
+        output = self.read_output(timeout=5)
+
+        # Parse the output lines
+        for line in output.splitlines():
+            if "Umem" in line:  # Look for the line containing memory info
+                fields = line.split()
+                if len(fields) >= 4:  # Ensure we have enough fields
+                    return int(fields[2])  # Return the "free" column value
+
+        raise ValueError("Could not parse free memory from output")
+
     def run(self, command: str, timeout: float = None):
         """
         Run a command on the NuttX shell and collect the results.
@@ -170,6 +199,7 @@ class Runner:
         This method sends a command to the NuttX shell, waits for execution to complete,
         captures the output, and determines whether the command executed successfully.
         If the QEMU process is not already running, it will be started automatically.
+        The method also monitors memory usage before and after command execution.
 
         Args:
             command: The shell command to execute in the NuttX environment
@@ -177,10 +207,12 @@ class Runner:
                      If None, uses the default timeout set for this Runner instance.
 
         Returns:
-            tuple: Contains:
+            dict: Contains:
                 - execution_time (float): Time taken to execute the command in seconds
-                - output_text (str): The command output text from the NuttX shell
-                - success_status (bool): True if the command executed without errors
+                - output (str): The command output text from the NuttX shell
+                - success (bool): True if the command executed without errors
+                - free_memory_before (int): Available memory before command execution in bytes
+                - free_memory_after (int): Available memory after command execution in bytes
 
         Raises:
             RuntimeError: If there's an issue with the QEMU process
@@ -195,10 +227,16 @@ class Runner:
             # Start the QEMU process
             self.start()
 
+            # Get free memory before running the command
+            free_memory = self.get_free_memory()
+
             self.send_command(command)
             output = self.read_output(timeout=timeout)
 
             success = True
+
+            # Get free memory after running the command
+            free_memory_after = self.get_free_memory()
 
             # Check for success
             if "[Command timed out after" in output:
@@ -218,7 +256,14 @@ class Runner:
 
         execution_time = time.time() - start_time
         self.stop()
-        return execution_time, output, success
+
+        return {
+            "execution_time": execution_time,
+            "output": output,
+            "success": success,
+            "free_memory_before": free_memory,
+            "free_memory_after": free_memory_after,
+        }
 
 
 if __name__ == "__main__":
@@ -233,11 +278,11 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     runner = Runner(args.binary, args.board)
-    execution_time, output, success = runner.run(args.command)
+    result = runner.run(args.command)
 
-    print(f"Command execution time: {execution_time:.2f} seconds")
-    print(f"Success: {success}")
+    print(f"Command execution time: {result['execution_time']:.2f} seconds")
+    print(f"Success: {result['success']}")
     print("Output:")
-    print(output)
+    print(result["output"])
 
     runner.stop()

@@ -53,6 +53,7 @@ class JsonResultManager:
         test_time=None,
         test_output=None,
         test_success=None,
+        memory_leaked=None,
     ):
         """
         Append build results to the JSON data structure.
@@ -71,6 +72,7 @@ class JsonResultManager:
             test_time (float, optional): Execution time of the test in seconds
             test_output (str, optional): Output of the test execution
             test_success (bool or str, optional): Whether the test was successful ("true", "false", or "skip")
+            memory_leaked (int, optional): Amount of memory leaked during the test execution
         """
         # Add new build result
         build_data = {
@@ -99,6 +101,7 @@ class JsonResultManager:
             "execution_time": test_time if test_time is not None else 0,
             "output": test_output if test_output is not None else "",
             "success": success_str,
+            "memory_leaked": memory_leaked if memory_leaked is not None else 0,
         }
 
         self.data["builds"].append(build_data)

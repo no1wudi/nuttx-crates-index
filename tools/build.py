@@ -110,19 +110,31 @@ def run_crate_test(runner, crate_name, binary_path):
     try:
         test_command = f"rust_crate_test_{crate_name}"
         print(f"⚙️ Executing command: {test_command}")
-        execution_time, output, success = runner.run(test_command)
+        result = runner.run(test_command)
 
-        print(f"⏱️ Command execution time: {execution_time:.2f} seconds")
-        if success == True:
+        print(f"⏱️ Command execution time: {result['execution_time']:.2f} seconds")
+        if result["success"] == True:
             print(f"✅ Success")
-        elif success == False:
+        elif result["success"] == False:
             print(f"❌ Failure")
         else:
             print(f"⚠️ Skipped")
         print("📝 Output:")
-        print(output)
+        print(result["output"])
 
-        return execution_time, output, success
+        # Memory leak check
+        memory_leaked = result["free_memory_before"] - result["free_memory_after"]
+        if memory_leaked > 0:
+            print(f"⚠️ Memory leaked: {memory_leaked} bytes")
+        else:
+            print("✅ No memory leak detected")
+
+        return (
+            result["execution_time"],
+            result["output"],
+            result["success"],
+            memory_leaked,
+        )
     except Exception as e:
         print(f"❌ Error running binary: {str(e)}")
         return None, str(e), False
@@ -152,9 +164,10 @@ def build_crates(
 
             # Run tests if requested
             test_time, test_output, test_success = None, None, None
+            mem_leaked = None
             if runner:
                 binary_path = f"{builder.build_dir}/nuttx"
-                test_time, test_output, test_success = run_crate_test(
+                test_time, test_output, test_success, mem_leaked = run_crate_test(
                     runner, crate_name, binary_path
                 )
 
@@ -168,6 +181,7 @@ def build_crates(
                 test_time,
                 test_output,
                 test_success,
+                mem_leaked,
             )
     finally:
         # Ensure runner is stopped even if an exception occurs
