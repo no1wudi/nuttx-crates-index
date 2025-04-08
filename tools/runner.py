@@ -238,14 +238,20 @@ class Runner:
 
             success = True
 
-            # Get free memory after running the command
-            free_memory_after = self.get_free_memory()
-
             # Check for success
             if "[Command timed out after" in output:
                 success = False
             elif "[Crash detected]" in output:
                 success = False
+
+            # Get free memory after running the command
+            if success:
+                free_memory_after = self.get_free_memory()
+            else:
+                # If the command failed, we may not be able to get free memory
+                # So we set it to the same value as before
+                # to indicate no change
+                free_memory_after = free_memory
 
         except pexpect.TIMEOUT:
             output = "Command timed out"
