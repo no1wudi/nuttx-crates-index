@@ -4,6 +4,28 @@
 use std::thread;
 use std::time::Duration;
 
+// Thread example with default stack size
+fn default_stack_size_example() {
+    println!("Running default stack size example...");
+
+    // Spawn a thread using the default settings
+    let handle = thread::spawn(|| {
+        println!("Hello from a thread with default stack size!");
+
+        // Sleep for a moment to demonstrate thread execution
+        thread::sleep(Duration::from_millis(200));
+
+        println!("Default stack size thread is finishing");
+    });
+
+    println!("Main thread continues while default stack thread runs");
+
+    // Wait for the thread to complete
+    handle.join().unwrap();
+
+    println!("Default stack size example complete");
+}
+
 // Thread example with custom stack size
 fn custom_stack_size_example() {
     println!("Running custom stack size example...");
@@ -35,6 +57,7 @@ fn custom_stack_size_example() {
 pub fn rust_crate_test_std_thread_main() {
     println!("Starting std_thread demonstration");
 
+    default_stack_size_example();
     custom_stack_size_example();
 
     println!("std_thread demonstration complete!");
