@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use std::io::{self, Write};
+use std::fs::File;
 
 /// Entry point for the std_io example
 /// Demonstrates various IO output methods from Rust's standard library
@@ -9,6 +10,17 @@ use std::io::{self, Write};
 pub fn rust_crate_test_std_io_main() {
     println!("=== Rust StdIO Example ===");
 
+    // Demonstrate basic IO functionality
+    demo_basic_io();
+
+    // Demonstrate io::Error::last_os_error
+    demo_last_os_error();
+
+    println!("=== StdIO Example Complete ===");
+}
+
+/// Demonstrates basic IO operations from std::io
+fn demo_basic_io() {
     // Basic println examples
     println!("Hello from Rust std::io!");
     println!("Formatted output: {}, {}, {}", 1, "two", 3.0);
@@ -29,6 +41,27 @@ pub fn rust_crate_test_std_io_main() {
     println!("Left-aligned: {:<10}", "text");
     println!("Center-aligned: {:^10}", "text");
     println!("Zero-padded: {:0>5}", "42");
+}
 
-    println!("=== StdIO Example Complete ===");
+/// Demonstrates how to use std::io::Error::last_os_error()
+fn demo_last_os_error() {
+    println!("\n--- Demonstrating io::Error::last_os_error ---");
+
+    // Try to open a file that doesn't exist
+    let file_path = "/this/file/does/not/exist.txt";
+    match File::open(file_path) {
+        Ok(_) => println!("Successfully opened file (unexpected)"),
+        Err(e) => {
+            // Print the error we got from the failed operation
+            println!("Failed to open file '{}': {}", file_path, e);
+
+            // Get the last OS error and display it
+            let os_error = io::Error::last_os_error();
+            println!("Last OS error: {:?}", os_error);
+            println!("Error kind: {:?}", os_error.kind());
+            println!("Error code: {:?}", os_error.raw_os_error());
+        }
+    }
+
+    println!("--- End of io::Error::last_os_error demo ---\n");
 }
