@@ -1,8 +1,8 @@
 // Copyright (c) 2025 Xiaomi Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-use std::io::{self, Write};
 use std::fs::File;
+use std::io::{self, Write};
 
 /// Entry point for the std_io example
 /// Demonstrates various IO output methods from Rust's standard library
@@ -15,6 +15,9 @@ pub fn rust_crate_test_std_io_main() {
 
     // Demonstrate io::Error::last_os_error
     demo_last_os_error();
+
+    // Demonstrate custom IO errors
+    demo_custom_errors();
 
     println!("=== StdIO Example Complete ===");
 }
@@ -64,4 +67,30 @@ fn demo_last_os_error() {
     }
 
     println!("--- End of io::Error::last_os_error demo ---\n");
+}
+
+/// Demonstrates how to create and work with custom I/O errors
+fn demo_custom_errors() {
+    println!("\n--- Demonstrating custom io::Error creation ---");
+
+    // Create an error from a string payload
+    let string_error = io::Error::new(io::ErrorKind::Other, "custom string error message");
+    println!("String error: {}", string_error);
+    println!("Error kind: {:?}", string_error.kind());
+
+    // Create an error from another error
+    let wrapped_error = io::Error::new(io::ErrorKind::Interrupted, string_error);
+    println!("Wrapped error: {}", wrapped_error);
+    println!("Wrapped error kind: {:?}", wrapped_error.kind());
+
+    // Create an error without extra payload
+    let simple_error = io::Error::from(io::ErrorKind::UnexpectedEof);
+    println!("Simple error: {}", simple_error);
+    println!("Simple error kind: {:?}", simple_error.kind());
+
+    // Demonstrate error conversion with From trait
+    let another_error = io::Error::from(io::ErrorKind::ConnectionRefused);
+    println!("From trait error: {}", another_error);
+
+    println!("--- End of custom io::Error demo ---\n");
 }
