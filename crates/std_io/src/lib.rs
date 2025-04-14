@@ -63,6 +63,42 @@ fn demo_last_os_error() {
             println!("Last OS error: {:?}", os_error);
             println!("Error kind: {:?}", os_error.kind());
             println!("Error code: {:?}", os_error.raw_os_error());
+
+            // Check if the error is what we expect (typically "No such file or directory")
+            if os_error.kind() == io::ErrorKind::NotFound {
+                println!("✅ Got expected 'NotFound' error kind");
+            } else {
+                println!(
+                    "❌ Unexpected error kind: expected NotFound, got {:?}",
+                    os_error.kind()
+                );
+            }
+        }
+    }
+
+    // Try to write to a read-only file (simulating a permission error)
+    println!("\n-- Writing to a file without permission --");
+    let readonly_file_path = "/proc/version"; // This is typically readable but not writable
+    match File::create(readonly_file_path) {
+        Ok(_) => println!("Successfully opened file for writing (unexpected)"),
+        Err(e) => {
+            println!("Failed to write to '{}': {}", readonly_file_path, e);
+
+            // Get the last OS error and display it
+            let os_error = io::Error::last_os_error();
+            println!("Last OS error: {:?}", os_error);
+            println!("Error kind: {:?}", os_error.kind());
+            println!("Error code: {:?}", os_error.raw_os_error());
+
+            // Check if the error is what we expect (typically "Permission denied")
+            if os_error.kind() == io::ErrorKind::PermissionDenied {
+                println!("✅ Got expected 'PermissionDenied' error kind");
+            } else {
+                println!(
+                    "❌ Unexpected error kind: expected PermissionDenied, got {:?}",
+                    os_error.kind()
+                );
+            }
         }
     }
 
