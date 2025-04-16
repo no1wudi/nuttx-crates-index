@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_STD_THREAD_LOCAL
+	tristate "Std Thread Local"
+	default n
+
+if RUST_CRATE_STD_THREAD_LOCAL
+
+config RUST_CRATE_STD_THREAD_LOCAL_PRIORITY
+	int "Std Thread Local task priority"
+	default 100
+
+config RUST_CRATE_STD_THREAD_LOCAL_STACKSIZE
+	int "Std Thread Local stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
