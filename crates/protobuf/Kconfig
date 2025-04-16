@@ -1,0 +1,21 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_PROTOBUF
+	tristate "Crate Protobuf"
+	default n
+	help
+	  Enable this option to build the protobuf crate demonstration application.
+	  This application shows basic serialization and deserialization using the protobuf crate.
+
+if RUST_CRATE_PROTOBUF
+
+config RUST_CRATE_PROTOBUF_PRIORITY
+	int "Crate Protobuf task priority"
+	default 100
+
+config RUST_CRATE_PROTOBUF_STACKSIZE
+	int "Crate Protobuf stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
