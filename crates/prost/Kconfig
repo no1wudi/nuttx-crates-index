@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Xiaomi Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+config RUST_CRATE_PROST
+	tristate "Crate Prost"
+	default n
+
+if RUST_CRATE_PROST
+
+config RUST_CRATE_PROST_PRIORITY
+	int "Crate Prost task priority"
+	default 100
+
+config RUST_CRATE_PROST_STACKSIZE
+	int "Crate Prost stack size"
+	default DEFAULT_TASK_STACKSIZE
+
+endif
