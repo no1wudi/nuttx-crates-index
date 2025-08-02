@@ -1,12 +1,12 @@
 # Copyright (c) 2025 Xiaomi Corporation
 # SPDX-License-Identifier: Apache-2.0
 
-name: Nightly Build
+name: Weekly Build
 
 on:
   schedule:
-    # Run at 00:00 UTC every day
-    - cron: '0 0 * * *'
+    # Run at 00:00 UTC every Sunday
+    - cron: '0 0 * * 0'
   # Allow manual triggering of the workflow
   workflow_dispatch:
 
