@@ -19,8 +19,7 @@ The project includes GitHub Actions workflows that:
 
 1. Set up the build environment
 2. Install required toolchains
-3. Patch Rust std library for compatibility
-4. Build and test crates against NuttX
+3. Build and test crates against NuttX
 
 ## Project Integration
 
