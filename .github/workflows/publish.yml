@@ -28,9 +28,22 @@ jobs:
           path: output/
           merge-multiple: true
 
-      - name: Copy index.html to output
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: page/package-lock.json
+
+      - name: Install dependencies and build page
         run: |
-          cp site/index.html output/
+          cd page
+          npm install
+          npm run build
+
+      - name: Copy built site to output
+        run: |
+          cp -r page/dist/* output/
           ls -la output/
 
       - name: Generate boards list

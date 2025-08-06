@@ -1,0 +1,20 @@
+{
+  "name": "nuttx-code-size-dashboard",
+  "version": "1.0.0",
+  "description": "Dashboard for displaying NuttX crate code size information",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.3.0",
+    "vue-router": "^4.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.4.0",
+    "prettier": "^3.6.2",
+    "vite": "^4.4.0"
+  }
+}
