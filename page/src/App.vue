@@ -24,16 +24,18 @@
     <div v-if="selectedBoard && !loading && !error">
       <div class="baseline-data">
         <h3>Baseline Data</h3>
-        <div class="baseline-stats">
-          <span>Text Size: {{ formatSize(currentData.builds[0]?.baseline.text || 0) }}</span>
-          <span>Data Size: {{ formatSize(currentData.builds[0]?.baseline.data || 0) }}</span>
-          <span>BSS Size: {{ formatSize(currentData.builds[0]?.baseline.bss || 0) }}</span>
-          <span>Total Size: {{ formatSize(currentData.builds[0]?.baseline.total || 0) }}</span>
-        </div>
-        <div class="test-stats">
-          <span class="test-passed">✅ Passed: {{ testStats.passed }}</span>
-          <span class="test-failed">❌ Failed: {{ testStats.failed }}</span>
-          <span class="test-skipped">⏭️ Skipped: {{ testStats.skipped }}</span>
+        <div class="baseline-content">
+          <div class="baseline-stats">
+            <span>Text Size: {{ formatSize(currentData.builds[0]?.baseline.text || 0) }}</span>
+            <span>Data Size: {{ formatSize(currentData.builds[0]?.baseline.data || 0) }}</span>
+            <span>BSS Size: {{ formatSize(currentData.builds[0]?.baseline.bss || 0) }}</span>
+            <span>Total Size: {{ formatSize(currentData.builds[0]?.baseline.total || 0) }}</span>
+          </div>
+          <div class="test-stats">
+            <span class="test-passed">✅ Passed: {{ testStats.passed }}</span>
+            <span class="test-failed">❌ Failed: {{ testStats.failed }}</span>
+            <span class="test-skipped">⏭️ Skipped: {{ testStats.skipped }}</span>
+          </div>
         </div>
       </div>
 
@@ -336,6 +338,14 @@
     color: #333;
   }
 
+  .baseline-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
   .baseline-stats {
     display: flex;
     flex-wrap: wrap;
@@ -479,9 +489,6 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid #e0e0e0;
   }
 
   .test-passed {
