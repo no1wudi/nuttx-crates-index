@@ -2,15 +2,15 @@
   <div class="container">
     <div class="header">
       <h1>NuttX-Rust Code Size Dashboard</h1>
-      <p>View and compare code size metrics for different architectures and boards</p>
+      <p>View and compare code size metrics for different architectures</p>
     </div>
 
-    <div class="board-selector">
-      <label for="board-select">Select Board: </label>
-      <select id="board-select" v-model="selectedBoard" @change="loadBoardData">
-        <option value="">Select a board...</option>
-        <option v-for="board in boards" :key="board" :value="board">
-          {{ board }}
+    <div class="arch-selector">
+      <label for="arch-select">Select Arch: </label>
+      <select id="arch-select" v-model="selectedArch" @change="loadArchData">
+        <option value="">Select an architecture...</option>
+        <option v-for="arch in archs" :key="arch" :value="arch">
+          {{ arch }}
         </option>
       </select>
     </div>
@@ -21,7 +21,7 @@
       {{ error }}
     </div>
 
-    <div v-if="selectedBoard && !loading && !error">
+    <div v-if="selectedArch && !loading && !error">
       <div class="baseline-data">
         <h3>Baseline Data</h3>
         <div class="baseline-content">
@@ -39,43 +39,45 @@
         </div>
       </div>
 
-      <div class="filter-container">
-        <label for="crate-filter">Filter by crate name: </label>
-        <input
-          id="crate-filter"
-          type="text"
-          v-model="crateFilter"
-          placeholder="Enter crate name..."
-          @input="filterTable"
-        />
-      </div>
+      <div class="filters-row">
+        <div class="filter-container">
+          <label for="crate-filter">Filter by crate name: </label>
+          <input
+            id="crate-filter"
+            type="text"
+            v-model="crateFilter"
+            placeholder="Enter crate name..."
+            @input="filterTable"
+          />
+        </div>
 
-      <div class="test-state-filters">
-        <label>Filter by test state: </label>
-        <button
-          :class="['filter-btn', testStateFilter === 'all' ? 'active' : '']"
-          @click="setTestStateFilter('all')"
-        >
-          All
-        </button>
-        <button
-          :class="['filter-btn', testStateFilter === 'pass' ? 'active' : '']"
-          @click="setTestStateFilter('pass')"
-        >
-          ✅ Pass
-        </button>
-        <button
-          :class="['filter-btn', testStateFilter === 'fail' ? 'active' : '']"
-          @click="setTestStateFilter('fail')"
-        >
-          ❌ Fail
-        </button>
-        <button
-          :class="['filter-btn', testStateFilter === 'skip' ? 'active' : '']"
-          @click="setTestStateFilter('skip')"
-        >
-          ⏭️ Skip
-        </button>
+        <div class="test-state-filters">
+          <label>Filter by test state: </label>
+          <button
+            :class="['filter-btn', testStateFilter === 'all' ? 'active' : '']"
+            @click="setTestStateFilter('all')"
+          >
+            All
+          </button>
+          <button
+            :class="['filter-btn', testStateFilter === 'pass' ? 'active' : '']"
+            @click="setTestStateFilter('pass')"
+          >
+            ✅ Pass
+          </button>
+          <button
+            :class="['filter-btn', testStateFilter === 'fail' ? 'active' : '']"
+            @click="setTestStateFilter('fail')"
+          >
+            ❌ Fail
+          </button>
+          <button
+            :class="['filter-btn', testStateFilter === 'skip' ? 'active' : '']"
+            @click="setTestStateFilter('skip')"
+          >
+            ⏭️ Skip
+          </button>
+        </div>
       </div>
 
       <div class="table-container">
@@ -111,6 +113,7 @@
               <td>{{ build.test.execution_time.toFixed(3) }} s</td>
               <td>
                 <span v-if="build.test.success === false || build.test.success === 'fail'" class="memory-leak">❌</span>
+                <span v-else-if="build.test.success === 'skip'" class="test-skip">⏭️</span>
                 <span v-else-if="build.test.memory_leaked === 0" class="memory-pass">✅</span>
                 <span v-else class="memory-leak">{{ formatSize(build.test.memory_leaked) }}</span>
               </td>
@@ -156,8 +159,8 @@
   export default {
     name: 'App',
     setup() {
-      const boards = ref([]);
-      const selectedBoard = ref('');
+      const archs = ref([]);
+      const selectedArch = ref('');
       const currentData = ref({});
       const loading = ref(false);
       const error = ref('');
@@ -167,8 +170,8 @@
       const currentLogCrate = ref('');
       const currentLogContent = ref('');
 
-      const loadBoardData = async () => {
-        if (!selectedBoard.value) {
+      const loadArchData = async () => {
+        if (!selectedArch.value) {
           currentData.value = {};
           return;
         }
@@ -177,18 +180,18 @@
         error.value = '';
 
         try {
-          console.log(`Loading data for board: ${selectedBoard.value}`);
-          const response = await fetch(`/dist/${selectedBoard.value}`);
+          console.log(`Loading data for arch: ${selectedArch.value}`);
+          const response = await fetch(`/dist/${selectedArch.value}`);
           console.log('Response status:', response.status, response.statusText);
 
           if (!response.ok) {
-            throw new Error(`Failed to load data for ${selectedBoard.value}`);
+            throw new Error(`Failed to load data for ${selectedArch.value}`);
           }
           const data = await response.json();
           console.log('Data loaded:', data);
           currentData.value = data;
         } catch (err) {
-          console.error('Error loading board data:', err);
+          console.error('Error loading arch data:', err);
           error.value = `Error loading data: ${err.message}`;
           currentData.value = {};
         } finally {
@@ -289,20 +292,20 @@
           const response = await fetch('/dist/boards.txt');
           if (response.ok) {
             const text = await response.text();
-            boards.value = text
+            archs.value = text
               .trim()
               .split('\n')
               .filter(line => line.trim());
           }
         } catch (err) {
-          console.error('Failed to load boards list:', err);
-          error.value = 'Failed to load available boards';
+          console.error('Failed to load archs list:', err);
+          error.value = 'Failed to load available architectures';
         }
       });
 
       return {
-        boards,
-        selectedBoard,
+        archs,
+        selectedArch,
         currentData,
         loading,
         error,
@@ -311,7 +314,7 @@
         showModal,
         currentLogCrate,
         currentLogContent,
-        loadBoardData,
+        loadArchData,
         formatSize,
         getDiffClass,
         filterTable,
@@ -357,8 +360,16 @@
     color: #666;
   }
 
-  .filter-container {
+  .filters-row {
     margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .filter-container {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -522,7 +533,6 @@
   }
 
   .test-state-filters {
-    margin: 20px 0;
     display: flex;
     align-items: center;
     gap: 10px;
