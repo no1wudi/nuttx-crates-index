@@ -82,7 +82,7 @@
 
         try {
           console.log(`Loading data for arch: ${selectedArch.value}`);
-          const response = await fetch(`/dist/${selectedArch.value}`);
+          const response = await fetch(`./${selectedArch.value}`);
           console.log('Response status:', response.status, response.statusText);
 
           if (!response.ok) {
@@ -174,7 +174,7 @@
 
       onMounted(async () => {
         try {
-          const response = await fetch('/dist/boards.txt');
+          const response = await fetch('./boards.txt');
           if (response.ok) {
             const text = await response.text();
             archs.value = text
